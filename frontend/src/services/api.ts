@@ -1143,6 +1143,124 @@ export interface DistrictDossierResponse {
     competitiveness: CompetitivenessScore;
     electoral_changes: string[];
   }>;
+  ground_intelligence?: DistrictGroundIntelligence;
+  caste_profile?: DistrictCasteProfile;
+}
+
+export interface PromiseVsReality {
+  promise: string;
+  reality: string;
+  status: 'विफल' | 'जुमला' | 'अधूरा';
+  tag: string;
+}
+
+export interface IncumbentAccountability {
+  ac_no: number;
+  ac_name: string;
+  mla_2022_party: string;
+  mla_2022_candidate: string;
+  lead_2024_party: string;
+  lead_2024_candidate: string;
+  accountability_notes: string;
+}
+
+export interface RallySpeeches {
+  aggressive: string;
+  kisan: string;
+  youth: string;
+  vikas: string;
+}
+
+export interface PrintCueCard {
+  rally_title: string;
+  district: string;
+  region: string;
+  key_slogans: string[];
+  opening_hooks: string[];
+  attack_points: string[];
+  vision_promises: string[];
+}
+
+export interface DistrictGroundIntelligence {
+  district_id: number;
+  district_name: string;
+  region: string;
+  headquarters: string;
+  odop_product: string;
+  total_acs: number;
+  total_pcs: number;
+  assembly_constituencies: string[];
+  parliamentary_constituencies: string[];
+  party_tally_2022: Record<string, number>;
+  party_tally_2024: Record<string, number>;
+  promises_vs_reality: PromiseVsReality[];
+  incumbent_accountability: IncumbentAccountability[];
+  vision_2027: string[];
+  rally_speeches: RallySpeeches;
+  whatsapp_format: string;
+  print_cue_card: PrintCueCard;
+  caste_profile?: DistrictCasteProfile;
+}
+
+export interface SubCastesBreakdown {
+  yadav: number;
+  kurmi_patel: number;
+  maurya_kushwaha_saini: number;
+  lodh: number;
+  nishad_kashyap_bind: number;
+  jat: number;
+  gujjar: number;
+  rajbhar: number;
+  pal_baghel: number;
+  other_obc: number;
+  jatav: number;
+  pasi: number;
+  other_sc: number;
+  muslim_total: number;
+  muslim_pasmanda: number;
+  muslim_ashraf: number;
+  brahmin: number;
+  thakur_rajput: number;
+  baniya_vaishya: number;
+  other_general: number;
+}
+
+export interface DistrictCasteProfile {
+  district_id: number;
+  district_name: string;
+  region: string;
+  total_acs: number;
+  total_pcs: number;
+  obc_total: number;
+  sc_total: number;
+  minority_total: number;
+  general_total: number;
+  pda_potential: number;
+  sub_castes: SubCastesBreakdown;
+  dominant_communities: string[];
+  strategic_summary: string;
+}
+
+export interface CasteMatrixResponse {
+  statewide_baseline: {
+    state: string;
+    total_districts: number;
+    total_assembly_seats: number;
+    total_parliamentary_seats: number;
+    obc_percentage: number;
+    sc_percentage: number;
+    minority_percentage: number;
+    general_percentage: number;
+    macro_subcastes: Record<string, number>;
+    target_majority_vote_share: string;
+    pda_state_share: string;
+  };
+  regions: Array<{
+    name: string;
+    district_count: number;
+    key_dynamics: string;
+  }>;
+  districts: DistrictCasteProfile[];
 }
 
 export interface ElectionComparisonResponse {
@@ -1271,6 +1389,18 @@ export async function fetchDistricts(): Promise<{ total_districts: number; distr
 export async function fetchDistrictDossier(name: string): Promise<DistrictDossierResponse> {
   const res = await fetch(`${API_BASE}/districts/${encodeURIComponent(name)}`);
   if (!res.ok) throw new Error(`Failed to fetch dossier for district ${name}`);
+  return res.json();
+}
+
+export async function fetchCasteMatrix(): Promise<CasteMatrixResponse> {
+  const res = await fetch(`${API_BASE}/districts/caste-matrix`);
+  if (!res.ok) throw new Error(`Failed to fetch caste matrix (HTTP ${res.status})`);
+  return res.json();
+}
+
+export async function fetchDistrictGroundIntelligence(name: string): Promise<DistrictGroundIntelligence> {
+  const res = await fetch(`${API_BASE}/districts/${encodeURIComponent(name)}/ground-intelligence`);
+  if (!res.ok) throw new Error(`Failed to fetch ground intelligence for district ${name} (HTTP ${res.status})`);
   return res.json();
 }
 

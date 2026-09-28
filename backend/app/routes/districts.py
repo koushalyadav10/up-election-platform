@@ -85,6 +85,88 @@ def list_districts(db: Session = Depends(get_db)):
         "districts": items
     }
 
+from pathlib import Path
+import json
+
+DATA_DIR = Path(__file__).resolve().parents[3] / "data"
+
+def _load_ground_intelligence():
+    p = DATA_DIR / "district_ground_intelligence.json"
+    if p.exists():
+        try:
+            with open(p, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {}
+    return {}
+
+def _load_caste_demographics():
+    p = DATA_DIR / "up_caste_demographics.json"
+    if p.exists():
+        try:
+            with open(p, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {}
+    return {}
+
+@router.get("/caste-matrix")
+def get_caste_matrix():
+    """
+    Returns the comprehensive statewide and 75-district caste and demographic matrix of Uttar Pradesh.
+    """
+    data = _load_caste_demographics()
+    if not data:
+        raise HTTPException(status_code=404, detail="Caste demographic matrix not generated")
+    return data
+
+@router.get("/ground-intelligence-all")
+def get_all_ground_intelligence():
+    """
+    Returns ground intelligence, promises vs reality, and AI rally speeches for all 75 districts.
+    """
+    data = _load_ground_intelligence()
+    if not data:
+        raise HTTPException(status_code=404, detail="Ground intelligence data not generated")
+    return data
+
+@router.get("/{name}/ground-intelligence")
+def get_district_ground_intelligence(name: str):
+    """
+    Returns ground intelligence, promises vs reality, local MP/MLA report card, and rally speeches for a specific district.
+    """
+    data = _load_ground_intelligence()
+    caste_data = _load_caste_demographics()
+    
+    clean_target = name.lower().replace(" ", "").replace("w", "v").replace("-", "").strip()
+    matched = None
+    for k, v in data.items():
+        if k.lower().replace(" ", "").replace("w", "v").replace("-", "").strip() == clean_target:
+            matched = v
+            break
+            
+    if not matched:
+        for k, v in data.items():
+            if clean_target in k.lower() or k.lower() in clean_target:
+                matched = v
+                break
+                
+    if not matched:
+        raise HTTPException(status_code=404, detail=f"Ground intelligence for district '{name}' not found")
+        
+    # Also attach matched caste profile if available
+    district_caste = None
+    if caste_data and "districts" in caste_data:
+        for cd in caste_data["districts"]:
+            cname = cd["district_name"].lower().replace(" ", "").replace("w", "v").replace("-", "").strip()
+            if cname == clean_target or clean_target in cname or cname in clean_target:
+                district_caste = cd
+                break
+                
+    result = dict(matched)
+    result["caste_profile"] = district_caste
+    return result
+
 @router.get("/{name}")
 def get_district_dossier(name: str, db: Session = Depends(get_db)):
     """
@@ -167,6 +249,25 @@ def get_district_dossier(name: str, db: Session = Depends(get_db)):
     
     avg_comp = round(sum(item["competitiveness"]["overall_score"] for item in ac_items) / len(ac_items), 1)
     
+    # Ground intel & caste profile attachment
+    ground_all = _load_ground_intelligence()
+    caste_all = _load_caste_demographics()
+    clean_target = clean_name.lower().replace(" ", "").replace("w", "v").replace("-", "").strip()
+    
+    ground_matched = None
+    for k, v in ground_all.items():
+        if k.lower().replace(" ", "").replace("w", "v").replace("-", "").strip() == clean_target:
+            ground_matched = v
+            break
+            
+    caste_matched = None
+    if caste_all and "districts" in caste_all:
+        for cd in caste_all["districts"]:
+            cname = cd["district_name"].lower().replace(" ", "").replace("w", "v").replace("-", "").strip()
+            if cname == clean_target or clean_target in cname or cname in clean_target:
+                caste_matched = cd
+                break
+
     return {
         "district_name": clean_name,
         "state": "Uttar Pradesh",
@@ -178,5 +279,8 @@ def get_district_dossier(name: str, db: Session = Depends(get_db)):
         "average_competitiveness": avg_comp,
         "significant_flips_count": len(flips),
         "significant_flips": flips,
-        "assembly_constituencies": ac_items
+        "assembly_constituencies": ac_items,
+        "ground_intelligence": ground_matched,
+        "caste_profile": caste_matched
     }
+

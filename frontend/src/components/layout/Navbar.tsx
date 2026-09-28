@@ -25,7 +25,8 @@ import {
   Bell,
   Sparkles,
   Menu,
-  X
+  X,
+  Users
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -178,6 +179,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <MapPin className="w-3.5 h-3.5" />
               <span>Districts (75)</span>
+            </button>
+
+            {/* Caste Equations / जातिगत समीकरण */}
+            <button
+              onClick={() => setActiveTab('caste-equations')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+                activeTab === 'caste-equations'
+                  ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-bold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
+              }`}
+            >
+              <Users className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+              <span>{language === 'hi' ? 'जाति समीकरण' : 'Caste Equation'}</span>
             </button>
 
             {/* Road to 2027 */}
@@ -507,6 +521,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <MapPin className="w-4 h-4 text-rose-600" />
             <span>Districts (75)</span>
+          </button>
+
+          <button
+            onClick={() => { setActiveTab('caste-equations'); setMobileMenuOpen(false); }}
+            className={`w-full text-left px-3.5 py-2.5 text-xs font-semibold rounded-xl flex items-center gap-2.5 transition-colors ${
+              activeTab === 'caste-equations'
+                ? 'bg-blue-50 text-blue-700 font-bold dark:bg-blue-950/50 dark:text-blue-300'
+                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            <Users className="w-4 h-4 text-blue-600" />
+            <span>{language === 'hi' ? 'जातिगत समीकरण' : 'Caste Equations'}</span>
           </button>
 
           <button

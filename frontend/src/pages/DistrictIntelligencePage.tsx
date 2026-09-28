@@ -19,11 +19,14 @@ import {
 import { 
   fetchDistricts, 
   fetchDistrictDossier, 
+  fetchDistrictGroundIntelligence,
   DistrictSummaryItem, 
-  DistrictDossierResponse 
+  DistrictDossierResponse,
+  DistrictGroundIntelligence 
 } from '../services/api';
 import { SourceBadge } from '../components/common/SourceBadge';
 import { ACDossierModal } from '../components/common/ACDossierModal';
+import { DistrictRallyDossierModal } from '../components/districts/DistrictRallyDossierModal';
 import { useLanguage } from '../context/LanguageContext';
 
 interface DistrictIntelligencePageProps {
@@ -42,6 +45,25 @@ export const DistrictIntelligencePage: React.FC<DistrictIntelligencePageProps> =
   const [dossierLoading, setDossierLoading] = useState(false);
   const [districtDossier, setDistrictDossier] = useState<DistrictDossierResponse | null>(null);
   const [selectedACNo, setSelectedACNo] = useState<number | null>(null);
+
+  // Rally Speech & Ground Report Modal State
+  const [selectedRallyDistrict, setSelectedRallyDistrict] = useState<DistrictGroundIntelligence | null>(null);
+  const [rallyModalLoading, setRallyModalLoading] = useState(false);
+  const [isRallyModalOpen, setIsRallyModalOpen] = useState(false);
+
+  const handleOpenRallyDossier = (name: string) => {
+    setRallyModalLoading(true);
+    setIsRallyModalOpen(true);
+    fetchDistrictGroundIntelligence(name)
+      .then(res => {
+        setSelectedRallyDistrict(res);
+        setRallyModalLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to load district ground intel:", err);
+        setRallyModalLoading(false);
+      });
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -230,9 +252,22 @@ export const DistrictIntelligencePage: React.FC<DistrictIntelligencePageProps> =
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-1 transition-transform">
-                  <span>View Full District Dossier</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                  <div className="flex items-center justify-between text-xs text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-1 transition-transform">
+                    <span>View Full District Dossier</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </div>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenRallyDossier(dist.name);
+                    }}
+                    className="w-full py-1.5 px-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white font-extrabold text-[11px] flex items-center justify-center gap-1.5 shadow-xs shadow-red-600/20 transition-all cursor-pointer"
+                  >
+                    <Flame className="w-3.5 h-3.5" />
+                    <span>🎙️ भाषण व ग्राउंड रिपोर्ट</span>
+                  </button>
                 </div>
               </div>
             );
@@ -275,6 +310,29 @@ export const DistrictIntelligencePage: React.FC<DistrictIntelligencePageProps> =
                 </div>
               ) : (
                 <>
+                  {/* Ground Report & Rally Speech Banner */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-red-600/10 via-rose-500/10 to-amber-500/10 border border-red-300 dark:border-red-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Flame className="w-4 h-4 text-red-600 animate-pulse" />
+                        <h4 className="font-extrabold text-sm text-slate-900 dark:text-white">
+                          {selectedDistrictName} चुनावी रैली भाषण &amp; ग्राउंड रिपोर्ट वॉर रूम
+                        </h4>
+                      </div>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                        4-टोन AI मंच भाषण, वादे बनाम हकीकत, MP/MLA रिपोर्ट कार्ड और 1-क्लिक WhatsApp शेयर फॉर्मेट।
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => handleOpenRallyDossier(selectedDistrictName)}
+                      className="px-4 py-2 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white rounded-xl font-extrabold text-xs shadow-md shadow-red-600/25 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
+                    >
+                      <Flame className="w-3.5 h-3.5" />
+                      <span>रैली भाषण व रिपोर्ट खोलें →</span>
+                    </button>
+                  </div>
+
                   {/* Overview Metric Ribbon */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
@@ -426,6 +484,14 @@ export const DistrictIntelligencePage: React.FC<DistrictIntelligencePageProps> =
         acNo={selectedACNo}
         isOpen={selectedACNo !== null}
         onClose={() => setSelectedACNo(null)}
+      />
+
+      {/* 6. Embedded Ground Intelligence & Rally Speech Modal */}
+      <DistrictRallyDossierModal
+        isOpen={isRallyModalOpen}
+        onClose={() => setIsRallyModalOpen(false)}
+        data={selectedRallyDistrict}
+        loading={rallyModalLoading}
       />
 
     </div>

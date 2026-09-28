@@ -9,6 +9,7 @@ import { LokSabhaExplorer } from './pages/LokSabhaExplorer';
 import { VidhanSabhaExplorer } from './pages/VidhanSabhaExplorer';
 import { PCDetailPage } from './pages/PCDetailPage';
 import { DistrictIntelligencePage } from './pages/DistrictIntelligencePage';
+import { CasteEquationsPage } from './pages/CasteEquationsPage';
 import { ACComparisonLabPage } from './pages/ACComparisonLabPage';
 import { ElectionComparisonLabPage } from './pages/ElectionComparisonLabPage';
 import { PartyIntelligencePage } from './pages/PartyIntelligencePage';
@@ -310,6 +311,10 @@ function MainApp() {
 
         {activeTab === 'districts' && (
           <DistrictIntelligencePage onSelectPC={handleSelectPC} />
+        )}
+
+        {activeTab === 'caste-equations' && (
+          <CasteEquationsPage />
         )}
 
         {activeTab === 'road-to-2027' && (
