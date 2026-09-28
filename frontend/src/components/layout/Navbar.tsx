@@ -100,16 +100,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const moreTabs = ['ac-comparison', 'election-comparison', 'scenario-lab', 'parties', 'close-contests', 'delimitation', 'data-quality', 'sources', 'ask-ai'];
   const isMoreTabActive = moreTabs.includes(activeTab);
-  const isWarRoomActive = ['poster-studio', 'vip-dossier', 'chanakya-ai'].includes(activeTab);
+  const isWarRoomActive = ['poster-studio', 'vip-dossier', 'chanakya-ai', 'road-to-2027'].includes(activeTab);
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors shadow-sm">
       <div className="max-w-7xl mx-auto px-3 sm:px-6">
-        <div className="flex items-center justify-between h-16 gap-3">
+        <div className="flex items-center justify-between h-16 gap-2 sm:gap-3">
           
           {/* 1. Brand Logo & Title */}
           <div 
-            className="flex items-center gap-2 sm:gap-2.5 cursor-pointer shrink-0 min-w-0" 
+            className="flex items-center gap-2 sm:gap-2.5 cursor-pointer shrink-0" 
             onClick={() => setActiveTab('overview')}
           >
             <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-slate-900 flex items-center justify-center text-white shadow-md ring-1 ring-blue-400/30 shrink-0 overflow-hidden group">
@@ -118,83 +118,83 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="absolute bottom-0.5 right-0.5 text-[8px] font-mono font-black tracking-tighter text-blue-200 bg-blue-950/80 px-1 rounded-xs">UP</span>
             </div>
             <div className="min-w-0">
-              <div className="font-display font-extrabold text-xs sm:text-sm md:text-base tracking-tight text-slate-900 dark:text-white leading-tight">
+              <div className="font-display font-extrabold text-xs sm:text-sm md:text-base tracking-tight text-slate-900 dark:text-white leading-tight whitespace-nowrap">
                 UP ELECTORAL <span className="hidden sm:inline">INTELLIGENCE</span>
               </div>
-              <div className="hidden md:block text-[10px] font-mono tracking-wider text-slate-500 dark:text-slate-400">
+              <div className="hidden 2xl:block text-[10px] font-mono tracking-wider text-slate-500 dark:text-slate-400 whitespace-nowrap">
                 Data-driven electoral analysis across Uttar Pradesh
               </div>
             </div>
           </div>
 
           {/* 2. Core Navigation Tabs */}
-          <nav className="hidden lg:flex items-center gap-1 text-xs font-semibold">
-            {/* Overview / Command Center */}
+          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1 text-xs font-semibold">
+            {/* Overview */}
             <button
               onClick={() => setActiveTab('overview')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
+              className={`px-2.5 py-1.5 rounded-lg transition-all ${
                 activeTab === 'overview'
                   ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-bold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
               }`}
             >
-              Command Center
+              Overview
             </button>
 
             {/* Interactive Map */}
             <button
               onClick={() => setActiveTab('map')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all ${
                 activeTab === 'map'
                   ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-bold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
               }`}
             >
               <Map className="w-3.5 h-3.5" />
-              <span>Interactive Map</span>
+              <span>Map</span>
             </button>
 
-            {/* Lok Sabha (80) */}
+            {/* Lok Sabha */}
             <button
               onClick={() => setActiveTab('lok-sabha')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
+              className={`px-2.5 py-1.5 rounded-lg transition-all ${
                 activeTab === 'lok-sabha'
                   ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-bold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
               }`}
             >
-              Lok Sabha (80)
+              Lok Sabha
             </button>
 
-            {/* Vidhan Sabha (403) */}
+            {/* Vidhan Sabha */}
             <button
               onClick={() => setActiveTab('vidhan-sabha')}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
+              className={`px-2.5 py-1.5 rounded-lg transition-all ${
                 activeTab === 'vidhan-sabha'
                   ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-bold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
               }`}
             >
-              Vidhan Sabha (403)
+              Vidhan Sabha
             </button>
 
             {/* District Intelligence */}
             <button
               onClick={() => setActiveTab('districts')}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all ${
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all ${
                 activeTab === 'districts'
                   ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-bold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
               }`}
             >
               <MapPin className="w-3.5 h-3.5" />
-              <span>Districts (75)</span>
+              <span>Districts</span>
             </button>
 
             {/* Caste Equations / जातिगत समीकरण */}
             <button
               onClick={() => setActiveTab('caste-equations')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all ${
                 activeTab === 'caste-equations'
                   ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-bold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
@@ -208,7 +208,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="relative" ref={warRoomMenuRef}>
               <button
                 onClick={() => setWarRoomMenuOpen(!warRoomMenuOpen)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer ${
                   isWarRoomActive
                     ? 'bg-gradient-to-r from-red-600 to-rose-700 text-white font-extrabold shadow-sm ring-1 ring-red-400'
                     : 'bg-red-50 text-red-700 hover:bg-red-100 dark:bg-red-950/40 dark:text-red-300 dark:hover:bg-red-950/70 font-bold border border-red-200/80 dark:border-red-900/50'
@@ -272,22 +272,27 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span className="text-[10px] text-slate-500 dark:text-slate-400">1-क्लिक 4-पेज प्रिंटेबल डॉसियर</span>
                     </div>
                   </button>
+
+                  <button
+                    onClick={() => {
+                      setActiveTab('road-to-2027');
+                      setWarRoomMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-3.5 py-2.5 text-xs flex items-center gap-2.5 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer border-t border-slate-100 dark:border-slate-700/60 ${
+                      activeTab === 'road-to-2027' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : 'text-slate-800 dark:text-slate-200'
+                    }`}
+                  >
+                    <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white shrink-0 shadow-xs">
+                      <Target className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="font-extrabold text-slate-900 dark:text-white block">🎯 2027 चुनावी रोडमैप</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">सीट मार्जिन, स्विंग व रणनीति लैब</span>
+                    </div>
+                  </button>
                 </div>
               )}
             </div>
-
-            {/* Road to 2027 */}
-            <button
-              onClick={() => setActiveTab('road-to-2027')}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all ${
-                activeTab === 'road-to-2027'
-                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-sm'
-                  : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-950/40 dark:text-indigo-300 dark:hover:bg-indigo-950/70'
-              }`}
-            >
-              <Target className="w-3.5 h-3.5" />
-              <span>Road to 2027</span>
-            </button>
 
             {/* More Labs & Research Dropdown */}
             <div className="relative" ref={moreMenuRef}>
@@ -403,26 +408,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* 3. Utility Controls */}
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-            {/* Chanakya AI War Room Button */}
-            {onOpenChanakya && (
-              <button
-                onClick={onOpenChanakya}
-                className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-black transition-all bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white shadow-sm hover:shadow-md hover:shadow-red-600/30 active:scale-95 cursor-pointer ring-1 ring-red-400/40"
-                title="चुनावी चाणक्य AI - War Room Advisor"
-              >
-                <Bot className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-                <span className="hidden md:inline">चाणक्य AI</span>
-              </button>
-            )}
-
             {/* Ask Electra Pill Button */}
             <button
               onClick={toggleElectra}
-              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-sm hover:shadow active:scale-95 cursor-pointer"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-sm hover:shadow active:scale-95 cursor-pointer"
               title="Toggle Electra Intelligence Assistant"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-              <span className="hidden md:inline">Ask Electra</span>
+              <span className="hidden 2xl:inline">Ask Electra</span>
             </button>
 
             {/* Electra Notifications Bell */}
@@ -499,10 +492,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
 
-            {/* Mobile Hamburger Menu Toggle (< lg) */}
+            {/* Mobile Hamburger Menu Toggle (< xl) */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1.5 sm:p-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors cursor-pointer border border-slate-200 dark:border-slate-700 active:scale-95"
+              className="xl:hidden p-1.5 sm:p-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors cursor-pointer border border-slate-200 dark:border-slate-700 active:scale-95"
               aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               title="Navigation Menu"
             >
@@ -516,7 +509,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Mobile Navigation Drawer Backdrop */}
       {mobileMenuOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs transition-opacity lg:hidden"
+          className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs transition-opacity xl:hidden"
           onClick={() => setMobileMenuOpen(false)}
           aria-hidden="true"
         />
@@ -524,7 +517,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Navigation Drawer */}
       <div 
-        className={`fixed top-0 right-0 bottom-0 z-50 w-full sm:w-80 max-w-[85vw] bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col justify-between transition-transform duration-200 ease-in-out lg:hidden ${
+        className={`fixed top-0 right-0 bottom-0 z-50 w-full sm:w-80 max-w-[85vw] bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col justify-between transition-transform duration-200 ease-in-out xl:hidden ${
           mobileMenuOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'
         }`}
       >

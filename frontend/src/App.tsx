@@ -403,23 +403,25 @@ function MainApp() {
       <DailyDigestModal />
       <ElectraObservabilityModal />
 
-      {/* 4.3 Chunavee Chanakya AI Floating Assistant */}
+      {/* 4.3 Chunavee Chanakya AI Floating Assistant (Compact AI Symbol) */}
       {!isChanakyaOpen && (
         <button
           onClick={() => setIsChanakyaOpen(true)}
-          className="fixed bottom-5 right-5 z-40 flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-red-600/40 hover:shadow-red-600/60 transition-all hover:scale-105 active:scale-95 cursor-pointer ring-2 ring-red-400/50 group"
-          title="चुनावी चाणक्य AI - War Room Advisor"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-red-600 via-rose-600 to-amber-500 text-white shadow-xl shadow-red-600/40 hover:shadow-red-600/70 hover:scale-110 active:scale-95 transition-all flex items-center justify-center cursor-pointer ring-2 ring-white/80 dark:ring-slate-800/80 group"
+          title="चुनावी चाणक्य AI"
+          aria-label="चुनावी चाणक्य AI"
         >
-          <div className="relative">
-            <Bot className="w-5 h-5 animate-pulse" />
+          <div className="relative flex items-center justify-center">
+            <Bot className="w-6 h-6 sm:w-7 sm:h-7 drop-shadow-md animate-pulse" />
             <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400"></span>
             </span>
           </div>
-          <span className="tracking-tight">🤖 चुनावी चाणक्य AI</span>
-          <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] bg-white/20 uppercase font-black">
-            वॉर रूम 2027
+          {/* Desktop Hover Tooltip */}
+          <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-xl bg-slate-900/95 text-white px-3 py-1.5 text-xs font-bold opacity-0 shadow-xl transition-all duration-200 group-hover:opacity-100 hidden sm:flex items-center gap-1.5 border border-slate-700">
+            <span>चाणक्य AI</span>
+            <span className="text-[10px] px-1 py-0.5 rounded bg-red-600 font-black">2027</span>
           </span>
         </button>
       )}

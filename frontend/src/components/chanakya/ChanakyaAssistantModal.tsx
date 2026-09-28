@@ -197,7 +197,7 @@ export const ChanakyaAssistantModal: React.FC<ChanakyaAssistantModalProps> = ({
     <div className={`fixed z-50 transition-all duration-300 ${
       isExpanded 
         ? 'inset-2 sm:inset-6 flex items-center justify-center' 
-        : 'bottom-4 right-4 sm:bottom-6 sm:right-6 w-full max-w-lg h-[640px] max-h-[90vh]'
+        : 'bottom-2 right-2 left-2 sm:left-auto sm:bottom-6 sm:right-6 sm:w-[480px] h-[85vh] sm:h-[640px] max-h-[92vh]'
     }`}>
       <div className="w-full h-full bg-slate-900 text-slate-100 rounded-3xl shadow-2xl border border-slate-700/80 flex flex-col overflow-hidden backdrop-blur-xl ring-1 ring-red-500/20">
         

@@ -178,7 +178,7 @@ export const VipRallyDossierPage: React.FC = () => {
           PAGE 1: जिला परिचय, निर्वाचन क्षेत्र व जातिगत समीकरण (PDA Matrix)
           ----------------------------------------------------------------------
         */}
-        <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-xl border border-slate-200 print:shadow-none print:border-none print:p-8 print:rounded-none min-h-[1050px] flex flex-col justify-between" style={{ pageBreakAfter: 'always', breakAfter: 'page' }}>
+        <div className="bg-white p-5 sm:p-10 rounded-3xl shadow-xl border border-slate-200 print:shadow-none print:border-none print:p-8 print:rounded-none min-h-auto print:min-h-[1050px] flex flex-col justify-between" style={{ pageBreakAfter: 'always', breakAfter: 'page' }}>
           <div>
             {/* Header Banner */}
             <div className="border-b-2 border-red-600 pb-4 mb-6 flex items-start justify-between">
@@ -203,7 +203,7 @@ export const VipRallyDossierPage: React.FC = () => {
             </div>
 
             {/* Quick Metrics Bar */}
-            <div className="grid grid-cols-4 gap-3 mb-6 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-6 p-3 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 text-center">
               <div>
                 <span className="block text-[10px] font-bold text-slate-500 uppercase">विधानसभा सीटें</span>
                 <strong className="text-lg font-black text-slate-900">{currentIntel.total_acs}</strong>
@@ -239,7 +239,7 @@ export const VipRallyDossierPage: React.FC = () => {
               </div>
 
               {/* Caste Breakdown Badges */}
-              <div className="grid grid-cols-4 gap-3 text-center">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 text-center">
                 <div className="p-3 rounded-xl bg-amber-50 border border-amber-200">
                   <span className="text-[11px] font-bold text-amber-800 uppercase block">अन्य पिछड़ा वर्ग (OBC)</span>
                   <span className="text-xl font-black text-amber-900">{casteProfile?.obc_total || 42.0}%</span>
@@ -342,7 +342,7 @@ export const VipRallyDossierPage: React.FC = () => {
           PAGE 2: जमीनी हकीकत, टॉप 5 वायरल घोटाले व वादाखिलाफी
           ----------------------------------------------------------------------
         */}
-        <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-xl border border-slate-200 print:shadow-none print:border-none print:p-8 print:rounded-none min-h-[1050px] flex flex-col justify-between" style={{ pageBreakAfter: 'always', breakAfter: 'page' }}>
+        <div className="bg-white p-5 sm:p-10 rounded-3xl shadow-xl border border-slate-200 print:shadow-none print:border-none print:p-8 print:rounded-none min-h-auto print:min-h-[1050px] flex flex-col justify-between" style={{ pageBreakAfter: 'always', breakAfter: 'page' }}>
           <div>
             {/* Header Banner */}
             <div className="border-b-2 border-red-600 pb-3 mb-6 flex items-start justify-between">
@@ -389,7 +389,7 @@ export const VipRallyDossierPage: React.FC = () => {
                 सरकारी वादे बनाम जमीनी हकीकत (ऑडिट रिपोर्ट):
               </h3>
 
-              <div className="overflow-hidden rounded-xl border border-slate-200">
+              <div className="overflow-x-auto rounded-xl border border-slate-200">
                 <table className="w-full text-xs text-left">
                   <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
                     <tr>
@@ -434,7 +434,7 @@ export const VipRallyDossierPage: React.FC = () => {
           PAGE 3: मंच भाषण सूत्र व स्थानीय जोशीले नारे
           ----------------------------------------------------------------------
         */}
-        <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-xl border border-slate-200 print:shadow-none print:border-none print:p-8 print:rounded-none min-h-[1050px] flex flex-col justify-between" style={{ pageBreakAfter: 'always', breakAfter: 'page' }}>
+        <div className="bg-white p-5 sm:p-10 rounded-3xl shadow-xl border border-slate-200 print:shadow-none print:border-none print:p-8 print:rounded-none min-h-auto print:min-h-[1050px] flex flex-col justify-between" style={{ pageBreakAfter: 'always', breakAfter: 'page' }}>
           <div>
             {/* Header Banner */}
             <div className="border-b-2 border-red-600 pb-3 mb-6 flex items-start justify-between">
@@ -474,7 +474,7 @@ export const VipRallyDossierPage: React.FC = () => {
                 <Flame className="w-4 h-4 text-red-600" />
                 1. आक्रामक मंच प्रहार (मुख्यमंत्री व स्थानीय नेताओं पर हमला):
               </span>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-[13px] leading-relaxed text-slate-800 whitespace-pre-line font-medium max-h-[380px] overflow-hidden">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-[13px] leading-relaxed text-slate-800 whitespace-pre-line font-medium">
                 {currentIntel.rally_speeches.aggressive}
               </div>
             </div>
@@ -485,7 +485,7 @@ export const VipRallyDossierPage: React.FC = () => {
                 <Wheat className="w-4 h-4 text-emerald-600" />
                 2. किसान व ग्रामीण संवाद सूत्र:
               </span>
-              <div className="p-4 rounded-xl bg-emerald-50/50 border border-emerald-200 text-xs leading-relaxed text-slate-800 whitespace-pre-line font-medium max-h-[160px] overflow-hidden">
+              <div className="p-4 rounded-xl bg-emerald-50/50 border border-emerald-200 text-xs sm:text-[13px] leading-relaxed text-slate-800 whitespace-pre-line font-medium">
                 {currentIntel.rally_speeches.kisan}
               </div>
             </div>
@@ -503,7 +503,7 @@ export const VipRallyDossierPage: React.FC = () => {
           PAGE 4: 2027 के 5 क्रांतिकारी संकल्प व ग्राउंड समन्वय
           ----------------------------------------------------------------------
         */}
-        <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-xl border border-slate-200 print:shadow-none print:border-none print:p-8 print:rounded-none min-h-[1050px] flex flex-col justify-between">
+        <div className="bg-white p-5 sm:p-10 rounded-3xl shadow-xl border border-slate-200 print:shadow-none print:border-none print:p-8 print:rounded-none min-h-auto print:min-h-[1050px] flex flex-col justify-between">
           <div>
             {/* Header Banner */}
             <div className="border-b-2 border-red-600 pb-3 mb-6 flex items-start justify-between">
@@ -559,7 +559,7 @@ export const VipRallyDossierPage: React.FC = () => {
                         {item.mla_2022_party}
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-600 line-clamp-2">
+                    <p className="text-[11px] text-slate-600">
                       {item.accountability_notes}
                     </p>
                   </div>
