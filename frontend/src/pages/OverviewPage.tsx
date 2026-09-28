@@ -93,53 +93,174 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
     <div className="space-y-10 pb-16">
       
       {/* 1. Command Center Hero Banner */}
-      <section className="relative pt-6 sm:pt-8 pb-6 sm:pt-8 px-4 sm:px-8 lg:px-10 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white shadow-xl overflow-hidden">
-        <div className="relative z-10 max-w-4xl space-y-3 sm:space-y-4">
-          
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" /> ECI CERTIFIED REPOSITORY (1991–2024)
-            </span>
-            <span className="text-[11px] sm:text-xs font-mono text-slate-400">
-              Delimitation Standard: 2008_CURRENT • Zero Contamination Architecture
-            </span>
+      <section className="relative pt-6 sm:pt-8 pb-6 px-4 sm:px-8 lg:px-10 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white shadow-xl overflow-hidden">
+        {/* Background grid pattern */}
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
+        
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8">
+          {/* Left: Text content */}
+          <div className="flex-1 space-y-3 sm:space-y-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-400" /> ECI CERTIFIED REPOSITORY (1991–2024)
+              </span>
+              <span className="text-[11px] sm:text-xs font-mono text-slate-400">
+                Delimitation Standard: 2008_CURRENT • Zero Contamination Architecture
+              </span>
+            </div>
+
+            <h1 className="font-display text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+              UP ELECTORAL INTELLIGENCE
+              <span className="block text-base sm:text-xl lg:text-2xl text-blue-400 mt-1 font-semibold">
+                Comprehensive Electoral Data Warehouse &amp; Analytical Command Center
+              </span>
+            </h1>
+            
+            <p className="text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
+              Data-driven electoral analysis across Uttar Pradesh. Complete coverage of all 80 Parliamentary Seats, 403 Assembly Constituencies, and 75 Administrative Districts.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <button
+                onClick={onOpenSearch}
+                className="px-4 py-2 bg-white text-slate-900 hover:bg-slate-100 rounded-xl text-xs font-bold transition-all shadow flex items-center gap-2"
+              >
+                <Search className="w-3.5 h-3.5 text-blue-600" />
+                <span>Global Analytical Search (Ctrl+K)</span>
+              </button>
+              <button
+                onClick={() => onNavigateTab('districts')}
+                className="px-4 py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-400/40 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5"
+              >
+                <MapPin className="w-3.5 h-3.5" />
+                <span>Explore 75 Districts</span>
+              </button>
+              <button
+                onClick={() => onNavigateTab('ask-ai')}
+                className="px-4 py-2 bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-400/40 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5"
+              >
+                <Bot className="w-3.5 h-3.5 text-indigo-300" />
+                <span>Ask Electra AI</span>
+              </button>
+            </div>
           </div>
 
-          <h1 className="font-display text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-            UP ELECTORAL INTELLIGENCE
-            <span className="block text-base sm:text-xl lg:text-2xl text-blue-400 mt-1 font-semibold">
-              Comprehensive Electoral Data Warehouse &amp; Analytical Command Center
-            </span>
-          </h1>
-          
-          <p className="text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
-            Data-driven electoral analysis across Uttar Pradesh. Complete coverage of all 80 Parliamentary Seats, 403 Assembly Constituencies, and 75 Administrative Districts.
-          </p>
+          {/* Right: Animated SVG Electoral Data Visualization */}
+          <div className="hidden lg:flex items-center justify-center w-72 xl:w-80 shrink-0">
+            <svg viewBox="0 0 280 220" className="w-full" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bjpGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#f97316" stopOpacity="0.9"/>
+                  <stop offset="100%" stopColor="#ea580c" stopOpacity="0.6"/>
+                </linearGradient>
+                <linearGradient id="spGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#e11d48" stopOpacity="0.9"/>
+                  <stop offset="100%" stopColor="#be123c" stopOpacity="0.6"/>
+                </linearGradient>
+                <linearGradient id="bspGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.9"/>
+                  <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.6"/>
+                </linearGradient>
+                <linearGradient id="incGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#22c55e" stopOpacity="0.9"/>
+                  <stop offset="100%" stopColor="#16a34a" stopOpacity="0.6"/>
+                </linearGradient>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                  <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              
+              {/* Outer ring - animated */}
+              <circle cx="140" cy="110" r="95" fill="none" stroke="rgba(59,130,246,0.15)" strokeWidth="1"/>
+              <circle cx="140" cy="110" r="95" fill="none" stroke="rgba(59,130,246,0.3)" strokeWidth="1" strokeDasharray="10 20" strokeLinecap="round">
+                <animateTransform attributeName="transform" type="rotate" values="0 140 110;360 140 110" dur="30s" repeatCount="indefinite"/>
+              </circle>
+              
+              {/* Middle ring */}
+              <circle cx="140" cy="110" r="70" fill="none" stroke="rgba(99,102,241,0.15)" strokeWidth="0.5"/>
+              
+              {/* UP Map silhouette (simplified polygon) */}
+              <polygon
+                points="80,70 100,55 130,50 160,52 185,58 200,72 210,88 205,108 195,125 175,138 155,148 135,150 110,145 92,132 78,115 70,95"
+                fill="rgba(59,130,246,0.08)"
+                stroke="rgba(59,130,246,0.4)"
+                strokeWidth="1.5"
+                strokeLinejoin="round"
+              />
+              
+              {/* Election result bars - BJP */}
+              <rect x="50" y="160" width="24" height="0" fill="url(#bjpGrad)" rx="3" filter="url(#glow)">
+                <animate attributeName="height" from="0" to="45" dur="1.2s" fill="freeze" begin="0.2s" calcMode="spline" keySplines="0.25 0.46 0.45 0.94"/>
+                <animate attributeName="y" from="205" to="160" dur="1.2s" fill="freeze" begin="0.2s" calcMode="spline" keySplines="0.25 0.46 0.45 0.94"/>
+              </rect>
+              <text x="62" y="158" textAnchor="middle" fontSize="7" fill="#f97316" fontFamily="monospace" fontWeight="bold">
+                <tspan opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" fill="freeze" begin="1.2s"/>BJP</tspan>
+              </text>
+              <text x="62" y="214" textAnchor="middle" fontSize="6" fill="rgba(148,163,184,0.8)" fontFamily="monospace">36%</text>
+              
+              {/* SP bar */}
+              <rect x="80" y="175" width="24" height="0" fill="url(#spGrad)" rx="3" filter="url(#glow)">
+                <animate attributeName="height" from="0" to="30" dur="1.2s" fill="freeze" begin="0.4s" calcMode="spline" keySplines="0.25 0.46 0.45 0.94"/>
+                <animate attributeName="y" from="205" to="175" dur="1.2s" fill="freeze" begin="0.4s" calcMode="spline" keySplines="0.25 0.46 0.45 0.94"/>
+              </rect>
+              <text x="92" y="173" textAnchor="middle" fontSize="7" fill="#e11d48" fontFamily="monospace" fontWeight="bold">
+                <tspan opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" fill="freeze" begin="1.4s"/>SP</tspan>
+              </text>
+              <text x="92" y="214" textAnchor="middle" fontSize="6" fill="rgba(148,163,184,0.8)" fontFamily="monospace">32%</text>
+              
+              {/* BSP bar */}
+              <rect x="110" y="185" width="24" height="0" fill="url(#bspGrad)" rx="3" filter="url(#glow)">
+                <animate attributeName="height" from="0" to="20" dur="1.2s" fill="freeze" begin="0.6s" calcMode="spline" keySplines="0.25 0.46 0.45 0.94"/>
+                <animate attributeName="y" from="205" to="185" dur="1.2s" fill="freeze" begin="0.6s" calcMode="spline" keySplines="0.25 0.46 0.45 0.94"/>
+              </rect>
+              <text x="122" y="183" textAnchor="middle" fontSize="7" fill="#3b82f6" fontFamily="monospace" fontWeight="bold">
+                <tspan opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" fill="freeze" begin="1.6s"/>BSP</tspan>
+              </text>
+              <text x="122" y="214" textAnchor="middle" fontSize="6" fill="rgba(148,163,184,0.8)" fontFamily="monospace">13%</text>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <button
-              onClick={onOpenSearch}
-              className="px-4 py-2 bg-white text-slate-900 hover:bg-slate-100 rounded-xl text-xs font-bold transition-all shadow flex items-center gap-2"
-            >
-              <Search className="w-3.5 h-3.5 text-blue-600" />
-              <span>Global Analytical Search (Ctrl+K)</span>
-            </button>
-            <button
-              onClick={() => onNavigateTab('districts')}
-              className="px-4 py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-400/40 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5"
-            >
-              <MapPin className="w-3.5 h-3.5" />
-              <span>Explore 75 Districts</span>
-            </button>
-            <button
-              onClick={() => onNavigateTab('ask-ai')}
-              className="px-4 py-2 bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-400/40 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5"
-            >
-              <Bot className="w-3.5 h-3.5 text-indigo-300" />
-              <span>Ask Electra AI</span>
-            </button>
+              {/* INC bar */}
+              <rect x="140" y="190" width="24" height="0" fill="url(#incGrad)" rx="3" filter="url(#glow)">
+                <animate attributeName="height" from="0" to="15" dur="1.2s" fill="freeze" begin="0.8s" calcMode="spline" keySplines="0.25 0.46 0.45 0.94"/>
+                <animate attributeName="y" from="205" to="190" dur="1.2s" fill="freeze" begin="0.8s" calcMode="spline" keySplines="0.25 0.46 0.45 0.94"/>
+              </rect>
+              <text x="152" y="188" textAnchor="middle" fontSize="7" fill="#22c55e" fontFamily="monospace" fontWeight="bold">
+                <tspan opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" fill="freeze" begin="1.8s"/>INC</tspan>
+              </text>
+              <text x="152" y="214" textAnchor="middle" fontSize="6" fill="rgba(148,163,184,0.8)" fontFamily="monospace">6%</text>
+              
+              {/* Baseline */}
+              <line x1="44" y1="205" x2="180" y2="205" stroke="rgba(148,163,184,0.3)" strokeWidth="0.5"/>
+              
+              {/* Orbiting dots */}
+              <circle cx="140" cy="15" r="4" fill="#f97316" filter="url(#glow)">
+                <animateTransform attributeName="transform" type="rotate" values="0 140 110;360 140 110" dur="8s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="140" cy="15" r="2" fill="#e11d48" filter="url(#glow)">
+                <animateTransform attributeName="transform" type="rotate" values="120 140 110;480 140 110" dur="8s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="140" cy="15" r="3" fill="#3b82f6" filter="url(#glow)">
+                <animateTransform attributeName="transform" type="rotate" values="240 140 110;600 140 110" dur="8s" repeatCount="indefinite"/>
+              </circle>
+              
+              {/* Center: 403 ACs label */}
+              <text x="140" y="104" textAnchor="middle" fontSize="18" fill="white" fontFamily="monospace" fontWeight="bold" filter="url(#glow)" opacity="0">
+                <animate attributeName="opacity" from="0" to="1" dur="0.5s" fill="freeze" begin="0.8s"/>403
+              </text>
+              <text x="140" y="116" textAnchor="middle" fontSize="7" fill="rgba(148,163,184,0.8)" fontFamily="monospace" opacity="0">
+                <animate attributeName="opacity" from="0" to="1" dur="0.5s" fill="freeze" begin="1s"/>ASSEMBLY SEATS</text>
+              
+              {/* Corner labels */}
+              <text x="200" y="65" fontSize="8" fill="rgba(148,163,184,0.6)" fontFamily="monospace">80 PCs</text>
+              <text x="200" y="77" fontSize="8" fill="rgba(148,163,184,0.6)" fontFamily="monospace">75 Dists</text>
+              
+              {/* Pulse rings */}
+              <circle cx="140" cy="110" r="20" fill="none" stroke="rgba(59,130,246,0.5)" strokeWidth="1">
+                <animate attributeName="r" values="20;40" dur="2.5s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.5;0" dur="2.5s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
           </div>
-
         </div>
       </section>
  

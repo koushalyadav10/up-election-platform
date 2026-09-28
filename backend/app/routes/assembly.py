@@ -1202,3 +1202,142 @@ def get_booth_detail(
         },
         "electra_evidence": electra_payload
     }
+
+
+@router.get("/{ac_no}/election-results/{year}")
+def get_election_year_candidates(
+    ac_no: int,
+    year: int,
+    db: Session = Depends(get_db)
+):
+    """
+    Returns all candidates with votes for an AC in a specific Vidhan Sabha election year.
+    Used by the Historical Winner Timeline to show full candidate breakdown.
+    Supports SQLite database (2017, 2022) with fallback to master archive (1991–2012).
+    """
+    from sqlalchemy import and_
+
+    # Find the AC
+    ac = db.query(AssemblyConstituency).filter(AssemblyConstituency.ac_no == ac_no).first()
+    ac_name = ac.name if ac else f"AC #{ac_no}"
+
+    # Try database first
+    cand_results = []
+    election_info = None
+
+    if ac:
+        election = db.query(Election).filter(
+            and_(Election.year == year, Election.election_type == 'Vidhan Sabha')
+        ).first()
+
+        if election:
+            er = db.query(ElectionResult).filter(
+                and_(ElectionResult.election_id == election.id, ElectionResult.ac_id == ac.id)
+            ).first()
+
+            if er:
+                election_info = {
+                    "year": year,
+                    "type": election.election_type,
+                    "total_electors": er.total_electors or 0,
+                    "valid_votes": er.valid_votes or 0,
+                    "total_votes_polled": er.total_votes_polled or 0,
+                    "turnout_pct": round(er.turnout_pct or 0, 2),
+                    "margin": er.margin or 0,
+                }
+                cand_results = db.query(CandidateResult).filter(
+                    CandidateResult.election_result_id == er.id
+                ).order_by(CandidateResult.rank.asc()).all()
+
+    candidates = []
+    if cand_results:
+        for cr in cand_results:
+            cand = db.query(Candidate).filter(Candidate.id == cr.candidate_id).first()
+            party = db.query(Party).filter(Party.id == cr.party_id).first() if cr.party_id else None
+            candidates.append({
+                "rank": cr.rank,
+                "name": cand.name if cand else "Unknown",
+                "party": party.code if party else "IND",
+                "party_name": party.name if party else "Independent",
+                "votes": cr.total_votes or 0,
+                "vote_pct": round(cr.vote_pct_valid or 0, 2),
+                "is_winner": bool(cr.is_winner),
+                "general_votes": cr.general_votes or 0,
+                "postal_votes": cr.postal_votes or 0,
+            })
+    else:
+        # Fallback to historical timeline records from archive (1991–2012)
+        from app.services.ac_historical_service import get_ac_historical_record
+        hist = get_ac_historical_record(ac_no)
+        if hist:
+            for el in hist.get('historical_winner_timeline', []):
+                if el.get('year') == year:
+                    valid_votes = el.get('valid_votes', 0)
+                    w_votes = el.get('winner_votes', 0)
+                    r_votes = el.get('runner_up_votes', 0)
+                    w_pct = round((w_votes / valid_votes) * 100, 2) if valid_votes else el.get('margin_pct', 0)
+                    r_pct = round((r_votes / valid_votes) * 100, 2) if valid_votes else 0
+
+                    election_info = {
+                        "year": year,
+                        "type": "Vidhan Sabha",
+                        "total_electors": el.get('total_electors', 0),
+                        "valid_votes": valid_votes,
+                        "total_votes_polled": valid_votes,
+                        "turnout_pct": el.get('turnout_pct', 0),
+                        "margin": el.get('margin', 0),
+                        "delimitation_era": el.get('delimitation_era', ''),
+                        "historical_ac_no": el.get('historical_ac_no', ac_no),
+                        "boundary_notice": el.get('boundary_notice', '')
+                    }
+
+                    # Winner
+                    candidates.append({
+                        "rank": 1,
+                        "name": el.get('winner', 'MLA Representative'),
+                        "party": el.get('winner_party', 'OTHER'),
+                        "party_name": el.get('winner_party', 'OTHER'),
+                        "votes": w_votes,
+                        "vote_pct": w_pct,
+                        "is_winner": True,
+                        "general_votes": w_votes,
+                        "postal_votes": 0,
+                    })
+
+                    # Runner Up
+                    candidates.append({
+                        "rank": 2,
+                        "name": el.get('runner_up', 'Runner-up Candidate'),
+                        "party": el.get('runner_up_party', 'OTHER'),
+                        "party_name": el.get('runner_up_party', 'OTHER'),
+                        "votes": r_votes,
+                        "vote_pct": r_pct,
+                        "is_winner": False,
+                        "general_votes": r_votes,
+                        "postal_votes": 0,
+                    })
+
+                    # Other candidates aggregate
+                    other_votes = valid_votes - (w_votes + r_votes) if valid_votes > (w_votes + r_votes) else 0
+                    if other_votes > 0:
+                        other_pct = round((other_votes / valid_votes) * 100, 2)
+                        candidates.append({
+                            "rank": 3,
+                            "name": "Other Contenders / Independents",
+                            "party": "OTH",
+                            "party_name": "Others / Independents",
+                            "votes": other_votes,
+                            "vote_pct": other_pct,
+                            "is_winner": False,
+                            "general_votes": other_votes,
+                            "postal_votes": 0,
+                        })
+                    break
+
+    return {
+        "ac_no": ac_no,
+        "ac_name": ac_name,
+        "year": year,
+        "election": election_info,
+        "candidates": candidates
+    }

@@ -101,8 +101,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="flex items-center gap-2 sm:gap-2.5 cursor-pointer shrink-0 min-w-0" 
             onClick={() => setActiveTab('overview')}
           >
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white font-extrabold text-sm sm:text-base shadow-sm ring-1 ring-blue-500/20 shrink-0">
-              UP
+            <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-slate-900 flex items-center justify-center text-white shadow-md ring-1 ring-blue-400/30 shrink-0 overflow-hidden group">
+              <div className="absolute inset-0 bg-blue-500/10 group-hover:bg-blue-400/20 transition-colors" />
+              <Landmark className="w-4 h-4 sm:w-5 sm:h-5 text-amber-300 drop-shadow-sm" />
+              <span className="absolute bottom-0.5 right-0.5 text-[8px] font-mono font-black tracking-tighter text-blue-200 bg-blue-950/80 px-1 rounded-xs">UP</span>
             </div>
             <div className="min-w-0">
               <div className="font-display font-extrabold text-xs sm:text-sm md:text-base tracking-tight text-slate-900 dark:text-white leading-tight">
@@ -420,8 +422,9 @@ export const Navbar: React.FC<NavbarProps> = ({
       >
         <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white font-extrabold text-sm shadow-sm">
-              UP
+            <div className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 via-indigo-600 to-slate-900 flex items-center justify-center text-white shadow-sm ring-1 ring-blue-400/30 overflow-hidden">
+              <Landmark className="w-4 h-4 text-amber-300 drop-shadow-sm" />
+              <span className="absolute bottom-0.5 right-0.5 text-[7px] font-mono font-black text-blue-200 bg-blue-950/80 px-0.5 rounded-xs">UP</span>
             </div>
             <div>
               <div className="font-display font-extrabold text-xs text-slate-900 dark:text-white">

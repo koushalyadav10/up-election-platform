@@ -1,19 +1,33 @@
-import React, { useState } from 'react';
-import { 
-  ShieldCheck, 
-  ShieldAlert, 
-  UserCheck, 
-  Eye, 
-  Lock, 
-  KeyRound, 
-  FileSpreadsheet, 
-  UploadCloud, 
-  CheckCircle, 
-  AlertCircle, 
-  X, 
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  ShieldCheck,
+  ShieldAlert,
+  UserCheck,
+  Eye,
+  Lock,
+  KeyRound,
+  FileSpreadsheet,
+  UploadCloud,
+  CheckCircle,
+  AlertCircle,
+  X,
   Download,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Users,
+  UserPlus,
+  Crown,
+  Pencil,
+  Trash2,
+  RefreshCw,
+  Building2,
+  Phone,
+  BadgeCheck,
+  ChevronRight,
+  Server,
+  Copy,
+  Check,
+  EyeOff
 } from 'lucide-react';
 import { useAuth, UserRole } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -23,17 +37,67 @@ interface AdminRoleModalProps {
   onImportSuccess?: () => void;
 }
 
+interface RBACUser {
+  user_id: string;
+  name: string;
+  mobile: string;
+  role: 'admin' | 'editor';
+  password?: string;
+  district?: string;
+  designation?: string;
+  created_at: string;
+  is_active: boolean;
+}
+
+// UP Districts list
+const UP_DISTRICTS = [
+  'Agra','Aligarh','Prayagraj','Ambedkar Nagar','Amethi','Amroha','Auraiya','Ayodhya',
+  'Azamgarh','Baghpat','Bahraich','Ballia','Balrampur','Banda','Barabanki','Bareilly',
+  'Basti','Bhadohi','Bijnor','Budaun','Bulandshahr','Chandauli','Chitrakoot','Deoria',
+  'Etah','Etawah','Farrukhabad','Fatehpur','Firozabad','Gautam Buddha Nagar',
+  'Ghaziabad','Ghazipur','Gonda','Gorakhpur','Hamirpur','Hapur','Hardoi','Hathras',
+  'Jalaun','Jaunpur','Jhansi','Kannauj','Kanpur Dehat','Kanpur Nagar','Kasganj',
+  'Kaushambi','Kushinagar','Lakhimpur Kheri','Lalitpur','Lucknow','Maharajganj',
+  'Mahoba','Mainpuri','Mathura','Mau','Meerut','Mirzapur','Moradabad','Muzaffarnagar',
+  'Pilibhit','Pratapgarh','Raebareli','Rampur','Saharanpur','Sambhal','Sant Kabir Nagar',
+  'Shahjahanpur','Shamli','Shravasti','Siddharthnagar','Sitapur','Sonbhadra',
+  'Sultanpur','Unnao','Varanasi'
+];
+
 export const AdminRoleModal: React.FC<AdminRoleModalProps> = ({ currentACNo = 314, onImportSuccess }) => {
   const { role, passcode, permissions, isAuthModalOpen, closeAuthModal, login, setViewerMode } = useAuth();
   const { language } = useLanguage();
   const isHi = language === 'hi';
 
-  const [activeTab, setActiveTab] = useState<'role' | 'import'>('role');
+  const [activeTab, setActiveTab] = useState<'login' | 'users' | 'create' | 'import'>('login');
   const [inputPasscode, setInputPasscode] = useState('');
-  const [authStatus, setAuthStatus] = useState<{ type: 'idle' | 'success' | 'error'; message: string }>({
-    type: 'idle',
-    message: ''
+  const [authStatus, setAuthStatus] = useState<{ type: 'idle' | 'success' | 'error'; message: string }>({ type: 'idle', message: '' });
+
+  // Users list state
+  const [users, setUsers] = useState<RBACUser[]>([]);
+  const [usersLoading, setUsersLoading] = useState(false);
+  const [usersError, setUsersError] = useState('');
+  const [userFilter, setUserFilter] = useState<'all' | 'admin' | 'editor'>('all');
+  const [showPasswords, setShowPasswords] = useState<boolean>(true);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Create user state
+  const [newUser, setNewUser] = useState({
+    name: '',
+    mobile: '',
+    district: UP_DISTRICTS[0],
+    designation: 'Field Coordinator'
   });
+  const [createStatus, setCreateStatus] = useState<{ type: 'idle' | 'success' | 'error'; message: string }>({ type: 'idle', message: '' });
+  const [createdCredentials, setCreatedCredentials] = useState<{
+    user_id: string;
+    password?: string;
+    name: string;
+    mobile: string;
+    district?: string;
+    designation?: string;
+  } | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
 
   // Import states
   const [selectedAC, setSelectedAC] = useState<number>(currentACNo || 314);
@@ -41,381 +105,628 @@ export const AdminRoleModal: React.FC<AdminRoleModalProps> = ({ currentACNo = 31
   const [isUploading, setIsUploading] = useState(false);
   const [importResult, setImportResult] = useState<any | null>(null);
 
+  const loadUsers = useCallback(async () => {
+    if (!permissions.is_admin || !passcode) return;
+    setUsersLoading(true);
+    setUsersError('');
+    try {
+      const res = await fetch(`/api/strategy/assembly/auth/users?admin_key=${encodeURIComponent(passcode)}`);
+      const data = await res.json();
+      if (res.ok) {
+        setUsers(data.users || []);
+      } else {
+        setUsersError(data.detail || 'Failed to load users');
+      }
+    } catch (e) {
+      setUsersError('Network error loading users');
+    } finally {
+      setUsersLoading(false);
+    }
+  }, [permissions.is_admin, passcode]);
+
+  useEffect(() => {
+    if (isAuthModalOpen && permissions.is_admin && activeTab === 'users') {
+      loadUsers();
+    }
+  }, [isAuthModalOpen, permissions.is_admin, activeTab, loadUsers]);
+
+  useEffect(() => {
+    if (permissions.is_admin && isAuthModalOpen) {
+      setActiveTab('users');
+    } else if (!permissions.is_admin) {
+      setActiveTab('login');
+    }
+  }, [permissions.is_admin, isAuthModalOpen]);
+
   if (!isAuthModalOpen) return null;
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputPasscode.trim()) return;
-
     const res = await login(inputPasscode);
     if (res.success) {
-      setAuthStatus({
-        type: 'success',
-        message: isHi 
-          ? `${res.role === 'admin' ? '👑 सुपर एडमिन' : '✍️ कार्यकर्ता प्रभारी'} मोड सक्रिय किया गया!` 
-          : `${res.role === 'admin' ? 'Super Admin' : 'Editor'} mode activated!`
-      });
+      setAuthStatus({ type: 'success', message: `${res.role === 'admin' ? '👑 Super Admin' : '✍️ Editor'} mode activated!` });
       setInputPasscode('');
+      if (res.role === 'admin') setActiveTab('users');
     } else {
-      setAuthStatus({
-        type: 'error',
-        message: res.message
-      });
+      setAuthStatus({ type: 'error', message: res.message });
     }
   };
 
-  const handleSwitchToViewer = () => {
-    setViewerMode();
-    setAuthStatus({
-      type: 'success',
-      message: isHi ? '👁️ सुरक्षित दर्शक मोड (Read-Only) लागू किया गया।' : 'Switched to Read-Only Viewer Mode.'
-    });
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newUser.name || !newUser.mobile) {
+      setCreateStatus({ type: 'error', message: 'Name and mobile are required' });
+      return;
+    }
+    setIsCreating(true);
+    setCreateStatus({ type: 'idle', message: '' });
+
+    // Generate user ID with 2027SP_ prefix
+    const existingEditors = users.filter(u => u.role === 'editor').length;
+    const newId = `2027SP_EDT${String(existingEditors + 1).padStart(2, '0')}`;
+
+    try {
+      const res = await fetch('/api/strategy/assembly/auth/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          admin_key: passcode,
+          user_id: newId,
+          name: newUser.name,
+          mobile: newUser.mobile,
+          role: 'editor',
+          district: newUser.district,
+          designation: newUser.designation
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.user) {
+        setCreatedCredentials({
+          user_id: data.user.user_id,
+          password: data.user.password,
+          name: data.user.name,
+          mobile: data.user.mobile,
+          district: data.user.district,
+          designation: data.user.designation
+        });
+        setCreateStatus({ type: 'success', message: `कार्यकर्ता खाता ${data.user.user_id} सफलतापूर्वक तैयार किया गया!` });
+        setNewUser({ name: '', mobile: '', district: UP_DISTRICTS[0], designation: 'Field Coordinator' });
+        loadUsers();
+      } else {
+        setCreateStatus({ type: 'error', message: data.detail || 'Failed to create user' });
+      }
+    } catch (e) {
+      setCreateStatus({ type: 'error', message: 'Network error' });
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  const handleDeactivate = async (userId: string) => {
+    if (!confirm(`Deactivate user ${userId}?`)) return;
+    try {
+      const res = await fetch(`/api/strategy/assembly/auth/users/${userId}?admin_key=${encodeURIComponent(passcode)}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) loadUsers();
+    } catch (e) { console.error(e); }
   };
 
   const handleFileUpload = async () => {
     if (!importFile) return;
     setIsUploading(true);
     setImportResult(null);
-
     const formData = new FormData();
     formData.append('file', importFile);
-
     try {
       const res = await fetch(`/api/strategy/assembly/${selectedAC}/bulk-import-workers`, {
         method: 'POST',
-        headers: {
-          'x-role-key': passcode
-        },
+        headers: { 'x-role-key': passcode },
         body: formData
       });
-
       const data = await res.json();
       if (res.ok) {
-        setImportResult({
-          success: true,
-          message: data.message,
-          total: data.total_rows_imported,
-          updated: data.updated,
-          created: data.created
-        });
-        if (onImportSuccess) onImportSuccess();
+        setImportResult({ success: true, message: data.message, total: data.total_rows_imported, updated: data.updated, created: data.created });
+        onImportSuccess?.();
       } else {
-        setImportResult({
-          success: false,
-          message: data.detail || 'इंपोर्ट में त्रुटि हुई'
-        });
+        setImportResult({ success: false, message: data.detail || 'Upload failed' });
       }
-    } catch (e: any) {
-      setImportResult({
-        success: false,
-        message: e.message || 'सर्वर से संपर्क नहीं हो सका'
-      });
+    } catch (e) {
+      setImportResult({ success: false, message: 'Network error during upload' });
     } finally {
       setIsUploading(false);
     }
   };
 
-  const handleDownloadTemplate = async () => {
-    try {
-      const res = await fetch(`/api/strategy/assembly/${selectedAC}/worker-template-excel`);
-      if (!res.ok) throw new Error('Template download failed');
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = `AC_${selectedAC}_Worker_Import_Template.csv`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (e) {
-      window.location.href = `/api/strategy/assembly/${selectedAC}/worker-template-excel`;
-    }
-  };
+  const adminCount = users.filter(u => u.role === 'admin' && u.is_active).length;
+  const editorCount = users.filter(u => u.role === 'editor' && u.is_active).length;
+  const filteredUsers = userFilter === 'all' ? users : users.filter(u => u.role === userFilter);
+
+  const tabs = [
+    { id: 'login' as const, label: isHi ? 'लॉगिन' : 'Login', icon: KeyRound },
+    ...(permissions.is_admin ? [
+      { id: 'users' as const, label: isHi ? 'उपयोगकर्ता' : 'Users', icon: Users },
+      { id: 'create' as const, label: isHi ? 'नया यूज़र' : 'New User', icon: UserPlus },
+      { id: 'import' as const, label: isHi ? 'डेटा इम्पोर्ट' : 'Import', icon: FileSpreadsheet },
+    ] : []),
+    ...(permissions.can_edit && !permissions.is_admin ? [
+      { id: 'import' as const, label: isHi ? 'डेटा इम्पोर्ट' : 'Import', icon: FileSpreadsheet },
+    ] : []),
+  ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in">
-      <div 
-        className="relative w-full max-w-xl bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden text-slate-100 flex flex-col max-h-[90vh]"
-        onClick={e => e.stopPropagation()}
-      >
-        {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/60">
-          <div className="flex items-center gap-2.5">
-            <div className={`p-2 rounded-xl ${
-              role === 'admin' 
-                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' 
-                : role === 'editor' 
-                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' 
-                  : 'bg-slate-800 text-slate-400 border border-slate-700'
-            }`}>
-              {role === 'admin' ? <ShieldAlert className="w-5 h-5" /> : role === 'editor' ? <UserCheck className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4">
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" onClick={closeAuthModal} />
+
+      {/* Panel */}
+      <div className="relative w-full max-w-4xl max-h-[92vh] overflow-hidden rounded-2xl shadow-2xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-700/60 flex flex-col">
+
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/60 bg-gradient-to-r from-blue-950/60 via-slate-900 to-indigo-950/60">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+              <ShieldCheck className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white tracking-wide">
-                {isHi ? 'प्रशासनिक नियंत्रण एवं भूमिका प्रबंधन' : 'RBAC & Access Control Panel'}
-              </h2>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[10px] text-slate-400 font-mono">
-                  {isHi ? 'सक्रिय मोड:' : 'Active Role:'}
-                </span>
-                <span className={`text-[10px] font-bold font-mono px-2 py-0.5 rounded ${
-                  role === 'admin' 
-                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' 
-                    : role === 'editor' 
-                      ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' 
-                      : 'bg-slate-800 text-slate-300 border border-slate-700'
-                }`}>
-                  {role === 'admin' ? '👑 SUPER ADMIN' : role === 'editor' ? '✍️ EDITOR (कार्यकर्ता प्रभारी)' : '👁️ VIEWER (दर्शक)'}
-                </span>
+              <div className="text-sm font-bold text-white">
+                {isHi ? 'RBAC एक्सेस कंट्रोल पैनल' : 'RBAC & Access Control Panel'}
+              </div>
+              <div className="text-[10px] text-slate-400 font-mono">UP Electoral Intelligence Platform • AWS Deployed</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {role !== 'viewer' && (
+              <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold font-mono border ${
+                role === 'admin'
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                  : 'bg-blue-500/20 text-blue-300 border-blue-500/40'
+              }`}>
+                {role === 'admin' ? '👑 SUPER ADMIN' : '✍️ EDITOR'}
+              </span>
+            )}
+            <button onClick={closeAuthModal} className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Stats Row (admin only) */}
+        {permissions.is_admin && users.length > 0 && (
+          <div className="grid grid-cols-3 gap-3 px-5 py-3 border-b border-slate-800/60">
+            <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800/50 border border-slate-700/40">
+              <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                <Crown className="w-4 h-4 text-amber-400" />
+              </div>
+              <div>
+                <div className="text-lg font-black text-amber-300 leading-none">{adminCount}</div>
+                <div className="text-[10px] text-slate-400 font-mono">Admins</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800/50 border border-slate-700/40">
+              <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                <Pencil className="w-4 h-4 text-blue-400" />
+              </div>
+              <div>
+                <div className="text-lg font-black text-blue-300 leading-none">{editorCount}</div>
+                <div className="text-[10px] text-slate-400 font-mono">Editors</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800/50 border border-slate-700/40">
+              <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                <Server className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div>
+                <div className="text-lg font-black text-emerald-300 leading-none">{users.length}</div>
+                <div className="text-[10px] text-slate-400 font-mono">Total Users</div>
               </div>
             </div>
           </div>
-
-          <button
-            onClick={closeAuthModal}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+        )}
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-slate-800 bg-slate-950/30 px-6">
-          <button
-            onClick={() => setActiveTab('role')}
-            className={`py-3 px-4 text-xs font-bold border-b-2 transition-colors flex items-center gap-1.5 ${
-              activeTab === 'role'
-                ? 'border-indigo-500 text-indigo-400'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <KeyRound className="w-3.5 h-3.5" />
-            <span>{isHi ? 'मोड व पासकोड' : 'Role & Passcode'}</span>
-          </button>
-
-          {permissions.can_import && (
-            <button
-              onClick={() => setActiveTab('import')}
-              className={`py-3 px-4 text-xs font-bold border-b-2 transition-colors flex items-center gap-1.5 ${
-                activeTab === 'import'
-                  ? 'border-indigo-500 text-indigo-400'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <FileSpreadsheet className="w-3.5 h-3.5" />
-              <span>{isHi ? 'एक्सेल बल्क-इंपोर्ट (.xlsx)' : 'Bulk Excel Import'}</span>
-            </button>
-          )}
+        <div className="flex items-center gap-1 px-5 py-2.5 border-b border-slate-800 overflow-x-auto">
+          {tabs.map(tab => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {tab.label}
+              </button>
+            );
+          })}
         </div>
 
-        {/* Modal Body */}
-        <div className="p-6 overflow-y-auto space-y-6 text-xs">
-          {activeTab === 'role' && (
-            <div className="space-y-5">
-              {/* Role Permissions Card */}
-              <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-3">
-                <div className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
-                  {isHi ? 'वर्तमान अनुमतियाँ (Current Privileges)' : 'Current Privileges'}
-                </div>
+        {/* Tab Content */}
+        <div className="flex-1 overflow-y-auto p-5">
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px]">
-                  <div className={`p-2.5 rounded-lg border flex items-center gap-2 ${
-                    permissions.can_edit ? 'bg-emerald-950/30 border-emerald-800/60 text-emerald-300' : 'bg-slate-900 border-slate-800 text-slate-500'
-                  }`}>
-                    <CheckCircle className="w-4 h-4 shrink-0" />
-                    <span>{isHi ? 'वेबसाइट से डेटा एडिट' : 'Direct Web Edit'}</span>
+          {/* LOGIN TAB */}
+          {activeTab === 'login' && (
+            <div className="max-w-md mx-auto space-y-5">
+              {role === 'viewer' ? (
+                <>
+                  <div className="text-center space-y-2 py-4">
+                    <div className="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center mx-auto">
+                      <Lock className="w-7 h-7 text-slate-400" />
+                    </div>
+                    <div className="text-white font-bold text-lg">{isHi ? 'प्रमाणीकरण आवश्यक' : 'Authentication Required'}</div>
+                    <div className="text-slate-400 text-sm">{isHi ? 'एडमिन या एडिटर क्रेडेंशियल दर्ज करें' : 'Enter Admin or Editor credentials to access the control panel'}</div>
                   </div>
 
-                  <div className={`p-2.5 rounded-lg border flex items-center gap-2 ${
-                    permissions.can_import ? 'bg-emerald-950/30 border-emerald-800/60 text-emerald-300' : 'bg-slate-900 border-slate-800 text-slate-500'
-                  }`}>
-                    <CheckCircle className="w-4 h-4 shrink-0" />
-                    <span>{isHi ? 'Excel बल्क सिंक' : 'Bulk Excel Import'}</span>
-                  </div>
-
-                  <div className={`p-2.5 rounded-lg border flex items-center gap-2 ${
-                    permissions.is_admin ? 'bg-emerald-950/30 border-emerald-800/60 text-emerald-300' : 'bg-slate-900 border-slate-800 text-slate-500'
-                  }`}>
-                    <CheckCircle className="w-4 h-4 shrink-0" />
-                    <span>{isHi ? 'पूर्ण प्रशासनिक नियंत्रण' : 'Full Admin Control'}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Status Banner */}
-              {authStatus.type !== 'idle' && (
-                <div className={`p-3 rounded-xl border flex items-center gap-2 text-xs font-semibold ${
-                  authStatus.type === 'success' 
-                    ? 'bg-emerald-950/40 border-emerald-800 text-emerald-300' 
-                    : 'bg-rose-950/40 border-rose-800 text-rose-300'
-                }`}>
-                  {authStatus.type === 'success' ? <CheckCircle className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
-                  <span>{authStatus.message}</span>
-                </div>
-              )}
-
-              {/* Passcode Form */}
-              <form onSubmit={handleLoginSubmit} className="space-y-3">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-300 mb-1">
-                    {isHi ? 'एडमिन या एडिटर पासकोड दर्ज करें:' : 'Enter Admin or Editor Passcode:'}
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="password"
-                      value={inputPasscode}
-                      onChange={e => setInputPasscode(e.target.value)}
-                      placeholder={isHi ? 'पासकोड यहाँ लिखें (उदा. sp2027admin या spworker)' : 'Enter passcode...'}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs font-mono focus:border-indigo-500 focus:outline-none transition-colors"
-                      required
-                    />
-                    <Lock className="w-4 h-4 text-slate-500 absolute right-3.5 top-3" />
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-center gap-2 pt-1">
-                  <button
-                    type="submit"
-                    className="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-1.5"
-                  >
-                    <span>{isHi ? '🔓 एक्सेस अनलॉक करें' : 'Unlock Privileges'}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-
-                  {role !== 'viewer' && (
+                  <form onSubmit={handleLoginSubmit} className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                        {isHi ? 'एक्सेस कोड / पासकोड' : 'Access Code / Passcode'}
+                      </label>
+                      <input
+                        type="password"
+                        value={inputPasscode}
+                        onChange={e => setInputPasscode(e.target.value)}
+                        placeholder={isHi ? 'पासकोड दर्ज करें...' : 'Enter your passcode...'}
+                        className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 text-white placeholder-slate-500 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 font-mono"
+                        autoFocus
+                      />
+                    </div>
                     <button
-                      type="button"
-                      onClick={handleSwitchToViewer}
-                      className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs border border-slate-700 transition-colors flex items-center justify-center gap-1.5"
+                      type="submit"
+                      disabled={!inputPasscode.trim()}
+                      className="w-full py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2"
                     >
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>{isHi ? 'दर्शक मोड में जाएं' : 'Switch to Viewer'}</span>
+                      <ShieldCheck className="w-4 h-4" />
+                      {isHi ? 'प्रमाणित करें' : 'Authenticate'}
                     </button>
-                  )}
-                </div>
-              </form>
+                  </form>
 
-              {/* Quick Info Credentials Box */}
-              <div className="p-3 rounded-xl bg-slate-950/40 border border-slate-800/80 text-[11px] text-slate-400 space-y-1.5 font-mono">
-                <div className="flex items-center justify-between text-slate-300">
-                  <span className="font-bold">{isHi ? 'त्वरित डेमो पासकोड:' : 'Quick Demo Passcodes:'}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>👑 Super Admin Key:</span>
-                  <code className="px-1.5 py-0.5 rounded bg-slate-800 text-amber-300">sp2027admin</code>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>✍️ Editor (प्रभारी) Key:</span>
-                  <code className="px-1.5 py-0.5 rounded bg-slate-800 text-blue-300">spworker</code>
-                </div>
-              </div>
+                  {authStatus.type !== 'idle' && (
+                    <div className={`flex items-center gap-2 p-3 rounded-xl text-sm border ${
+                      authStatus.type === 'success'
+                        ? 'bg-emerald-950/40 border-emerald-800/60 text-emerald-300'
+                        : 'bg-red-950/40 border-red-800/60 text-red-300'
+                    }`}>
+                      {authStatus.type === 'success' ? <CheckCircle className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
+                      {authStatus.message}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className={`p-4 rounded-2xl border text-center space-y-2 ${
+                    role === 'admin'
+                      ? 'bg-amber-950/30 border-amber-700/40'
+                      : 'bg-blue-950/30 border-blue-700/40'
+                  }`}>
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mx-auto ${
+                      role === 'admin' ? 'bg-amber-500/20' : 'bg-blue-500/20'
+                    }`}>
+                      {role === 'admin' ? <Crown className="w-6 h-6 text-amber-400" /> : <UserCheck className="w-6 h-6 text-blue-400" />}
+                    </div>
+                    <div className={`font-bold ${ role === 'admin' ? 'text-amber-300' : 'text-blue-300'}`}>
+                      {role === 'admin' ? '👑 Super Admin Active' : '✍️ Editor Mode Active'}
+                    </div>
+                    <div className="text-xs text-slate-400">{isHi ? 'आप वर्तमान में प्रमाणित हैं' : 'You are currently authenticated'}</div>
+                  </div>
+                  <button
+                    onClick={() => { setViewerMode(); setAuthStatus({ type: 'idle', message: '' }); }}
+                    className="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-sm rounded-xl transition-all flex items-center justify-center gap-2"
+                  >
+                    <Eye className="w-4 h-4" />
+                    {isHi ? 'व्यूअर मोड में वापस जाएं' : 'Switch to Viewer Mode'}
+                  </button>
+                </>
+              )}
             </div>
           )}
 
-          {activeTab === 'import' && permissions.can_import && (
-            <div className="space-y-5">
-              {/* Info Card */}
-              <div className="p-3.5 rounded-xl bg-blue-950/20 border border-blue-900/50 text-blue-300 text-[11px] space-y-1">
-                <div className="font-bold flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-                  <span>{isHi ? 'स्मार्ट एक्सेल ऑटो-डिटेक्ट इंजन' : 'Smart Excel Auto-Detect Engine'}</span>
-                </div>
-                <p className="text-slate-400 text-[10px] leading-relaxed">
-                  {isHi 
-                    ? 'अपनी एक्सेल/सीएसवी फाइल को सीधे अपलोड करें। सिस्टम स्वतः बूथ नंबर, अध्यक्ष का नाम, मोबाइल और BLA-2 का डेटा पहचान कर सुरक्षित कर लेगा।' 
-                    : 'Upload any standard Excel or CSV file. The engine matches headers across English, Hindi and regional conventions.'}
-                </p>
-              </div>
-
-              {/* Constituency Selector */}
-              <div>
-                <label className="block text-[11px] font-bold text-slate-300 mb-1">
-                  {isHi ? 'विधानसभा चुनें (AC Number):' : 'Assembly Constituency No:'}
-                </label>
+          {/* USERS TAB */}
+          {activeTab === 'users' && permissions.is_admin && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    value={selectedAC}
-                    onChange={e => setSelectedAC(Number(e.target.value))}
-                    className="w-32 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs font-mono font-bold"
-                  />
+                  {(['all', 'admin', 'editor'] as const).map(f => (
+                    <button
+                      key={f}
+                      onClick={() => setUserFilter(f)}
+                      className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all capitalize ${
+                        userFilter === f
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-slate-800 text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {f === 'all'
+                        ? `All (${users.length})`
+                        : f === 'admin'
+                          ? `Admins (${users.filter(u => u.role === 'admin').length})`
+                          : `Editors (${users.filter(u => u.role === 'editor').length})`}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex items-center gap-2">
                   <button
-                    type="button"
-                    onClick={handleDownloadTemplate}
-                    className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-indigo-500/30 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                    onClick={() => setShowPasswords(!showPasswords)}
+                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
+                      showPasswords
+                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                        : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-white'
+                    }`}
+                    title="Toggle password visibility"
                   >
-                    <Download className="w-3.5 h-3.5" />
-                    <span>{isHi ? 'खाली एक्सेल टेम्पलेट डाउनलोड करें' : 'Download Blank Template'}</span>
+                    {showPasswords ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                    <span>{showPasswords ? 'Hide Keys' : 'Show Keys'}</span>
+                  </button>
+                  <button onClick={loadUsers} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
+                    <RefreshCw className={`w-4 h-4 ${usersLoading ? 'animate-spin' : ''}`} />
                   </button>
                 </div>
               </div>
 
-              {/* Upload Dropzone */}
-              <div className="p-6 rounded-2xl border-2 border-dashed border-slate-700 bg-slate-950/40 text-center space-y-3">
-                <FileSpreadsheet className="w-10 h-10 text-emerald-400 mx-auto" />
-                <div>
-                  <div className="font-bold text-white text-xs">
-                    {importFile ? importFile.name : (isHi ? 'एक्सेल फाइल चुनें (.xlsx, .xls, .csv)' : 'Select spreadsheet file (.xlsx, .xls, .csv)')}
-                  </div>
-                  <div className="text-[10px] text-slate-500 mt-0.5">
-                    {isHi ? 'अधिकतम 5 MB • सभी 400+ बूथ एक बार में सिंक' : 'Max 5 MB • Instant sync across all booths'}
-                  </div>
+              {usersError && (
+                <div className="p-3 rounded-xl bg-red-950/40 border border-red-800/60 text-red-300 text-sm">{usersError}</div>
+              )}
+
+              {usersLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <RefreshCw className="w-6 h-6 animate-spin text-blue-400" />
                 </div>
+              ) : (
+                <div className="space-y-2">
+                  {filteredUsers.map(u => (
+                    <div key={u.user_id} className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
+                      !u.is_active ? 'opacity-50 bg-slate-800/20 border-slate-700/20' :
+                      u.role === 'admin' ? 'bg-amber-950/20 border-amber-800/30 hover:border-amber-700/50' :
+                      'bg-slate-800/40 border-slate-700/40 hover:border-slate-600/60'
+                    }`}>
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                        u.role === 'admin' ? 'bg-amber-500/20' : 'bg-blue-500/20'
+                      }`}>
+                        {u.role === 'admin'
+                          ? <Crown className="w-4 h-4 text-amber-400" />
+                          : <Pencil className="w-4 h-4 text-blue-400" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-xs font-mono font-bold text-white">{u.user_id}</span>
+                          <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase border ${
+                            u.role === 'admin'
+                              ? 'bg-amber-500/20 text-amber-300 border-amber-600/40'
+                              : 'bg-blue-500/20 text-blue-300 border-blue-600/40'
+                          }`}>{u.role}</span>
+                          {!u.is_active && (
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-red-900/40 text-red-300 border border-red-800/40">INACTIVE</span>
+                          )}
+                        </div>
+                        <div className="text-xs text-slate-300 font-semibold truncate mt-0.5">{u.name}</div>
+                        <div className="flex items-center gap-3 text-[10px] text-slate-500 mt-0.5 flex-wrap">
+                          <span className="flex items-center gap-1">
+                            <Phone className="w-2.5 h-2.5" />
+                            {u.mobile ? u.mobile.replace(/(.{3})(.+)(.{2})/, '$1•••••$3') : '—'}
+                          </span>
+                          {u.district && (
+                            <span className="flex items-center gap-1">
+                              <Building2 className="w-2.5 h-2.5" />{u.district}
+                            </span>
+                          )}
+                          {u.designation && <span>{u.designation}</span>}
+                        </div>
+                        {u.password && (
+                          <div className="flex items-center gap-1.5 mt-1">
+                            <span className="text-[10px] font-mono text-slate-500">Passcode:</span>
+                            <span className="text-[10px] font-mono font-bold text-amber-300 bg-slate-900/80 px-1.5 py-0.5 rounded border border-slate-800">
+                              {showPasswords ? u.password : '••••••••••••'}
+                            </span>
+                            <button
+                              onClick={() => {
+                                navigator.clipboard.writeText(u.password || '');
+                                setCopiedId(u.user_id);
+                                setTimeout(() => setCopiedId(null), 2000);
+                              }}
+                              className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-700/60 transition-colors"
+                              title="Copy Passcode"
+                            >
+                              {copiedId === u.user_id ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                      {u.role !== 'admin' && u.is_active && (
+                        <button
+                          onClick={() => handleDeactivate(u.user_id)}
+                          className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-950/30 transition-colors shrink-0"
+                          title="Deactivate editor"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  {filteredUsers.length === 0 && (
+                    <div className="text-center py-8 text-slate-500 text-sm">No users found</div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
 
-                <input
-                  type="file"
-                  accept=".xlsx,.xls,.csv"
-                  onChange={e => e.target.files && setImportFile(e.target.files[0])}
-                  className="text-[11px] text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-indigo-300 hover:file:bg-slate-700 cursor-pointer"
-                />
-
-                {importFile && (
-                  <div className="pt-2">
-                    <button
-                      onClick={handleFileUpload}
-                      disabled={isUploading}
-                      className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 transition-all flex items-center gap-1.5 mx-auto"
-                    >
-                      <UploadCloud className="w-4 h-4" />
-                      <span>{isUploading ? (isHi ? 'सिंक हो रहा है...' : 'Syncing Data...') : (isHi ? 'डेटाबेस में सिंक करें (Bulk Sync)' : 'Upload & Sync Everywhere')}</span>
-                    </button>
-                  </div>
-                )}
+          {/* CREATE USER TAB */}
+          {activeTab === 'create' && permissions.is_admin && (
+            <div className="max-w-lg mx-auto space-y-4">
+              <div className="p-4 rounded-2xl bg-blue-950/30 border border-blue-800/40">
+                <div className="text-sm font-bold text-blue-300 mb-1 flex items-center gap-2">
+                  <UserPlus className="w-4 h-4" /> {isHi ? 'नया कार्यकर्ता / एडिटर बनाएं' : 'Create New Editor Account'}
+                </div>
+                <div className="text-[11px] text-slate-400">
+                  {isHi ? 'यूज़र आईडी 2027SP_EDT## प्रारूप में बनेगी। एडमिन नए एडिटर्स को पंजीकृत कर पासवर्ड सौंप सकते हैं।' : 'User ID will be auto-generated in 2027SP_EDT## format with secure mixed password. One admin cannot delete another admin.'}
+                </div>
               </div>
 
-              {/* Result Summary */}
-              {importResult && (
-                <div className={`p-4 rounded-xl border space-y-1.5 ${
-                  importResult.success 
-                    ? 'bg-emerald-950/40 border-emerald-800 text-emerald-300' 
-                    : 'bg-rose-950/40 border-rose-800 text-rose-300'
-                }`}>
-                  <div className="font-bold flex items-center gap-1.5">
-                    {importResult.success ? <CheckCircle className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
-                    <span>{importResult.message}</span>
+              {createdCredentials && (
+                <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/50 space-y-3 animate-in fade-in duration-300">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 text-emerald-300 font-bold text-xs sm:text-sm">
+                      <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>{isHi ? 'खाता तैयार! क्रेडेंशियल साझा करें:' : 'Account Created! Credentials Ready:'}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const text = `*UP Electoral Intelligence Platform*\n• User ID: ${createdCredentials.user_id}\n• Password: ${createdCredentials.password}\n• Name: ${createdCredentials.name}\n• Designation: ${createdCredentials.designation || 'Field Coordinator'}\n• District: ${createdCredentials.district || 'Uttar Pradesh'}\n• Portal: http://15.207.14.41`;
+                        navigator.clipboard.writeText(text);
+                        setCopiedId('created_card');
+                        setTimeout(() => setCopiedId(null), 2500);
+                      }}
+                      className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 shadow-sm"
+                    >
+                      {copiedId === 'created_card' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedId === 'created_card' ? (isHi ? 'कॉपी हुआ!' : 'Copied!') : (isHi ? 'WhatsApp कार्ड कॉपी' : 'Copy Card')}</span>
+                    </button>
                   </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs font-mono bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                    <div><span className="text-slate-500 block text-[10px]">User ID:</span><span className="text-white font-bold">{createdCredentials.user_id}</span></div>
+                    <div><span className="text-slate-500 block text-[10px]">Password:</span><span className="text-amber-300 font-bold">{createdCredentials.password}</span></div>
+                    <div><span className="text-slate-500 block text-[10px]">Name:</span><span className="text-slate-300 truncate block">{createdCredentials.name}</span></div>
+                    <div><span className="text-slate-500 block text-[10px]">Mobile:</span><span className="text-slate-300">{createdCredentials.mobile}</span></div>
+                  </div>
+                </div>
+              )}
+
+              <form onSubmit={handleCreateUser} className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">{isHi ? 'पूरा नाम *' : 'Full Name *'}</label>
+                    <input
+                      type="text"
+                      value={newUser.name}
+                      onChange={e => setNewUser(p => ({ ...p, name: e.target.value }))}
+                      placeholder={isHi ? 'नाम दर्ज करें' : 'Enter full name'}
+                      className="w-full px-3 py-2 bg-slate-800 border border-slate-600 text-white placeholder-slate-500 rounded-xl text-sm focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">{isHi ? 'मोबाइल नंबर *' : 'Mobile Number *'}</label>
+                    <input
+                      type="tel"
+                      value={newUser.mobile}
+                      onChange={e => setNewUser(p => ({ ...p, mobile: e.target.value }))}
+                      placeholder={isHi ? '10-अंकीय मोबाइल' : '10-digit mobile'}
+                      className="w-full px-3 py-2 bg-slate-800 border border-slate-600 text-white placeholder-slate-500 rounded-xl text-sm focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">{isHi ? 'जिला' : 'District'}</label>
+                    <select
+                      value={newUser.district}
+                      onChange={e => setNewUser(p => ({ ...p, district: e.target.value }))}
+                      className="w-full px-3 py-2 bg-slate-800 border border-slate-600 text-white rounded-xl text-sm focus:outline-none focus:border-blue-500"
+                    >
+                      {UP_DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">{isHi ? 'पद / दायित्व' : 'Designation'}</label>
+                    <select
+                      value={newUser.designation}
+                      onChange={e => setNewUser(p => ({ ...p, designation: e.target.value }))}
+                      className="w-full px-3 py-2 bg-slate-800 border border-slate-600 text-white rounded-xl text-sm focus:outline-none focus:border-blue-500"
+                    >
+                      {[
+                        'Field Coordinator',
+                        'Booth Analyst',
+                        'District Supervisor',
+                        'Data Entry Operator',
+                        'Campaign Manager',
+                        'Research Analyst'
+                      ].map(d => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  disabled={isCreating || !newUser.name || !newUser.mobile}
+                  className="w-full py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2"
+                >
+                  {isCreating ? <RefreshCw className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
+                  {isCreating ? (isHi ? 'खाता बनाया जा रहा है...' : 'Creating...') : (isHi ? 'एडिटर खाता बनाएं' : 'Create Editor Account')}
+                </button>
+              </form>
+              {createStatus.type !== 'idle' && (
+                <div className={`flex items-center gap-2 p-3 rounded-xl text-sm border ${
+                  createStatus.type === 'success'
+                    ? 'bg-emerald-950/40 border-emerald-800/60 text-emerald-300'
+                    : 'bg-red-950/40 border-red-800/60 text-red-300'
+                }`}>
+                  {createStatus.type === 'success'
+                    ? <CheckCircle className="w-4 h-4 shrink-0" />
+                    : <AlertCircle className="w-4 h-4 shrink-0" />}
+                  {createStatus.message}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* IMPORT TAB */}
+          {activeTab === 'import' && permissions.can_edit && (
+            <div className="max-w-lg mx-auto space-y-4">
+              <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-800/40">
+                <div className="text-sm font-bold text-emerald-300 mb-1 flex items-center gap-2">
+                  <UploadCloud className="w-4 h-4" /> Bulk Import Booth Workers
+                </div>
+                <div className="text-[11px] text-slate-400">
+                  Upload an Excel/CSV file with booth worker data for a specific AC.
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">Assembly Constituency No.</label>
+                <input
+                  type="number"
+                  value={selectedAC}
+                  onChange={e => setSelectedAC(Number(e.target.value))}
+                  min={1}
+                  max={403}
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-600 text-white rounded-xl text-sm focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">Upload File (Excel/CSV)</label>
+                <input
+                  type="file"
+                  accept=".xlsx,.csv"
+                  onChange={e => setImportFile(e.target.files?.[0] || null)}
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-600 text-slate-300 rounded-xl text-sm file:mr-3 file:px-3 file:py-1 file:rounded-lg file:bg-slate-700 file:text-slate-300 file:border-0 file:text-xs"
+                />
+              </div>
+              <button
+                onClick={handleFileUpload}
+                disabled={isUploading || !importFile}
+                className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50 text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2"
+              >
+                {isUploading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
+                {isUploading ? 'Uploading...' : 'Upload & Import'}
+              </button>
+              {importResult && (
+                <div className={`p-3 rounded-xl border text-sm ${
+                  importResult.success
+                    ? 'bg-emerald-950/40 border-emerald-800/60 text-emerald-300'
+                    : 'bg-red-950/40 border-red-800/60 text-red-300'
+                }`}>
+                  <div className="font-semibold">{importResult.message}</div>
                   {importResult.success && (
-                    <div className="text-[11px] font-mono text-slate-300">
-                      कुल रिकॉर्ड: <strong>{importResult.total}</strong> (अपडेटेड: {importResult.updated} • नए: {importResult.created})
+                    <div className="text-xs mt-1">
+                      Total: {importResult.total} | Created: {importResult.created} | Updated: {importResult.updated}
                     </div>
                   )}
                 </div>
               )}
             </div>
           )}
-        </div>
 
-        {/* Modal Footer */}
-        <div className="px-6 py-3 border-t border-slate-800 bg-slate-950/80 flex items-center justify-between text-[11px] text-slate-500">
-          <span>{isHi ? 'सुरक्षित एन्क्रिप्टेड एक्सेस • ECI 2027' : 'Secure Encrypted Access • ECI 2027'}</span>
-          <button
-            onClick={closeAuthModal}
-            className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition-colors"
-          >
-            {isHi ? 'बंद करें' : 'Close'}
-          </button>
         </div>
       </div>
     </div>

@@ -89,15 +89,33 @@ class ChangePasscodeRequest(BaseModel):
     new_admin_passcode: Optional[str] = None
     new_editor_passcode: Optional[str] = None
 
+def is_valid_admin_key(key: str) -> bool:
+    if not key:
+        return False
+    k = key.strip()
+    if k == get_admin_passcode():
+        return True
+    try:
+        users = _load_users().get("users", [])
+        for u in users:
+            if u.get("role") == "admin" and u.get("is_active", True):
+                if k == u.get("password") or k == u.get("user_id") or k == f"{u.get('user_id')}:{u.get('password')}":
+                    return True
+    except Exception:
+        pass
+    return False
+
+
 @router.post("/auth/verify-role", response_model=AuthVerifyResponse)
 def verify_role_passcode(req: AuthVerifyRequest, request: Request):
-    client_ip = request.client.host if request.client else "127.0.0.1"
+    client_ip = request.client.host if (request and getattr(request, "client", None)) else "127.0.0.1"
     check_rate_limit(client_ip)
 
     code = req.passcode.strip()
     admin_pass = get_admin_passcode()
     editor_pass = get_editor_passcode()
 
+    # 1. Master passcodes
     if code == admin_pass:
         clear_failed_attempts(client_ip)
         return AuthVerifyResponse(
@@ -114,14 +132,42 @@ def verify_role_passcode(req: AuthVerifyRequest, request: Request):
             permissions={"can_edit": True, "can_import": False, "is_admin": False},
             message="Editor (कार्यकर्ता प्रभारी) प्रमाणीकरण सफल (Edit Access)"
         )
-    else:
-        record_failed_attempt(client_ip)
-        return AuthVerifyResponse(
-            valid=False,
-            role="viewer",
-            permissions={"can_edit": False, "can_import": False, "is_admin": False},
-            message="अमान्य पासकोड! अनधिकृत पहुंच अस्वीकृत।"
-        )
+
+    # 2. RBAC Users credentials verification
+    try:
+        data = _load_users()
+        for u in data.get("users", []):
+            if not u.get("is_active", True):
+                continue
+            uid = u.get("user_id", "")
+            pw = u.get("password", "")
+            # Check password, user_id:password, or case-insensitive user_id match
+            if code == pw or code == f"{uid}:{pw}" or (":" in code and code.split(":", 1)[0].strip().upper() == uid.upper() and code.split(":", 1)[1].strip() == pw):
+                clear_failed_attempts(client_ip)
+                if u.get("role") == "admin":
+                    return AuthVerifyResponse(
+                        valid=True,
+                        role="admin",
+                        permissions={"can_edit": True, "can_import": True, "is_admin": True},
+                        message=f"Admin प्रमाणीकरण सफल: {u.get('name')} ({uid})"
+                    )
+                else:
+                    return AuthVerifyResponse(
+                        valid=True,
+                        role="editor",
+                        permissions={"can_edit": True, "can_import": False, "is_admin": False},
+                        message=f"Editor प्रमाणीकरण सफल: {u.get('name')} ({uid})"
+                    )
+    except Exception:
+        pass
+
+    record_failed_attempt(client_ip)
+    return AuthVerifyResponse(
+        valid=False,
+        role="viewer",
+        permissions={"can_edit": False, "can_import": False, "is_admin": False},
+        message="अमान्य क्रेडेंशियल! अमान्य पासकोड या यूजर आईडी।"
+    )
 
 @router.post("/auth/change-passcode")
 def change_passcode(req: ChangePasscodeRequest):
@@ -138,6 +184,136 @@ def change_passcode(req: ChangePasscodeRequest):
     _save_credentials(creds)
     return {"status": "SUCCESS", "message": "पासकोड सुरक्षित रूप से अपडेट कर दिए गए हैं।"}
 
+
+# ===================== RBAC USER MANAGEMENT =====================
+USERS_FILE = Path("E:/eci/data/rbac_users.json")
+
+
+class CreateUserRequest(BaseModel):
+    admin_key: str  # must match current admin passcode or admin password
+    user_id: Optional[str] = None
+    name: str
+    mobile: str
+    role: str = "editor"  # "editor" only (admins cannot create admins via this)
+    district: Optional[str] = None
+    designation: Optional[str] = None
+    password: Optional[str] = None
+
+
+class UserInfo(BaseModel):
+    user_id: str
+    name: str
+    mobile: str
+    role: str
+    password: Optional[str] = None
+    district: Optional[str] = None
+    designation: Optional[str] = None
+    created_at: str
+    created_by: Optional[str] = None
+    is_active: bool = True
+
+
+def _load_users() -> Dict[str, Any]:
+    if USERS_FILE.exists():
+        try:
+            with open(USERS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"users": []}
+
+
+def _save_users(data: Dict[str, Any]):
+    USERS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(USERS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+
+@router.get("/auth/users")
+def list_users(admin_key: str = Query(...)):
+    """List all users - admin only"""
+    if not is_valid_admin_key(admin_key):
+        raise HTTPException(status_code=403, detail="Admin access required")
+    data = _load_users()
+    return {"users": data.get("users", [])}
+
+
+@router.post("/auth/users")
+def create_user(req: CreateUserRequest):
+    """Create a new editor user - admin only"""
+    if not is_valid_admin_key(req.admin_key):
+        raise HTTPException(status_code=403, detail="Invalid admin credentials")
+
+    data = _load_users()
+    users = data.get("users", [])
+
+    # Only editors can be created through this endpoint (admins are predefined)
+    if req.role not in ["editor"]:
+        raise HTTPException(status_code=400, detail="Only 'editor' role can be created via API")
+
+    # Auto-generate user_id if not provided
+    user_id = req.user_id.strip() if req.user_id else None
+    if not user_id:
+        existing_editor_count = len([u for u in users if u.get("role") == "editor"])
+        user_id = f"2027SP_EDT{str(existing_editor_count + 1).zfill(2)}"
+
+    # Check duplicate user_id
+    if any(u["user_id"].upper() == user_id.upper() for u in users):
+        raise HTTPException(status_code=409, detail=f"User ID {user_id} already exists")
+
+    # Auto-generate secure password if not provided
+    import random
+    import string
+    chars = string.ascii_letters + string.digits
+    rand_suffix = ''.join(random.choice(chars) for _ in range(4))
+    user_password = req.password.strip() if req.password else f"Ed@2027#{rand_suffix}"
+
+    new_user = {
+        "user_id": user_id,
+        "name": req.name.strip(),
+        "mobile": req.mobile.strip(),
+        "role": "editor",
+        "password": user_password,
+        "district": req.district or "Lucknow",
+        "designation": req.designation or "Field Coordinator",
+        "created_at": datetime.utcnow().isoformat(),
+        "created_by": "admin",
+        "is_active": True
+    }
+    users.append(new_user)
+    _save_users({"users": users})
+    return {"status": "SUCCESS", "user": new_user}
+
+
+@router.delete("/auth/users/{user_id}")
+def deactivate_user(user_id: str, admin_key: str = Query(...)):
+    """
+    Deactivate (soft-delete) an editor user.
+    SECURITY RULE: One Admin CANNOT delete another Admin (Peer Admin Protection Enforced).
+    """
+    if not is_valid_admin_key(admin_key):
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    data = _load_users()
+    users = data.get("users", [])
+    target = next((u for u in users if u["user_id"].upper() == user_id.upper()), None)
+    if not target:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # STRICT RULE: Admins cannot be deleted by another admin
+    if target.get("role") == "admin":
+        raise HTTPException(
+            status_code=403, 
+            detail="सुरक्षा नियम: एडमिन खाता हटाया नहीं जा सकता! एक एडमिन दूसरे एडमिन को डिलीट नहीं कर सकता (Peer Admin Protection Enforced)."
+        )
+
+    target["is_active"] = False
+    _save_users({"users": users})
+    return {"status": "DEACTIVATED", "user_id": user_id}
+
+    target["is_active"] = False
+    _save_users({"users": users})
+    return {"status": "DEACTIVATED", "user_id": user_id}
 
 
 class TurnoutSimulationRequest(BaseModel):

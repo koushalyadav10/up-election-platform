@@ -88,6 +88,8 @@ export const ACDossierModal: React.FC<ACDossierModalProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedTimelineYear, setSelectedTimelineYear] = useState<number>(2022);
+  const [timelineCandidates, setTimelineCandidates] = useState<any[]>([]);
+  const [timelineCandLoading, setTimelineCandLoading] = useState(false);
   const [showStoryEvidence, setShowStoryEvidence] = useState(false);
   const [showPublicEvidence, setShowPublicEvidence] = useState(false);
   const [showProvenanceDrawer, setShowProvenanceDrawer] = useState(false);
@@ -313,6 +315,19 @@ export const ACDossierModal: React.FC<ACDossierModalProps> = ({
       window.removeEventListener('popstate', handlePopState);
     };
   }, [isOpen, acNo, selectedDrawerBoothPartNo, isShareModalOpen, onClose]);
+
+  useEffect(() => {
+    if (!acNo || !selectedTimelineYear) return;
+    setTimelineCandLoading(true);
+    setTimelineCandidates([]);
+    fetch(`/api/assembly-constituencies/${acNo}/election-results/${selectedTimelineYear}`)
+      .then(r => r.json())
+      .then(data => {
+        setTimelineCandidates(data.candidates || []);
+      })
+      .catch(() => setTimelineCandidates([]))
+      .finally(() => setTimelineCandLoading(false));
+  }, [acNo, selectedTimelineYear]);
 
   if (!acNo || isOpen === false) return null;
 
@@ -1087,6 +1102,85 @@ export const ACDossierModal: React.FC<ACDossierModalProps> = ({
                         <span><strong>Historical Boundary Note: </strong>{timelineElection.boundary_notice}</span>
                       </div>
                     )}
+
+                    {/* Full Candidate Breakdown Table */}
+                    <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                          <span>📊</span> Complete Candidate Breakdown
+                        </h3>
+                        {timelineCandLoading && (
+                          <span className="text-[10px] font-mono text-blue-500 animate-pulse">Loading candidates...</span>
+                        )}
+                      </div>
+
+                      {timelineCandLoading ? (
+                        <div className="flex items-center justify-center py-6">
+                          <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent" />
+                        </div>
+                      ) : timelineCandidates.length > 0 ? (
+                        <div className="overflow-x-auto rounded-xl border border-slate-100 dark:border-slate-700">
+                          <table className="w-full text-xs">
+                            <thead>
+                              <tr className="bg-slate-50 dark:bg-slate-800/80">
+                                <th className="px-3 py-2 text-left font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">#</th>
+                                <th className="px-3 py-2 text-left font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">Candidate</th>
+                                <th className="px-3 py-2 text-left font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">Party</th>
+                                <th className="px-3 py-2 text-right font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">Votes</th>
+                                <th className="px-3 py-2 text-right font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">Vote %</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {timelineCandidates.map((cand, idx) => (
+                                <tr
+                                  key={idx}
+                                  className={`border-t border-slate-100 dark:border-slate-700 ${
+                                    cand.is_winner
+                                      ? 'bg-emerald-50/60 dark:bg-emerald-950/20'
+                                      : idx % 2 === 0 ? 'bg-white dark:bg-transparent' : 'bg-slate-50/50 dark:bg-slate-800/20'
+                                  }`}
+                                >
+                                  <td className="px-3 py-2 font-mono text-slate-400">
+                                    {cand.is_winner ? '🏆' : cand.rank}
+                                  </td>
+                                  <td className="px-3 py-2">
+                                    <div className={`font-semibold ${ cand.is_winner ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-900 dark:text-white'}`}>
+                                      {cand.name}
+                                    </div>
+                                    {cand.is_winner && (
+                                      <div className="text-[10px] text-emerald-600 dark:text-emerald-500 font-mono">✓ ELECTED MLA</div>
+                                    )}
+                                  </td>
+                                  <td className="px-3 py-2">
+                                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold font-mono bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                                      {cand.party}
+                                    </span>
+                                  </td>
+                                  <td className="px-3 py-2 text-right font-mono font-semibold text-slate-900 dark:text-white">
+                                    {cand.votes?.toLocaleString()}
+                                  </td>
+                                  <td className="px-3 py-2 text-right">
+                                    <div className="flex items-center justify-end gap-1.5">
+                                      <div className="w-12 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div
+                                          className={`h-full rounded-full ${ cand.is_winner ? 'bg-emerald-500' : 'bg-blue-400'}`}
+                                          style={{ width: `${Math.min(cand.vote_pct, 100)}%` }}
+                                        />
+                                      </div>
+                                      <span className="font-mono text-slate-600 dark:text-slate-300 text-[11px] w-10 text-right">{cand.vote_pct}%</span>
+                                    </div>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : (
+                        <div className="text-center py-4 text-xs text-slate-400 font-mono bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-700">
+                          Detailed candidate data not available in database for {selectedTimelineYear} (pre-digitization era).
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
