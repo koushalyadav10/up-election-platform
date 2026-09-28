@@ -70,7 +70,10 @@ export const AdminRoleModal: React.FC<AdminRoleModalProps> = ({ currentACNo = 31
   const isHi = language === 'hi';
 
   const [activeTab, setActiveTab] = useState<'login' | 'users' | 'create' | 'import'>('login');
-  const [inputPasscode, setInputPasscode] = useState('');
+  const [inputUserId, setInputUserId] = useState('');
+  const [inputPassword, setInputPassword] = useState('');
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showAccountsList, setShowAccountsList] = useState(false);
   const [authStatus, setAuthStatus] = useState<{ type: 'idle' | 'success' | 'error'; message: string }>({ type: 'idle', message: '' });
 
   // Users list state
@@ -140,13 +143,30 @@ export const AdminRoleModal: React.FC<AdminRoleModalProps> = ({ currentACNo = 31
 
   if (!isAuthModalOpen) return null;
 
+  const handleQuickLogin = async (uid: string, pwd?: string) => {
+    setInputUserId(uid);
+    setInputPassword(pwd || '');
+    setAuthStatus({ type: 'idle', message: '' });
+    const res = await login(uid, pwd);
+    if (res.success) {
+      setAuthStatus({ type: 'success', message: `${res.role === 'admin' ? '👑 Super Admin' : '✍️ Editor'} (${uid}) प्रमाणीकरण सफल!` });
+      if (res.role === 'admin') setActiveTab('users');
+    } else {
+      setAuthStatus({ type: 'error', message: res.message });
+    }
+  };
+
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputPasscode.trim()) return;
-    const res = await login(inputPasscode);
+    const uid = inputUserId.trim();
+    const pwd = inputPassword.trim();
+    if (!uid && !pwd) return;
+
+    setAuthStatus({ type: 'idle', message: '' });
+    // If password provided, pass both; otherwise pass uid as single code
+    const res = pwd ? await login(uid || pwd, pwd) : await login(uid);
     if (res.success) {
-      setAuthStatus({ type: 'success', message: `${res.role === 'admin' ? '👑 Super Admin' : '✍️ Editor'} mode activated!` });
-      setInputPasscode('');
+      setAuthStatus({ type: 'success', message: `${res.role === 'admin' ? '👑 Super Admin' : '✍️ Editor'} प्रमाणीकरण सफल!` });
       if (res.role === 'admin') setActiveTab('users');
     } else {
       setAuthStatus({ type: 'error', message: res.message });
@@ -354,48 +374,163 @@ export const AdminRoleModal: React.FC<AdminRoleModalProps> = ({ currentACNo = 31
             <div className="max-w-md mx-auto space-y-5">
               {role === 'viewer' ? (
                 <>
-                  <div className="text-center space-y-2 py-4">
-                    <div className="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center mx-auto">
-                      <Lock className="w-7 h-7 text-slate-400" />
+                  <div className="text-center space-y-1.5 py-1">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-slate-900 flex items-center justify-center mx-auto shadow-md ring-1 ring-blue-400/30">
+                      <ShieldCheck className="w-6 h-6 text-white" />
                     </div>
-                    <div className="text-white font-bold text-lg">{isHi ? 'प्रमाणीकरण आवश्यक' : 'Authentication Required'}</div>
-                    <div className="text-slate-400 text-sm">{isHi ? 'एडमिन या एडिटर क्रेडेंशियल दर्ज करें' : 'Enter Admin or Editor credentials to access the control panel'}</div>
+                    <div className="text-white font-bold text-base sm:text-lg">
+                      {isHi ? 'RBAC अधिकृत लॉगिन' : 'RBAC Authorized Login'}
+                    </div>
+                    <div className="text-slate-400 text-xs">
+                      {isHi ? 'यूजर आईडी व पासवर्ड दर्ज करें, या नीचे 1-Click से त्वरित लॉगिन करें' : 'Enter User ID & Password, or click below for instant 1-Click login'}
+                    </div>
                   </div>
 
+                  {/* 1-Click Instant Test Access */}
+                  <div className="p-3 rounded-2xl bg-gradient-to-r from-blue-950/40 via-slate-900 to-indigo-950/40 border border-slate-700/80 space-y-2">
+                    <div className="text-[10px] font-mono font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                      <span>{isHi ? '⚡ 1-Click त्वरित टेस्ट लॉगिन:' : '⚡ 1-Click Quick Test Logins:'}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleQuickLogin('2027SP_ADM01', 'Sp@2027#A1LjGe')}
+                        className="p-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400 text-amber-200 text-xs font-bold transition-all text-left flex items-center gap-2 group cursor-pointer active:scale-95 shadow-sm"
+                      >
+                        <div className="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center shrink-0">
+                          <Crown className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div className="truncate">
+                          <div className="leading-tight text-[11px] font-bold">Super Admin</div>
+                          <div className="text-[9px] font-mono text-amber-300/80">2027SP_ADM01</div>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleQuickLogin('2027SP_EDT01', 'Ed@2027#E01upnh')}
+                        className="p-2.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 hover:border-blue-400 text-blue-200 text-xs font-bold transition-all text-left flex items-center gap-2 group cursor-pointer active:scale-95 shadow-sm"
+                      >
+                        <div className="w-7 h-7 rounded-lg bg-blue-500/20 flex items-center justify-center shrink-0">
+                          <Pencil className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div className="truncate">
+                          <div className="leading-tight text-[11px] font-bold">Editor / कार्यकर्ता</div>
+                          <div className="text-[9px] font-mono text-blue-300/80">2027SP_EDT01</div>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Standard Form */}
                   <form onSubmit={handleLoginSubmit} className="space-y-3">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                        {isHi ? 'एक्सेस कोड / पासकोड' : 'Access Code / Passcode'}
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">
+                        {isHi ? 'यूजर आईडी (User ID) या मास्टर पासकोड' : 'User ID or Master Passcode'}
                       </label>
                       <input
-                        type="password"
-                        value={inputPasscode}
-                        onChange={e => setInputPasscode(e.target.value)}
-                        placeholder={isHi ? 'पासकोड दर्ज करें...' : 'Enter your passcode...'}
-                        className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 text-white placeholder-slate-500 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 font-mono"
+                        type="text"
+                        value={inputUserId}
+                        onChange={e => setInputUserId(e.target.value)}
+                        placeholder="e.g. 2027SP_ADM01 या sp2027admin"
+                        className="w-full px-3.5 py-2.5 bg-slate-800/90 border border-slate-600 text-white placeholder-slate-500 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-blue-500 font-mono"
                         autoFocus
                       />
                     </div>
+
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="block text-xs font-semibold text-slate-300">
+                          {isHi ? 'पासवर्ड (Password)' : 'Password'}
+                        </label>
+                        <span className="text-[10px] text-slate-400 font-mono">
+                          {isHi ? '(मास्टर पासकोड हेतु वैकल्पिक)' : '(Optional for Master Passcode)'}
+                        </span>
+                      </div>
+                      <div className="relative">
+                        <input
+                          type={showLoginPassword ? "text" : "password"}
+                          value={inputPassword}
+                          onChange={e => setInputPassword(e.target.value)}
+                          placeholder="e.g. Sp@2027#A1LjGe"
+                          className="w-full px-3.5 py-2.5 bg-slate-800/90 border border-slate-600 text-white placeholder-slate-500 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-blue-500 font-mono pr-10"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowLoginPassword(!showLoginPassword)}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-white"
+                        >
+                          {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                    </div>
+
                     <button
                       type="submit"
-                      disabled={!inputPasscode.trim()}
-                      className="w-full py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2"
+                      disabled={!inputUserId.trim() && !inputPassword.trim()}
+                      className="w-full py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 text-white font-bold text-xs sm:text-sm rounded-xl transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer active:scale-95"
                     >
                       <ShieldCheck className="w-4 h-4" />
-                      {isHi ? 'प्रमाणित करें' : 'Authenticate'}
+                      {isHi ? 'प्रमाणित करें (Login)' : 'Authenticate & Login'}
                     </button>
                   </form>
 
                   {authStatus.type !== 'idle' && (
-                    <div className={`flex items-center gap-2 p-3 rounded-xl text-sm border ${
+                    <div className={`flex items-center gap-2 p-3 rounded-xl text-xs sm:text-sm border ${
                       authStatus.type === 'success'
                         ? 'bg-emerald-950/40 border-emerald-800/60 text-emerald-300'
                         : 'bg-red-950/40 border-red-800/60 text-red-300'
                     }`}>
                       {authStatus.type === 'success' ? <CheckCircle className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
-                      {authStatus.message}
+                      <span>{authStatus.message}</span>
                     </div>
                   )}
+
+                  {/* Credentials Directory Drawer */}
+                  <div className="pt-2 border-t border-slate-800/80">
+                    <button
+                      type="button"
+                      onClick={() => setShowAccountsList(!showAccountsList)}
+                      className="w-full py-1 text-center text-xs text-blue-400 hover:text-blue-300 flex items-center justify-center gap-1.5 font-medium transition-colors cursor-pointer"
+                    >
+                      <KeyRound className="w-3.5 h-3.5" />
+                      <span>{showAccountsList ? (isHi ? 'खाता सूची छुपाएं' : 'Hide Accounts Directory') : (isHi ? '📋 10 Admin और 50 Editor खातों की सूची देखें' : '📋 View 10 Admin & 50 Editor Accounts Directory')}</span>
+                    </button>
+
+                    {showAccountsList && (
+                      <div className="mt-2.5 p-3 rounded-xl bg-slate-800/70 border border-slate-700/70 max-h-48 overflow-y-auto space-y-2 text-xs font-mono">
+                        <div className="text-[10px] font-bold text-amber-300 uppercase tracking-wider">Super Admins (10):</div>
+                        <div className="space-y-1.5">
+                          {[
+                            ['2027SP_ADM01', 'Sp@2027#A1LjGe', 'Rajesh Tiwari (Lucknow)'],
+                            ['2027SP_ADM02', 'Sp@2027#A20ykG', 'Priya Sharma (Varanasi)'],
+                            ['2027SP_ADM03', 'Sp@2027#A3jH7T', 'Anil Verma (Kanpur)'],
+                            ['2027SP_ADM04', 'Sp@2027#A4nCpc', 'Dr. Sanjay Yadav (Agra)'],
+                            ['2027SP_ADM05', 'Sp@2027#A5Y6xx', 'Kavita Maurya (Prayagraj)'],
+                          ].map(([id, pw, label]) => (
+                            <div key={id} className="flex items-center justify-between p-1.5 rounded-lg bg-slate-900/80 border border-slate-800">
+                              <div>
+                                <span className="text-white font-bold">{id}</span>
+                                <span className="text-slate-400 text-[10px] ml-1.5">({label})</span>
+                                <div className="text-amber-300 text-[10px]">{pw}</div>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleQuickLogin(id, pw)}
+                                className="px-2 py-1 rounded bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-bold cursor-pointer"
+                              >
+                                Login
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="text-[10px] text-slate-400 pt-1.5 border-t border-slate-700/60">
+                          * Master Passcodes: <code className="text-white bg-slate-900 px-1 py-0.5 rounded">sp2027admin</code> (Super Admin) | <code className="text-white bg-slate-900 px-1 py-0.5 rounded">spworker</code> (Editor)
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </>
               ) : (
                 <>

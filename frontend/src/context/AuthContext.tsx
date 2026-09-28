@@ -15,7 +15,7 @@ interface AuthContextType {
   isAuthModalOpen: boolean;
   openAuthModal: () => void;
   closeAuthModal: () => void;
-  login: (code: string) => Promise<{ success: boolean; message: string; role: UserRole }>;
+  login: (codeOrUserId: string, password?: string) => Promise<{ success: boolean; message: string; role: UserRole }>;
   setViewerMode: () => void;
 }
 
@@ -66,24 +66,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     verifyStoredAuth();
   }, []);
 
-  const login = async (code: string): Promise<{ success: boolean; message: string; role: UserRole }> => {
+  const login = async (codeOrUserId: string, password?: string): Promise<{ success: boolean; message: string; role: UserRole }> => {
     try {
+      const payload = password ? { user_id: codeOrUserId.trim(), password: password.trim() } : { passcode: codeOrUserId.trim() };
       const res = await fetch('/api/strategy/assembly/auth/verify-role', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ passcode: code.trim() })
+        body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (data.valid) {
         const newRole = data.role as UserRole;
+        const effectiveKey = data.admin_key || (password ? `${codeOrUserId.trim()}:${password.trim()}` : codeOrUserId.trim());
         setRole(newRole);
-        setPasscode(code.trim());
+        setPasscode(effectiveKey);
         setPermissions(data.permissions);
         localStorage.setItem('up_electoral_role', newRole);
-        localStorage.setItem('up_electoral_passcode', code.trim());
+        localStorage.setItem('up_electoral_passcode', effectiveKey);
         return { success: true, message: data.message, role: newRole };
       } else {
-        return { success: false, message: data.message || 'अमान्य पासकोड', role: 'viewer' };
+        return { success: false, message: data.message || 'अमान्य क्रेडेंशियल', role: 'viewer' };
       }
     } catch (e) {
       return { success: false, message: 'सर्वर प्रमाणीकरण में त्रुटि', role: 'viewer' };

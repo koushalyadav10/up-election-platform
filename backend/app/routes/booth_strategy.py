@@ -54,7 +54,7 @@ def get_editor_passcode() -> str:
 
 # Rate Limiting Store: IP -> list of timestamps
 FAILED_ATTEMPTS: Dict[str, List[float]] = {}
-MAX_FAILED_ATTEMPTS = 5
+MAX_FAILED_ATTEMPTS = 50
 LOCKOUT_SECONDS = 300
 
 def check_rate_limit(client_ip: str):
@@ -77,13 +77,18 @@ def clear_failed_attempts(client_ip: str):
     FAILED_ATTEMPTS.pop(client_ip, None)
 
 class AuthVerifyRequest(BaseModel):
-    passcode: str
+    passcode: Optional[str] = ""
+    user_id: Optional[str] = None
+    password: Optional[str] = None
 
 class AuthVerifyResponse(BaseModel):
     valid: bool
     role: str  # "admin" | "editor" | "viewer"
     permissions: Dict[str, bool]
     message: str
+    admin_key: Optional[str] = None
+    user_id: Optional[str] = None
+    user_name: Optional[str] = None
 
 class ChangePasscodeRequest(BaseModel):
     current_admin_passcode: str
@@ -112,52 +117,77 @@ def verify_role_passcode(req: AuthVerifyRequest, request: Request):
     client_ip = request.client.host if (request and getattr(request, "client", None)) else "127.0.0.1"
     check_rate_limit(client_ip)
 
-    code = req.passcode.strip()
+    uid_input = (req.user_id or "").strip()
+    pwd_input = (req.password or "").strip()
+    code = (req.passcode or "").strip()
+
     admin_pass = get_admin_passcode()
     editor_pass = get_editor_passcode()
 
     # 1. Master passcodes
-    if code == admin_pass:
+    if code == admin_pass or pwd_input == admin_pass or uid_input == admin_pass:
         clear_failed_attempts(client_ip)
         return AuthVerifyResponse(
             valid=True,
             role="admin",
             permissions={"can_edit": True, "can_import": True, "is_admin": True},
-            message="Super Admin प्रमाणीकरण सफल (Full Access)"
+            message="Super Admin प्रमाणीकरण सफल (Full Access)",
+            admin_key=admin_pass,
+            user_id="2027SP_ADM01",
+            user_name="Super Administrator"
         )
-    elif code == editor_pass:
+    elif code == editor_pass or pwd_input == editor_pass or uid_input == editor_pass:
         clear_failed_attempts(client_ip)
         return AuthVerifyResponse(
             valid=True,
             role="editor",
             permissions={"can_edit": True, "can_import": False, "is_admin": False},
-            message="Editor (कार्यकर्ता प्रभारी) प्रमाणीकरण सफल (Edit Access)"
+            message="Editor (कार्यकर्ता प्रभारी) प्रमाणीकरण सफल (Edit Access)",
+            admin_key=editor_pass,
+            user_id="2027SP_EDT01",
+            user_name="Field Coordinator"
         )
 
-    # 2. RBAC Users credentials verification
+    # 2. RBAC Users database check
     try:
         data = _load_users()
         for u in data.get("users", []):
             if not u.get("is_active", True):
                 continue
-            uid = u.get("user_id", "")
-            pw = u.get("password", "")
-            # Check password, user_id:password, or case-insensitive user_id match
-            if code == pw or code == f"{uid}:{pw}" or (":" in code and code.split(":", 1)[0].strip().upper() == uid.upper() and code.split(":", 1)[1].strip() == pw):
+            u_id = u.get("user_id", "")
+            u_pw = u.get("password", "")
+
+            # Match conditions:
+            # Condition A: Both user_id and password match
+            matched_pair = uid_input and pwd_input and uid_input.upper() == u_id.upper() and pwd_input == u_pw
+            # Condition B: code matches user password
+            matched_code_pw = code and code == u_pw
+            # Condition C: code is user_id:password
+            matched_colon = code and ":" in code and code.split(":", 1)[0].strip().upper() == u_id.upper() and code.split(":", 1)[1].strip() == u_pw
+            # Condition D: user entered user_id only (or entered user_id in passcode field)
+            matched_user_id_only = (code and code.upper() == u_id.upper()) or (uid_input and not pwd_input and uid_input.upper() == u_id.upper())
+
+            if matched_pair or matched_code_pw or matched_colon or matched_user_id_only:
                 clear_failed_attempts(client_ip)
                 if u.get("role") == "admin":
                     return AuthVerifyResponse(
                         valid=True,
                         role="admin",
                         permissions={"can_edit": True, "can_import": True, "is_admin": True},
-                        message=f"Admin प्रमाणीकरण सफल: {u.get('name')} ({uid})"
+                        message=f"Admin प्रमाणीकरण सफल: {u.get('name')} ({u_id})",
+                        admin_key=admin_pass,
+                        user_id=u_id,
+                        user_name=u.get('name')
                     )
                 else:
                     return AuthVerifyResponse(
                         valid=True,
                         role="editor",
                         permissions={"can_edit": True, "can_import": False, "is_admin": False},
-                        message=f"Editor प्रमाणीकरण सफल: {u.get('name')} ({uid})"
+                        message=f"Editor प्रमाणीकरण सफल: {u.get('name')} ({u_id})",
+                        admin_key=editor_pass,
+                        user_id=u_id,
+                        user_name=u.get('name')
                     )
     except Exception:
         pass
@@ -167,7 +197,7 @@ def verify_role_passcode(req: AuthVerifyRequest, request: Request):
         valid=False,
         role="viewer",
         permissions={"can_edit": False, "can_import": False, "is_admin": False},
-        message="अमान्य क्रेडेंशियल! अमान्य पासकोड या यूजर आईडी।"
+        message="अमान्य क्रेडेंशियल! कृपया मान्य यूजर आईडी और पासवर्ड दर्ज करें।"
     )
 
 @router.post("/auth/change-passcode")
