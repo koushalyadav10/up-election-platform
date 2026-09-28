@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UP Electoral Intelligence & Digital War Room Platform Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+    
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+      @bottom-right {
+        content: "Page " counter(page);
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+      }
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.55;
+      font-size: 10pt;
+    }
+    
+    /* Cover Page */
+    .cover-page {
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 90vh;
+      padding: 30px 10px;
+    }
+    
+    .cover-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #fef2f2;
+      color: #c62828;
+      border: 1px solid #fecaca;
+      border-radius: 20px;
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    
+    .cover-title {
+      font-size: 28pt;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      border-left: 6px solid #c62828;
+      padding-left: 16px;
+    }
+    
+    .cover-subtitle {
+      font-size: 13pt;
+      font-weight: 500;
+      color: #1b5e20;
+      line-height: 1.4;
+      padding-left: 22px;
+      margin-bottom: 30px;
+    }
+    
+    .cover-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+    
+    .cover-card h3 {
+      font-size: 11pt;
+      color: #0f172a;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    
+    .cover-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+    
+    .cover-stat-box {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .cover-stat-num {
+      font-size: 16pt;
+      font-weight: 800;
+      color: #c62828;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .cover-stat-label {
+      font-size: 8pt;
+      color: #475569;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    
+    .cover-footer {
+      border-top: 2px solid #e2e8f0;
+      padding-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 8.5pt;
+      color: #64748b;
+    }
+    
+    /* Document Headers */
+    h1 {
+      font-size: 18pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin-top: 25px;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    h1::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 20px;
+      background: #c62828;
+      border-radius: 2px;
+    }
+    
+    h2 {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #1b5e20;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      border-left: 3px solid #1b5e20;
+      padding-left: 8px;
+    }
+    
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      text-align: justify;
+    }
+    
+    /* Section callouts */
+    .callout-box {
+      background: #f8fafc;
+      border-left: 4px solid #c62828;
+      padding: 12px 14px;
+      border-radius: 0 8px 8px 0;
+      margin: 14px 0;
+      font-size: 9.5pt;
+    }
+    
+    .callout-box.green {
+      border-left-color: #1b5e20;
+      background: #f0fdf4;
+    }
+    
+    .callout-title {
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    /* Comparison Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 9pt;
+    }
+    
+    th {
+      background: #f1f5f9;
+      color: #0f172a;
+      text-align: left;
+      padding: 8px 10px;
+      font-weight: 700;
+      border: 1px solid #cbd5e1;
+    }
+    
+    td {
+      padding: 8px 10px;
+      border: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+    
+    .badge-red {
+      display: inline-block;
+      padding: 2px 7px;
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+      border-radius: 4px;
+      font-size: 8pt;
+      font-weight: 700;
+    }
+    
+    .badge-green {
+      display: inline-block;
+      padding: 2px 7px;
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+      border-radius: 4px;
+      font-size: 8pt;
+      font-weight: 700;
+    }
+    
+    /* Feature Block */
+    .feature-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    
+    .feature-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 4px;
+    }
+    
+    .feature-title {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    
+    .feature-url {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8pt;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+      font-size: 8.5pt;
+    }
+    
+    .feature-subbox {
+      background: #f8fafc;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #f1f5f9;
+    }
+    
+    .feature-subbox strong {
+      display: block;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+    
+    /* Page Break Helper */
+    .page-break {
+      page-break-after: always;
+    }
+    
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+    
+    li {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= COVER PAGE ================= -->
+  <div class="cover-page">
+    <div>
+      <div class="cover-badge">OFFICIAL STRATEGIC COMPENDIUM & TECH ARCHITECTURE</div>
+      <div class="cover-title">UP ELECTORAL INTELLIGENCE &amp; WAR ROOM PLATFORM</div>
+      <div class="cover-subtitle">Complete Feature Manual, System Architecture, Competitive Differentiation &amp; Tactical Playbook for Mission 2027</div>
+      
+      <p style="font-size: 10pt; color: #334155; line-height: 1.6; max-width: 650px;">
+        A certified, single-window election intelligence ecosystem built exclusively for Uttar Pradesh politics. Combining 33+ years of certified ECI voting records (1991–2024), hyper-local ground intelligence across 75 districts, caste demographic simulations (PDA matrix), and an artificial intelligence advisor with voice capabilities.
+      </p>
+
+      <div class="cover-card">
+        <h3>Electoral Data Warehouse Scale</h3>
+        <div class="cover-stats-grid">
+          <div class="cover-stat-box">
+            <div class="cover-stat-num">403</div>
+            <div class="cover-stat-label">Vidhan Sabha ACs</div>
+          </div>
+          <div class="cover-stat-box">
+            <div class="cover-stat-num">80</div>
+            <div class="cover-stat-label">Lok Sabha PCs</div>
+          </div>
+          <div class="cover-stat-box">
+            <div class="cover-stat-num">75</div>
+            <div class="cover-stat-label">Districts Ground Intel</div>
+          </div>
+          <div class="cover-stat-box">
+            <div class="cover-stat-num">33+</div>
+            <div class="cover-stat-label">Years Certified Archives</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <div><strong>Deployment:</strong> AWS EC2 Production Server (15.207.14.41)</div>
+      <div><strong>Core Theme:</strong> Red &amp; Green (Samajwadi Progressive Movement)</div>
+      <div><strong>Confidentiality:</strong> Internal Strategic Distribution</div>
+    </div>
+  </div>
+
+  <!-- ================= SECTION 1: COMPETITIVE DIFFERENTIATION ================= -->
+  <div>
+    <h1>1. Executive Value Proposition &amp; Competitive Analysis</h1>
+    <h2>Does Anything Like This Exist Anywhere Else in Indian Politics?</h2>
+    
+    <div class="callout-box">
+      <div class="callout-title">The Direct Answer: NO. This is completely unprecedented in Indian political history.</div>
+      Nothing remotely comparable exists either in the public domain or in the hands of ground workers. Never before has an enterprise-grade war room platform been built that combines certified historical voting data, real-time ground intelligence, caste demographic equations, and voice AI into one accessible platform.
+    </div>
+
+    <p>To understand why this platform is a game-changing breakthrough, compare it with existing industry alternatives:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>What Exists Today</th>
+          <th>Limitations</th>
+          <th>Our Unified Platform</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ECI Official Portal</strong><br><em>(eci.gov.in)</em></td>
+          <td>Raw scanned PDFs and static tables published months after counting day.</td>
+          <td>Zero searchability across years; no caste data; no speech suggestions; impossible for workers on mobile.</td>
+          <td><span class="badge-green">Instant Interactive Access</span><br>Instant 1-click search across 403 ACs from 1991–2024 with margins and dossiers.</td>
+        </tr>
+        <tr>
+          <td><strong>Media News Portals</strong><br><em>(NDTV, India Today)</em></td>
+          <td>High-level state seat tallies during counting day only.</td>
+          <td>Disappears after election day; no district-level scandal dossiers; no local booth intelligence.</td>
+          <td><span class="badge-green">Permanent War Room</span><br>75 district dossiers, unfulfilled promises, local landmarks, and candidate records active 365 days a year.</td>
+        </tr>
+        <tr>
+          <td><strong>Corporate Political Firms</strong><br><em>(I-PAC, Jarvis, etc.)</em></td>
+          <td>Proprietary closed dashboards for top leadership only.</td>
+          <td>Costs <strong>₹15–50 Crores</strong> per campaign; black-box secrecy; ground workers and local candidates get zero access.</td>
+          <td><span class="badge-green">Democratized War Room</span><br>Every candidate, spokesperson, and booth worker holds the same elite data in their pocket.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Why Having Everything in One Single Place is a Strategic Superpower</h2>
+    <ul>
+      <li><strong>Eliminates Information Chaos:</strong> Campaign managers do not need to juggle between 10 Excel sheets, PDF documents, caste estimates, and news clippings. Everything is connected in one browser tab.</li>
+      <li><strong>Immediate Fact-Checking on TV &amp; Social Media:</strong> When opposition claims "We won this seat by a huge margin," our spokesperson checks the phone in 3 seconds: <em>"Sir, in 2022 your margin was only 712 votes, and in 2024 INDIA alliance led here by 8,400 votes."</em> Instant debate victory!</li>
+      <li><strong>Uniform High-Impact Messaging:</strong> When the Party President or Star Campaigner travels to a district, the local speech snippet, local scam names, and local caste dynamics are already pre-analyzed and ready in 1 click.</li>
+    </ul>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ================= SECTION 2: SYSTEM ARCHITECTURE & TECH STACK ================= -->
+  <div>
+    <h1>2. System Architecture &amp; Technology Deep Dive</h1>
+    <p>The platform is engineered with modern, enterprise-grade, high-throughput technologies designed to handle thousands of concurrent queries with sub-second response times.</p>
+
+    <h2>Technology Stack Breakdown</h2>
+
+    <div class="feature-card">
+      <div class="feature-header">
+        <span class="feature-title">Layer 1: Frontend Presentation &amp; Geospatial Engine</span>
+        <span class="feature-url">Client Architecture</span>
+      </div>
+      <p style="font-size: 8.5pt; color: #475569;">
+        Built on <strong>React 19</strong> and <strong>TypeScript</strong> for type safety and fast UI rendering. Bundled via <strong>Vite 8</strong> for ultra-fast asset compilation. Styled with <strong>Tailwind CSS</strong> using a disciplined Red (#C62828) &amp; Green (#1B5E20) political palette.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-subbox">
+          <strong>Interactive GIS Mapping:</strong>
+          Powered by <strong>Leaflet.js</strong> with custom GeoJSON boundaries for all 403 Vidhan Sabha and 80 Lok Sabha seats. Color-coded victory layers and drilldowns.
+        </div>
+        <div class="feature-subbox">
+          <strong>Responsive Viewport:</strong>
+          Optimized for both desktop war rooms (dual monitors, big screens) and mobile smartphones used by workers on motorbikes in the field.
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header">
+        <span class="feature-title">Layer 2: Backend RESTful API &amp; Computational Engine</span>
+        <span class="feature-url">FastAPI + Python 3.12</span>
+      </div>
+      <p style="font-size: 8.5pt; color: #475569;">
+        High-concurrency asynchronous API service powered by <strong>FastAPI</strong> and <strong>Uvicorn</strong>. Features auto-validating Pydantic schemas, sub-50ms query latency, and unified CORS support.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-subbox">
+          <strong>Election Data Warehouse:</strong>
+          SQLite database (<code>up_election.db</code>) with custom indexed schemas storing candidate votes, margins, turnouts, and PC-to-AC segment mappings from 1991 to 2024.
+        </div>
+        <div class="feature-subbox">
+          <strong>Demographics &amp; Scandal Engine:</strong>
+          Pre-compiled JSON engines (<code>up_caste_demographics.json</code> and <code>district_ground_intelligence.json</code>) delivering instant hyper-local analysis without DB bottleneck.
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header">
+        <span class="feature-title">Layer 3: Artificial Intelligence &amp; Natural Language Processing</span>
+        <span class="feature-url">Chunavee Chanakya AI Engine</span>
+      </div>
+      <p style="font-size: 8.5pt; color: #475569;">
+        A specialized domain-tuned political intelligence engine that processes multi-lingual queries (Hindi, English, Hinglish). Detects district names, matches relevant scandals, extracts caste PDA math, and structures speech snippets.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-subbox">
+          <strong>Smart Text Parsing:</strong>
+          Custom Markdown formatter that strips technical raw syntax and converts asterisks into elegant gold highlights, badges, and quote callouts.
+        </div>
+        <div class="feature-subbox">
+          <strong>Speech Oratory Engine:</strong>
+          Generates aggressive rally pitches tailored to local issues (e.g. Tikunia in Lakhimpur, Ram Path waterlogging in Ayodhya).
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header">
+        <span class="feature-title">Layer 4: Voice Technology (STT &amp; TTS)</span>
+        <span class="feature-url">Web Speech API</span>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-subbox">
+          <strong>Speech-to-Text (STT):</strong>
+          Uses <code>webkitSpeechRecognition</code> with <code>interimResults: true</code> for real-time transcription as the user speaks into their phone mic.
+        </div>
+        <div class="feature-subbox">
+          <strong>Text-to-Speech (TTS):</strong>
+          Uses <code>SpeechSynthesis</code> with auto-selection of Hindi (<code>hi-IN</code>) and Indian English voices, spoken with clear oratorical cadence.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ================= SECTION 3: STEP-BY-STEP FEATURE DIRECTORY ================= -->
+  <div>
+    <h1>3. Complete Feature Directory &amp; Navigation Guide</h1>
+    <p>The platform is organized into 8 interconnected modules accessible via the top navigation bar and floating AI dock.</p>
+
+    <!-- Module 1 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <span class="feature-title">Module 1: Macro Overview Dashboard</span>
+        <span class="feature-url">URL: /?tab=overview</span>
+      </div>
+      <p><strong>What it does:</strong> Provides executive bird’s-eye intelligence on Uttar Pradesh’s entire electoral battlefield.</p>
+      <ul>
+        <li><strong>Macro Metrics Strip:</strong> 403 Vidhan Sabha Seats, 80 Lok Sabha Seats, 75 Districts, 15.3 Crore Electorate.</li>
+        <li><strong>2024 Parliamentary Baseline:</strong> Shows the dramatic shift where SP won 37 seats + Congress 6 seats (INDIA 43) vs BJP 33.</li>
+        <li><strong>Interactive Coalition Simulator:</strong> Move sliders to simulate BSP vote transfers (+2% to +8%) or youth turnout shifts, instantly revealing how many seats flip to INDIA alliance.</li>
+      </ul>
+    </div>
+
+    <!-- Module 2 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <span class="feature-title">Module 2: Interactive GIS Electoral Map</span>
+        <span class="feature-url">URL: /?tab=map</span>
+      </div>
+      <p><strong>What it does:</strong> Geospatial visualizer that lets leaders see political geography and regional strongholds.</p>
+      <ul>
+        <li>Toggle between <strong>Vidhan Sabha (403 ACs)</strong> and <strong>Lok Sabha (80 PCs)</strong> boundaries.</li>
+        <li>Filter by election year (2024 leads, 2022, 2017, 2012, 2007) with color-coded party victories.</li>
+        <li>Click any constituency on the map to see the winning candidate, margin, runner-up, and quick dossier link.</li>
+      </ul>
+    </div>
+
+    <!-- Module 3 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <span class="feature-title">Module 3: Vidhan Sabha Constituencies Explorer</span>
+        <span class="feature-url">URL: /?tab=vidhan-sabha</span>
+      </div>
+      <p><strong>What it does:</strong> The ultimate encyclopedia of all 403 Uttar Pradesh Assembly Constituencies across 8 historical election cycles.</p>
+      
+      <div class="callout-box green">
+        <strong>★ NEW HIGHLIGHT: Assembly vs Following Lok Sabha Trend Card (2007–2024 &amp; 2027 Forecast):</strong>
+        <p style="margin-top: 4px; font-size: 8.5pt;">
+          Positioned right at the top of the page, this card visually correlates what happens in the Lok Sabha election 2 years after a Vidhan Sabha victory:
+        </p>
+        <ul style="font-size: 8.5pt; margin-bottom: 0;">
+          <li><strong>2007 BSP Win (206) ➔ 2009 LS:</strong> SP 23, INC 21 (Opposition swept, ruling party lost momentum).</li>
+          <li><strong>2012 SP Win (224) ➔ 2014 LS:</strong> BJP 73, SP reduced to 5 family seats during Modi wave.</li>
+          <li><strong>2017 BJP Win (325) ➔ 2019 LS:</strong> BJP held 64 seats against SP-BSP alliance.</li>
+          <li><strong>2022 BJP Win (273) ➔ 2024 LS:</strong> SP 37 + INC 6 = <strong>INDIA 43 seats (Historic UP reversal)</strong>.</li>
+          <li><strong>2027 Data Forecast:</strong> In 2024 LS, INDIA led in <strong>238 of 403 ACs (59%)</strong> vs NDA in 162 ACs. Projected 2027 range: <strong>SP/INDIA 225–245 Seats (Clear Majority)</strong>.</li>
+        </ul>
+      </div>
+
+      <ul>
+        <li><strong>Cycle Switcher:</strong> Switch between 2022, 2024 LS Leads, 2017, 2019 Leads, 2012, 2007, 2002, 1996, 1993, 1991.</li>
+        <li><strong>Seat Tally Badges:</strong> Click any party badge (SP, BJP, BSP, INC) to filter constituencies won by that party.</li>
+        <li><strong>Real-time Search:</strong> Search by AC name (e.g. <em>"Karhal"</em>), AC number (<code>#123</code>), district, or candidate name.</li>
+        <li><strong>Filters:</strong> Filter by District (all 73/75), Category (General / SC Reserved), and Margin range.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ================= SECTION 3 CONTINUED ================= -->
+  <div>
+    <!-- Module 4 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <span class="feature-title">Module 4: 75 Districts Ground Intelligence &amp; War Room Dossiers</span>
+        <span class="feature-url">URL: /?tab=districts</span>
+      </div>
+      <p><strong>What it does:</strong> Hyper-local ground research across every single district of Uttar Pradesh. No other platform has this data.</p>
+      <div class="feature-grid">
+        <div class="feature-subbox">
+          <strong>Top Viral Scandals &amp; Public Outrage:</strong>
+          Documents local corruption, leaked papers, hospital neglect, paper leaks, and municipal apathy for each district.
+        </div>
+        <div class="feature-subbox">
+          <strong>Incumbent MLA Disconnect:</strong>
+          Identifies specific complaints against ruling party MLAs: unapproachability, broken promises, and local nepotism.
+        </div>
+        <div class="feature-subbox">
+          <strong>1-Click VIP Rally Dossier:</strong>
+          Generates a certified 4-page briefing for party leaders traveling to that district with landmark names, river names, and speech punchlines.
+        </div>
+        <div class="feature-subbox">
+          <strong>1-Click Poster Studio:</strong>
+          Instantly formats ready-to-share social media graphics with district stats, ready for WhatsApp groups and Twitter/X.
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 5 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <span class="feature-title">Module 5: Caste Demographics &amp; PDA Matrix</span>
+        <span class="feature-url">URL: /?tab=caste-equations</span>
+      </div>
+      <p><strong>What it does:</strong> Unveils the social engineering reality of Uttar Pradesh. Maps the core PDA (Pichhda, Dalit, Alpsankhyak) demographics across all 75 districts.</p>
+      <ul>
+        <li><strong>Granular Caste Estimates:</strong> OBC (Kurmi, Yadav, Maurya, Nishad, Rajbhar, Lodh, Pal, etc.), Dalit/SC (Jatav / Dalit, Pasi, Valmiki), Muslims, and Upper Caste shares.</li>
+        <li><strong>PDA Potential Index:</strong> Quantifies the total social justice voting base (typically 75% to 85% in UP).</li>
+        <li><strong>Respectful Nomenclature:</strong> Completely scrubbed of derogatory colonial terms; uses dignified terminology across all simulator pills and demographic tables.</li>
+      </ul>
+    </div>
+
+    <!-- Module 6 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <span class="feature-title">Module 6: Road to 2027 (Strategic War Room)</span>
+        <span class="feature-url">URL: /?tab=road-to-2027</span>
+      </div>
+      <p><strong>What it does:</strong> Converts historical data into a tactical campaign blueprint to cross the 202-seat majority mark.</p>
+      <ul>
+        <li><strong>Priority A Seats:</strong> Fortify and retain our 2022 existing assembly strongholds.</li>
+        <li><strong>Priority B Seats (Flip Seats):</strong> 48 seats where BJP won in 2022 by less than 5,000 votes. Flipping these alone delivers a massive wave.</li>
+        <li><strong>Priority C Seats:</strong> Breakthrough rural and urban seats where 2024 Lok Sabha leads proved massive anti-incumbency.</li>
+      </ul>
+    </div>
+
+    <!-- Module 7 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <span class="feature-title">Module 7: चुनावी चाणक्य AI (Voice-Enabled War Room Advisor)</span>
+        <span class="feature-url">Access: Floating Glowing Bot Icon at Bottom-Right</span>
+      </div>
+      <p><strong>What it does:</strong> An interactive, voice-enabled AI strategist available 24/7 on the platform.</p>
+      <ul>
+        <li><strong>Multi-modal Input:</strong> Type in Hindi, English, or Hinglish, or click the Microphone button and speak naturally.</li>
+        <li><strong>Live Voice Recognition:</strong> Real-time interim transcription types your words into the chat box as you speak.</li>
+        <li><strong>Oratorical Voice Speaker:</strong> Click the speaker button on any strategy response to hear Chanakya speak in natural Hindi.</li>
+        <li><strong>Clean Executive Formatting:</strong> No raw asterisks (<code>**</code>); displays crisp bold gold typography, numbered circular badges, and rally quote cards.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ================= SECTION 4: STRATEGIC PLAYBOOK BY ROLE ================= -->
+  <div>
+    <h1>4. Strategic Playbook: How Every Campaign Role Wins</h1>
+    <p>This platform is designed so that every member of the party organization—from the High Command down to the polling booth—draws immense strategic value.</p>
+
+    <h2>1. For Party Leadership &amp; Star Campaigners (Akhilesh Yadav &amp; Central Leaders)</h2>
+    <div class="callout-box">
+      <strong>Action:</strong> 15 minutes before landing at a rally ground, open the district's page on a tablet. Review the top 3 viral scandals, local tehsil and river names, and the speech snippet. Address local farmers by mentioning their local mandi issues.
+      <br><strong>Result:</strong> Crowd feels the leader knows their village intimately. Media reports: <em>"Akhilesh touched local ground pulse!"</em>
+    </div>
+
+    <h2>2. For MLA Candidates &amp; Constituency Managers</h2>
+    <div class="callout-box green">
+      <strong>Action:</strong> Open Vidhan Sabha page for your AC. Review 2012, 2017, 2022 results, and 2024 Lok Sabha lead. Check whether your seat was won by less than 3,000 votes.
+      <br><strong>Result:</strong> Focus campaign budget and door-to-door teams exactly on the 25 swing booths that decide victory or defeat.
+    </div>
+
+    <h2>3. For Media Spokespersons &amp; TV Debaters</h2>
+    <div class="callout-box">
+      <strong>Action:</strong> Keep the platform open on a phone during live studio debates. When opposition makes false claims regarding development or margins, quote certified ECI numbers within 5 seconds.
+      <br><strong>Result:</strong> Destroys opposition propaganda with certified evidence on prime-time television.
+    </div>
+
+    <h2>4. For Digital War Room &amp; Social Media Teams</h2>
+    <div class="callout-box green">
+      <strong>Action:</strong> Use the 1-Click Poster Studio on the Districts page to generate district-specific infographics every morning highlighting local scam figures and unkept promises.
+      <br><strong>Result:</strong> Trends local issues on WhatsApp and Twitter/X before opposition can react.
+    </div>
+
+    <h2>5. For Booth Level Agents (BLAs) &amp; Ground Cadre</h2>
+    <div class="callout-box">
+      <strong>Action:</strong> Use the Caste Demographics simulator and Chanakya AI to answer voter doubts on reservation, caste census, and local development.
+      <br><strong>Result:</strong> Cadre speaks with facts and confidence rather than rumors.
+    </div>
+
+    <div style="margin-top: 40px; padding: 20px; background: #fef2f2; border: 2px solid #fecaca; border-radius: 12px; text-align: center;">
+      <h2 style="color: #c62828; margin: 0 0 8px 0; border: none; padding: 0;">MISSION UP 2027: DATA FIRST. EVIDENCE FIRST. VICTORY FIRST.</h2>
+      <p style="font-size: 9.5pt; color: #475569; margin: 0;">
+        Certified Electoral Warehouse &bull; 75 Districts &bull; 403 Vidhan Sabha &bull; 80 Lok Sabha &bull; Chunavee Chanakya AI
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>

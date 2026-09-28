@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UP Electoral Intelligence Platform - Interactive Slides</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .slide-container {
+      width: 100%;
+      max-width: 1080px;
+      aspect-ratio: 16 / 9;
+      background: #ffffff;
+      color: #1e293b;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 48px;
+      border: 1px solid #334155;
+    }
+    
+    .top-stripe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      display: flex;
+    }
+    
+    .top-stripe .red {
+      flex: 1;
+      background: #c62828;
+    }
+    
+    .top-stripe .green {
+      flex: 1;
+      background: #1b5e20;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #fef2f2;
+      color: #c62828;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    
+    .title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+    
+    .subtitle {
+      font-size: 13px;
+      font-weight: 500;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+    
+    .content-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 5px solid #1b5e20;
+      border-radius: 10px;
+      padding: 20px 24px;
+      flex: 1;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .bullet-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1b5e20;
+      margin-bottom: 12px;
+    }
+    
+    .bullets {
+      list-style: none;
+      space-y: 8px;
+    }
+    
+    .bullets li {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: #1e293b;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    
+    .bullets li::before {
+      content: "•";
+      color: #c62828;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 1;
+    }
+    
+    .highlight-box {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #c62828;
+    }
+    
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+    
+    .btn {
+      background: #1e293b;
+      color: #ffffff;
+      border: 1px solid #334155;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    
+    .btn:hover {
+      background: #334155;
+    }
+    
+    .btn.primary {
+      background: #c62828;
+      border-color: #b91c1c;
+    }
+    
+    .btn.primary:hover {
+      background: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slide-container" id="slideBox">
+    <div class="top-stripe">
+      <div class="red"></div>
+      <div class="green"></div>
+    </div>
+    
+    <div>
+      <div class="badge" id="slideBadge"></div>
+      <div class="title" id="slideTitle"></div>
+      <div class="subtitle" id="slideSubtitle"></div>
+    </div>
+
+    <div class="content-card">
+      <div class="bullet-title" id="bulletTitle"></div>
+      <ul class="bullets" id="bulletList"></ul>
+    </div>
+
+    <div class="highlight-box" id="highlightBox"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="prevSlide()">&#8592; Previous</button>
+    <span id="slideIndicator">Slide 1 of 12</span>
+    <button class="btn primary" onclick="nextSlide()">Next &#8594;</button>
+    <span style="margin-left: 20px;">Use Keyboard <strong>Left / Right Arrows</strong> or <strong>Space</strong></span>
+  </div>
+
+  <script>
+    const slides = [{"title": "UP ELECTORAL INTELLIGENCE & WAR ROOM PLATFORM", "subtitle": "Complete Architectural Guide, Feature Directory & Mission 2027 Playbook", "badge": "CONFIDENTIAL &bull; STRATEGIC BRIEFING", "bullet_title": "Platform Overview & Scale", "bullets": ["Unified digital war room for Uttar Pradesh 2027 Vidhan Sabha election.", "Integrates 33+ years of certified ECI voting archives (1991–2024).", "Covers all 403 Vidhan Sabha and 80 Lok Sabha constituencies.", "Includes ground intelligence across all 75 districts and hyper-local caste matrix.", "Live production deployment on AWS EC2: http://15.207.14.41"], "highlight": "Certified ECI Data + 75 Districts Ground Intel + Chunavee Chanakya AI in One Single Window"}, {"title": "Does Anything Like This Exist Anywhere Else?", "subtitle": "Competitive Differentiation vs. ECI, News Portals & Corporate Agencies", "badge": "COMPETITIVE ADVANTAGE", "bullet_title": "Why This Platform is Completely Unprecedented", "bullets": ["ECI Portal: Scanned, static PDFs months after elections. Zero mobile usability or trends.", "TV Media (NDTV, India Today): Flash tallies on counting day only, then disappears.", "Corporate Agencies (I-PAC, Jarvis): Charge ₹15–50 Crores for closed executive silos.", "This Platform: Democratizes elite political intelligence for leaders, candidates & cadre.", "Zero black-box secrecy: Every worker, candidate & spokesperson holds certified facts."], "highlight": "First-ever unified, worker-accessible war room platform in Indian political history."}, {"title": "System Architecture & Engineering Stack", "subtitle": "How the Platform Operates Under the Hood with Sub-50ms Latency", "badge": "TECHNOLOGY DEEP DIVE", "bullet_title": "Core Technical Components", "bullets": ["Frontend: React 19 + TypeScript + Vite 8 for instant client-side performance.", "GIS Map: Leaflet interactive engine with 403 AC and 80 PC boundary GeoJSON layers.", "Backend: FastAPI (Python 3.12) with asynchronous multi-threaded Uvicorn server.", "Database: SQLite relational warehouse (up_election.db) with multi-election indexing.", "Demographics: JSON analytical engines for instant 75-district caste PDA math.", "Hosting: AWS EC2 Ubuntu cloud server with Systemd background daemon."], "highlight": "Sub-50ms query response time across 33 years of voting records."}, {"title": "Module 1: Macro Overview & Coalition Simulator", "subtitle": "Bird"s-Eye Strategic Intelligence on UP"s 15.3 Crore Electorate", "badge": "CORE MODULE &bull; /?tab=overview", "bullet_title": "Capabilities & Practical Use", "bullets": ["Macro Metrics: 403 ACs, 80 PCs, 75 Districts, 15.3 Crore certified voters.", "2024 Parliamentary Baseline: SP (37) + INC (6) = INDIA 43 vs BJP 33 in UP.", "Live Swing Simulator: Adjust vote shift sliders to simulate voter migration.", "Simulate BSP Vote Transfer (+2% to +8%) to immediately see seat flips.", "Youth & Farm Turnout Modeling: Forecast impact of rural vs urban mobilization."], "highlight": "Identify how many seats flip with just a 2% or 4% vote shift in our favor."}, {"title": "Module 2: Interactive GIS Electoral Map", "subtitle": "Geospatial Visualizer Mapping Victory Layers Across All 403 ACs", "badge": "CORE MODULE &bull; /?tab=map", "bullet_title": "Key Features & Field Applications", "bullets": ["Boundary Switcher: Toggle between 403 Vidhan Sabha and 80 Lok Sabha boundaries.", "Multi-Election Layer: Inspect color-coded party victories across 2024, 2022, 2017, 2012.", "Instant AC Drilldown: Click any assembly shape to view winner, margin & runner-up.", "Regional Cluster Mapping: Visualize Western UP, Purvanchal, Awadh & Bundelkhand.", "Mobile Touch-Optimized: Field workers can inspect their constituency boundaries on phones."], "highlight": "Visually tracks regional waves and reveals where opposition margins are thinnest."}, {"title": "Module 3: Vidhan Sabha 403 Explorer & Historic Power Shift Card", "subtitle": "Complete AC Encyclopedia & Historical Assembly vs Lok Sabha Correlation", "badge": "CORE MODULE &bull; /?tab=vidhan-sabha", "bullet_title": "Assembly vs Lok Sabha Cycles (2007–2024) & 2027 Forecast", "bullets": ["2007 BSP Win (206) ➔ 2009 LS: SP 23, INC 21, BSP 20 (Ruling party lost momentum).", "2012 SP Win (224) ➔ 2014 LS: BJP 73, SP reduced to 5 family seats during Modi wave.", "2017 BJP Win (325) ➔ 2019 LS: BJP held 64 seats against SP-BSP alliance.", "2022 BJP Win (273) ➔ 2024 LS: SP 37 + INC 6 = INDIA 43 (Historic UP reversal).", "2027 Forecast: In 2024, INDIA led in 238 of 403 ACs. Projected 2027: SP/INDIA 225–245 Seats."], "highlight": "Positioned at the top of the Vidhan Sabha page for instant strategic clarity."}, {"title": "Module 4: 75 Districts Ground Intelligence & War Room Dossiers", "subtitle": "Hyper-Local Scandals, MLA Disconnect & 1-Click VIP Rally Briefings", "badge": "CORE MODULE &bull; /?tab=districts", "bullet_title": "District Dossier Capabilities", "bullets": ["75 Districts Covered: Hyper-local ground research for every single district.", "Viral Scandals: Uncovers paper leaks, hospital negligence, and corruption by district.", "Incumbent MLA Disconnect: Identifies local grievances against ruling party MLAs.", "1-Click VIP Rally Dossier: Formats 4-page briefing for leaders traveling to that district.", "1-Click Poster Studio: Instantly generates social media graphics for WhatsApp & Twitter."], "highlight": "Empowers star campaigners to speak on local tehsils, rivers & scams with zero prep time."}, {"title": "Module 5: Caste Demographics & PDA Social Engineering", "subtitle": "Mathematical Formulation of the 85%+ Social Justice Coalition", "badge": "CORE MODULE &bull; /?tab=caste-equations", "bullet_title": "Demographic Architecture", "bullets": ["Granular Caste Breakdowns: Kurmi, Yadav, Maurya, Nishad, Rajbhar, Lodh, Dalit, Muslim.", "PDA Potential Index: Quantifies total social justice base across all 75 districts.", "Respectful Terminology: Scrubbed of colonial labels; uses dignified terminology.", "Caste Swing Simulator: Simulate what happens if a specific sub-caste shifts by 5%.", "Booth-Level Coalition: Pairs 1 OBC and 1 Dalit worker at every single polling booth."], "highlight": "Transforms PDA from a political slogan into an exact mathematical victory formula."}, {"title": "Module 6: Road to 2027 & Target Seat Categorization", "subtitle": "Converting Data into a Tactical Roadmap to Surpass the 202-Seat Mark", "badge": "CORE MODULE &bull; /?tab=road-to-2027", "bullet_title": "Three-Tier Priority Architecture", "bullets": ["Priority A (Defend & Retain): Secure existing 2022 strongholds with booth audits.", "Priority B (The Flip List): 48 seats where BJP won in 2022 by less than 5,000 votes.", "Priority C (Breakthrough): Rural & urban seats where 2024 Lok Sabha leads proved massive shift.", "Turnout Optimization: Blueprint for boosting afternoon voting in minority and OBC areas.", "Majority Goal: 202 seats required; platform models pathway to 225–245 seats."], "highlight": "Winning just 35 of the 48 Priority B flip seats guarantees an absolute majority."}, {"title": "Module 7: चुनावी चाणक्य AI (Voice-Enabled War Room Advisor)", "subtitle": "Domain-Tuned AI Political Strategist with Speech-to-Text & Text-to-Speech", "badge": "AI ENGINE &bull; FLOATING BOT DOCK", "bullet_title": "AI Capabilities & Multi-Modal Voice Interaction", "bullets": ["Multi-Lingual Engine: Understands queries in Hindi, English, and Hinglish.", "Real-Time Speech-to-Text: Spoken words appear in the text box live as you talk.", "Oratorical Text-to-Speech: Preloaded Hindi voices speak out campaign strategies clearly.", "Clean Typography: Stripped of raw asterisks (**); formatted in bold gold, badges & quotes.", "Instant Attack Dossiers: Ask "Gorakhpur ke ghotale" or "Ayodhya bhashan" for instant answers."], "highlight": "A personal campaign strategist in the pocket of every party candidate and leader."}, {"title": "Operational Playbook by Campaign Role", "subtitle": "How the Unified Platform Powers the Entire Party Hierarchy", "badge": "FIELD PLAYBOOK", "bullet_title": "Role-Specific Execution", "bullets": ["Party Leadership: Review district dossier 15 mins before landing at a rally ground.", "MLA Candidates: Identify the 20 swing booths that decide victory or defeat.", "TV Spokespersons: Counter opposition claims with certified ECI numbers in 5 seconds.", "Digital War Room: Deploy localized scandal infographics daily across WhatsApp groups.", "Booth Level Agents (BLAs): Armed with verifiable facts to debunk rumors on voting day."], "highlight": "Unified data alignment guarantees that the party speaks with one powerful, factual voice."}, {"title": "Mission UP 2027: The Data-Driven Path to Victory", "subtitle": "Why Discipline, Certified Data & Ground Truth Ensure Complete Dominance", "badge": "STRATEGIC SUMMARY", "bullet_title": "Key Takeaways for Leadership", "bullets": ["Historical Precedent: When Lok Sabha flips in UP, the following Vidhan Sabha follows.", "2024 Reversal: INDIA alliance won 43 of 80 Lok Sabha seats, leading in 238 assembly segments.", "Anti-Incumbency Focus: 75 district dossiers pinpoint exact local MLA failures.", "PDA Coalition: 85%+ demographic base mathematically unified across every district.", "Next Steps: Train district presidents, IT cell coordinators, and candidates on the platform."], "highlight": "DATA FIRST. EVIDENCE FIRST. AI NEVER INVENTS FACTS. MISSION 2027 VICTORY."}];
+    let currentSlide = 0;
+
+    function renderSlide(idx) {
+      const data = slides[idx];
+      document.getElementById('slideBadge').innerText = data.badge;
+      document.getElementById('slideTitle').innerText = data.title;
+      document.getElementById('slideSubtitle').innerText = data.subtitle;
+      document.getElementById('bulletTitle').innerText = data.bullet_title;
+      
+      const list = document.getElementById('bulletList');
+      list.innerHTML = '';
+      data.bullets.forEach(b => {
+        const li = document.createElement('li');
+        li.innerText = b;
+        list.appendChild(li);
+      });
+
+      document.getElementById('highlightBox').innerText = '★ KEY STRATEGIC TAKEAWAY: ' + data.highlight;
+      document.getElementById('slideIndicator').innerText = `Slide ${idx + 1} of ${slides.length}`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        renderSlide(currentSlide);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        renderSlide(currentSlide);
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+
+    renderSlide(0);
+  </script>
+</body>
+</html>
