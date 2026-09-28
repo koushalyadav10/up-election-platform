@@ -50,11 +50,12 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Geist', '"Geist Sans"', '"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['Geist', '"Geist Sans"', '"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
-        ui: ['Geist', '"Geist Sans"', 'Inter', 'system-ui', 'sans-serif'],
-        mono: ['"Geist Mono"', '"JetBrains Mono"', 'monospace'],
-        data: ['Geist', '"Geist Sans"', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        display: ['Manrope', 'system-ui', 'sans-serif'],
+        heading: ['Manrope', 'system-ui', 'sans-serif'],
+        ui: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['"Space Grotesk"', 'ui-monospace', 'monospace'],
+        data: ['"Space Grotesk"', 'Inter', 'monospace', 'sans-serif'],
       },
     },
   },

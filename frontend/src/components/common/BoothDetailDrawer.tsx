@@ -315,7 +315,6 @@ export const BoothDetailDrawer: React.FC<BoothDetailDrawerProps> = ({
       <div className="fixed inset-y-0 right-0 z-drawer-container flex max-w-full pointer-events-none">
         <div 
           className="pointer-events-auto w-full sm:w-[520px] md:w-[560px] lg:w-[600px] bg-slate-900 border-l border-slate-800 h-full flex flex-col shadow-2xl text-slate-100 font-sans"
-          style={{ fontFamily: "'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}
         >
           {/* Drawer Header with Title, Language Switcher & Action Controls */}
           <div className="p-4 sm:p-5 border-b border-slate-800 flex items-start justify-between gap-3 bg-slate-950/95 backdrop-blur-md sticky top-0 z-10">

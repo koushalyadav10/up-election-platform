@@ -117,10 +117,17 @@ export const ElectraPanel: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[540px] bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col font-sans transition-all">
-      
-      {/* 1. Header Bar */}
-      <div className="p-4 border-b border-slate-200 dark:border-slate-800 space-y-2">
+    <>
+      {/* Mobile/Tablet Backdrop */}
+      <div 
+        className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs transition-opacity sm:hidden"
+        onClick={closeElectra}
+        aria-hidden="true"
+      />
+      <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[540px] bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col font-sans transition-all">
+        
+        {/* 1. Header Bar */}
+        <div className="p-4 border-b border-slate-200 dark:border-slate-800 space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-lg bg-indigo-600 text-white shadow-xs">
@@ -271,6 +278,7 @@ export const ElectraPanel: React.FC = () => {
         </form>
       </div>
 
-    </div>
+      </div>
+    </>
   );
 };

@@ -87,21 +87,21 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
     <div className="space-y-10 pb-16">
       
       {/* 1. Command Center Hero Banner */}
-      <section className="relative pt-8 pb-8 px-6 sm:px-10 rounded-3xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white shadow-xl overflow-hidden">
-        <div className="relative z-10 max-w-4xl space-y-4">
+      <section className="relative pt-6 sm:pt-8 pb-6 sm:pt-8 px-4 sm:px-8 lg:px-10 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white shadow-xl overflow-hidden">
+        <div className="relative z-10 max-w-4xl space-y-3 sm:space-y-4">
           
           <div className="flex flex-wrap items-center gap-2">
             <span className="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-blue-400" /> ECI CERTIFIED REPOSITORY (1991–2024)
             </span>
-            <span className="text-xs font-mono text-slate-400">
+            <span className="text-[11px] sm:text-xs font-mono text-slate-400">
               Delimitation Standard: 2008_CURRENT • Zero Contamination Architecture
             </span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+          <h1 className="font-display text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
             UP ELECTORAL INTELLIGENCE
-            <span className="block text-xl sm:text-2xl text-blue-400 mt-1 font-semibold">
+            <span className="block text-base sm:text-xl lg:text-2xl text-blue-400 mt-1 font-semibold">
               Comprehensive Electoral Data Warehouse &amp; Analytical Command Center
             </span>
           </h1>
@@ -333,8 +333,8 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
           </button>
         </div>
 
-        <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
-          <table className="w-full text-left border-collapse text-xs">
+        <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-x-auto">
+          <table className="w-full text-left border-collapse text-xs min-w-[620px]">
             <thead>
               <tr className="bg-slate-50 dark:bg-slate-800 text-[11px] font-bold text-slate-500 border-b border-slate-200 dark:border-slate-700">
                 <th className="p-3">PC #</th>

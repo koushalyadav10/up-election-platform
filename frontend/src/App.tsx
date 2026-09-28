@@ -229,11 +229,11 @@ function MainApp() {
       />
 
       {/* 3. Main Dynamic Content Body */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
         
         {/* 3.1 Smart Step-Back Navigation & Breadcrumb Bar */}
         {activeTab !== 'overview' && (
-          <div className="mb-5 flex items-center justify-between bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2.5 shadow-xs transition-colors">
+          <div className="mb-4 sm:mb-5 flex flex-wrap items-center justify-between gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 sm:px-3.5 sm:py-2.5 shadow-xs transition-colors">
             <button
               onClick={() => window.history.back()}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-slate-200 dark:border-slate-700 cursor-pointer shadow-xs active:scale-95"
@@ -387,16 +387,16 @@ function MainApp() {
 
       {/* 5. Editorial & Provenance Footer */}
       <footer className="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 text-xs text-slate-500 dark:text-slate-400 transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
             <span className="font-extrabold text-blue-600 dark:text-blue-400">UP ELECTORAL INTELLIGENCE</span>
-            <span>•</span>
-            <span className="font-medium">DATA FIRST. EVIDENCE FIRST. AI NEVER INVENTS FACTS.</span>
+            <span className="hidden sm:inline">•</span>
+            <span className="font-medium text-[11px] sm:text-xs">DATA FIRST. EVIDENCE FIRST. AI NEVER INVENTS FACTS.</span>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-mono">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 sm:gap-4 text-xs font-mono">
             <span>Official Archive: <strong>1991–2024 (80 PCs / 403 ACs / 75 Districts)</strong></span>
-            <span>•</span>
+            <span className="hidden sm:inline">•</span>
             <span>Source: Election Commission of India</span>
           </div>
         </div>
