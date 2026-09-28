@@ -24,7 +24,8 @@ from datetime import datetime
 
 router = APIRouter(prefix="/api/strategy/assembly", tags=["Mission 2027 Booth Strategy"])
 
-CREDENTIALS_FILE = Path("E:/eci/data/auth_credentials.json")
+DATA_DIR = Path(__file__).resolve().parents[3] / "data"
+CREDENTIALS_FILE = DATA_DIR / "auth_credentials.json"
 
 def _load_credentials() -> Dict[str, str]:
     default_creds = {
@@ -186,7 +187,7 @@ def change_passcode(req: ChangePasscodeRequest):
 
 
 # ===================== RBAC USER MANAGEMENT =====================
-USERS_FILE = Path("E:/eci/data/rbac_users.json")
+USERS_FILE = DATA_DIR / "rbac_users.json"
 
 
 class CreateUserRequest(BaseModel):
