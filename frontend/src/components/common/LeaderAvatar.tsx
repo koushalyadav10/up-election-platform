@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { PartySymbol } from './PartySymbol';
-import { User } from 'lucide-react';
 
 export interface LeaderAvatarProps {
   name: string;
@@ -23,20 +22,58 @@ const LOCAL_PORTRAIT_MAP: Record<string, string> = {
   'DIMPLE YADAV': '/assets/leaders/dimple_yadav.jpg',
   'NARENDRA MODI': '/assets/leaders/narendra_modi.jpg',
   'RAJNATH SINGH': '/assets/leaders/rajnath_singh.jpg',
+  'RAJ NATH SINGH': '/assets/leaders/rajnath_singh.jpg',
   'MAYAWATI': '/assets/leaders/mayawati.jpg',
   'CHANDRASHEKHAR': '/assets/leaders/chandrashekhar_azad.jpg',
   'CHANDRASHEKHAR AZAD': '/assets/leaders/chandrashekhar_azad.jpg',
+  'CHANDRA SHEKHAR': '/assets/leaders/chandrashekhar_azad.jpg',
   'JAYANT CHAUDHARY': '/assets/leaders/jayant_chaudhary.jpg',
   'AFZAL ANSARI': '/assets/leaders/afzal_ansari.jpg',
   'HEMA MALINI': '/assets/leaders/hema_malini.jpg',
+  'HEMAMALINI DHARMENDRA DEOL': '/assets/leaders/hema_malini.jpg',
   'SMRITI IRANI': '/assets/leaders/smriti_irani.jpg',
   'RAVINDRA SHUKLA ALIAS RAVI KISHAN': '/assets/leaders/ravi_kishan.jpg',
   'RAVI KISHAN': '/assets/leaders/ravi_kishan.jpg',
   'SHIVPAL SINGH YADAV': '/assets/leaders/shivpal_yadav.jpg',
+  'SHIVPAL YADAV': '/assets/leaders/shivpal_yadav.jpg',
   'ANUPRIYA PATEL': '/assets/leaders/anupriya_patel.jpg',
   'KESHAV PRASAD MAURYA': '/assets/leaders/keshav_maurya.jpg',
   'BRAJESH PATHAK': '/assets/leaders/brajesh_pathak.jpg',
-  'OM PRAKASH RAJBHAR': '/assets/leaders/op_rajbhar.jpg'
+  'OM PRAKASH RAJBHAR': '/assets/leaders/op_rajbhar.jpg',
+  'IMRAN MASOOD': '/assets/leaders/imran_masood.jpg',
+  'ARUN GOVIL': '/assets/leaders/arun_govil.jpg',
+  'MAHESH SHARMA': '/assets/leaders/mahesh_sharma.jpg',
+  'DR. MAHESH SHARMA': '/assets/leaders/mahesh_sharma.jpg',
+  'SATISH GAUTAM': '/assets/leaders/satish_gautam.jpg',
+  'SATISH KUMAR GAUTAM': '/assets/leaders/satish_gautam.jpg',
+  'RAJKUMAR CHAHAR': '/assets/leaders/rajkumar_chahar.jpg',
+  'JITIN PRASADA': '/assets/leaders/jitin_prasada.jpg',
+  'ANAND BHADAURIYA': '/assets/leaders/anand_bhadauriya.jpg',
+  'SAKSHI MAHARAJ': '/assets/leaders/sakshi_maharaj.jpg',
+  'SWAMI SACHCHIDANAND HARI SAKSHI': '/assets/leaders/sakshi_maharaj.jpg',
+  'KISHORI LAL': '/assets/leaders/kishori_lal_sharma.jpg',
+  'KISHORI LAL SHARMA': '/assets/leaders/kishori_lal_sharma.jpg',
+  'PUSHPENDRA SAROJ': '/assets/leaders/pushpendra_saroj.jpg',
+  'KARAN BHUSHAN SINGH': '/assets/leaders/karan_bhushan_singh.jpg',
+  'KIRTIVARDHAN SINGH': '/assets/leaders/kirtivardhan_singh.jpg',
+  'JAGDAMBIKA PAL': '/assets/leaders/jagdambika_pal.jpg',
+  'PANKAJ CHAUDHARY': '/assets/leaders/pankaj_chaudhary.jpg',
+  'BABU SINGH KUSHWAHA': '/assets/leaders/babu_singh_kushwaha.jpg',
+  'PRIYA SAROJ': '/assets/leaders/priya_saroj.jpg',
+  'DANISH ALI': '/assets/leaders/danish_ali.jpg',
+  'KUNWAR DANISH ALI': '/assets/leaders/danish_ali.jpg',
+  'DINESH LAL YADAV': '/assets/leaders/dinesh_lal_yadav.jpg',
+  'NIRAHUA': '/assets/leaders/dinesh_lal_yadav.jpg',
+  'VARUN GANDHI': '/assets/leaders/varun_gandhi.jpg',
+  'S P SINGH BAGHEL': '/assets/leaders/sp_singh_baghel.jpg',
+  'PROF S P SINGH BAGHEL': '/assets/leaders/sp_singh_baghel.jpg',
+  'AKSHAYA YADAV': '/assets/leaders/akshay_yadav.jpg',
+  'AKSHAY YADAV': '/assets/leaders/akshay_yadav.jpg',
+  'ARUN KUMAR SAGAR': '/assets/leaders/arun_kumar_sagar.jpg',
+  'MUKESH RAJPUT': '/assets/leaders/mukesh_rajput.jpg',
+  'TANUJ PUNIA': '/assets/leaders/tanuj_punia.jpg',
+  'AVTAR SINGH BHADANA': '/assets/leaders/avtar_singh_bhadana.jpg',
+  'POONAM SINHA': '/assets/leaders/poonam_sinha.jpg'
 };
 
 const SIZE_CONFIGS = {
@@ -144,19 +181,30 @@ export const LeaderAvatar: React.FC<LeaderAvatarProps> = ({
             loading="lazy"
           />
         ) : (
-          /* Graceful stylized political profile avatar fallback */
+          /* High-impact official political identity card with party symbol & initials */
           <div 
-            className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden"
+            className="w-full h-full flex flex-col items-center justify-between p-1 relative overflow-hidden"
             style={{
               background: partyColor 
-                ? `linear-gradient(135deg, ${partyColor}25 0%, ${partyColor}10 100%)`
-                : 'linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)'
+                ? `linear-gradient(145deg, ${partyColor}18 0%, ${partyColor}35 100%)`
+                : 'linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%)'
             }}
           >
-            <User className="w-1/2 h-1/2 opacity-40 text-slate-700 dark:text-slate-300" />
+            {/* Top party accent line */}
+            <div 
+              className="w-full h-0.5 rounded-full shrink-0"
+              style={{ backgroundColor: partyColor || '#64748B' }}
+            />
+
+            {/* Official Party Symbol embedded prominently in center */}
+            <div className="flex-1 flex items-center justify-center my-0.5 scale-110">
+              <PartySymbol party={party} size={size === 'xs' ? 'xs' : size === 'sm' ? 'sm' : 'md'} variant="icon" />
+            </div>
+
+            {/* Candidate Initials Badge */}
             <span 
-              className={`font-mono font-bold leading-none mt-0.5 ${cfg.initialsText}`}
-              style={{ color: partyColor || '#475569' }}
+              className={`font-mono font-black leading-none pb-0.5 tracking-tight ${cfg.initialsText}`}
+              style={{ color: partyColor || '#1e293b' }}
             >
               {initials}
             </span>
