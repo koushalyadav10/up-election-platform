@@ -170,7 +170,7 @@ export const CasteEquationsPage: React.FC = () => {
   let simulatedVoteShare = 0;
   if (coalition.yadav) simulatedVoteShare += macro['yadav'] || 9.5;
   if (coalition.muslim) simulatedVoteShare += macro['muslim_total'] || 19.3;
-  if (coalition.jatav) simulatedVoteShare += macro['jatav_chamar'] || 11.8;
+  if (coalition.jatav) simulatedVoteShare += macro['jatav_dalit'] || 11.8;
   if (coalition.kurmi) simulatedVoteShare += macro['kurmi_patel'] || 7.5;
   if (coalition.maurya) simulatedVoteShare += macro['maurya_kushwaha_shakya_saini'] || 6.8;
   if (coalition.nishad) simulatedVoteShare += macro['nishad_kashyap_mallah'] || 4.5;
@@ -243,7 +243,7 @@ export const CasteEquationsPage: React.FC = () => {
         <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs">
           <span className="text-[11px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">SC (अनुसूचित जाति/दलित)</span>
           <div className="text-2xl font-black text-slate-900 dark:text-white font-mono mt-0.5">~21.1%</div>
-          <span className="text-[10px] text-slate-500 truncate block mt-0.5">जाटव/चमार, पासी, धोबी, कोरी, बाल्मीकि</span>
+          <span className="text-[10px] text-slate-500 truncate block mt-0.5">जाटव (दलित), पासी, धोबी, कोरी, वाल्मीकि</span>
         </div>
 
         <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs">
@@ -320,7 +320,7 @@ export const CasteEquationsPage: React.FC = () => {
         <div className="flex flex-wrap gap-2 pt-1">
           {[
             { key: 'muslim', label: 'मुस्लिम (Muslims)', pct: '19.3%', color: 'border-blue-400 bg-blue-50 text-blue-800 dark:bg-blue-950 dark:text-blue-200' },
-            { key: 'jatav', label: 'जाटव / चमार (Jatav)', pct: '11.8%', color: 'border-purple-400 bg-purple-50 text-purple-800 dark:bg-purple-950 dark:text-purple-200' },
+            { key: 'jatav', label: 'जाटव / दलित (Jatav / Dalit)', pct: '11.8%', color: 'border-purple-400 bg-purple-50 text-purple-800 dark:bg-purple-950 dark:text-purple-200' },
             { key: 'yadav', label: 'यादव (Yadav)', pct: '9.5%', color: 'border-red-400 bg-red-50 text-red-800 dark:bg-red-950 dark:text-red-200' },
             { key: 'brahmin', label: 'ब्राह्मण (Brahmin)', pct: '9.5%', color: 'border-indigo-400 bg-indigo-50 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-200' },
             { key: 'kurmi', label: 'कुर्मी / पटेल (Kurmi)', pct: '7.5%', color: 'border-emerald-400 bg-emerald-50 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200' },

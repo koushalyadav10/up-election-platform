@@ -157,7 +157,7 @@ REGIONAL_DEMOGRAPHIC_BASELINES = {
     "Bundelkhand": {
         "muslim_range": (7.0, 11.0),
         "dominant_obc": ["Lodh", "Kurmi/Patel", "Kushwaha", "Nishad/Kewat", "Yadav"],
-        "dominant_sc": ["Koli/Chamar", "Jatav", "Khatik"],
+        "dominant_sc": ["Koli/Dalit", "Jatav", "Khatik"],
         "dominant_gen": ["Bundela Rajput", "Brahmin", "Vaishya"]
     },
     "Purvanchal": {
@@ -518,7 +518,7 @@ for d_id, d_name in db_districts:
         gujjar_pct = 0.3
         saini_pct = 1.0
         rajbhar_pct = 0.5
-        koli_chamar = 17.5
+        koli_dalit = 17.5
         jatav_pct = 12.0
         pasi_pct = 3.0
         other_sc_pct = 4.5
@@ -600,7 +600,7 @@ for d_id, d_name in db_districts:
     comm_rank = [
         ("मुस्लिम (Muslims)", sub_castes["muslim_total"]),
         ("यादव (Yadav)", sub_castes["yadav"]),
-        ("जाटव / चमार (Jatav)", sub_castes["jatav"]),
+        ("जाटव / दलित (Jatav)", sub_castes["jatav"]),
         ("कुर्मी / पटेल (Kurmi/Patel)", sub_castes["kurmi_patel"]),
         ("ब्राह्मण (Brahmin)", sub_castes["brahmin"]),
         ("ठाकुर / राजपूत (Thakur/Rajput)", sub_castes["thakur_rajput"]),
@@ -649,7 +649,7 @@ caste_matrix_payload = {
             "yadav": 9.5, "kurmi_patel": 7.5, "maurya_kushwaha_shakya_saini": 6.8,
             "lodh": 4.5, "nishad_kashyap_mallah": 4.5, "jat": 3.6, "gujjar": 2.2,
             "rajbhar": 2.4, "pal_baghel": 2.5, "other_obc_mbc": 8.5,
-            "jatav_chamar": 11.8, "pasi": 3.8, "dhobi_kori_balmiki_other_sc": 5.5,
+            "jatav_dalit": 11.8, "pasi": 3.8, "dhobi_kori_balmiki_other_sc": 5.5,
             "muslim_total": 19.3, "muslim_pasmanda": 12.5, "muslim_ashraf": 6.8,
             "brahmin": 9.5, "thakur_rajput": 7.2, "baniya_vaishya": 3.5, "other_general": 1.5
         },
@@ -661,7 +661,7 @@ caste_matrix_payload = {
         {"name": "Rohilkhand", "district_count": 9, "key_dynamics": "उच्च मुस्लिम आबादी (35-52%) के साथ कुर्मी, लोध और जाटव का मजबूत जनाधार। पीतल, जरी-जरदोजी और मेंथा प्रमुख आर्थिक मुद्दे।"},
         {"name": "Braj", "district_count": 7, "key_dynamics": "यादव, शाक्य, लोध और जाटव बाहुल्य क्षेत्र। नेताजी का ऐतिहासिक गढ़; आलू मूल्य, परफ्यूम पार्क और सैफई मेडिकल यूनिवर्सिटी मुख्य मुद्दे।"},
         {"name": "Awadh", "district_count": 14, "key_dynamics": "पासी, कुर्मी, ब्राह्मण, मुस्लिम और यादव का बहुकोणीय समीकरण। लखनऊ-कानपुर-अयोध्या का वैचारिक केंद्र; 69000 शिक्षक भर्ती, मिल बंदी और नजूल विवाद प्रमुख।"},
-        {"name": "Bundelkhand", "district_count": 7, "key_dynamics": "लोध, कुर्मी, निषाद, कोल-चमार और बुंदेला राजपूत का समीकरण। अन्ना पशु, भीषण पेयजल संकट और अवैध बालू खनन चुनावी मुद्दे।"},
+        {"name": "Bundelkhand", "district_count": 7, "key_dynamics": "लोध, कुर्मी, निषाद, कोल-दलित और बुंदेला राजपूत का समीकरण। अन्ना पशु, भीषण पेयजल संकट और अवैध बालू खनन चुनावी मुद्दे।"},
         {"name": "Purvanchal", "district_count": 24, "key_dynamics": "यादव, मुस्लिम, राजभर, निषाद, मौर्या, कुर्मी और दलित का विशाल सामाजिक आधार। बुनकर बिजली फ्लैट-रेट, बंद चीनी मिलें, छात्र आक्रोश और बाढ़ कटान मुख्य मुद्दे।"}
     ],
     "districts": caste_matrix_districts

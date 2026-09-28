@@ -744,7 +744,7 @@ DISTRICT_PROFILES = {
         "caste": {
             "breakdown": {
                 "lodh": 14.0, "kushwaha": 9.0, "yadav": 8.0, "pal": 4.5, "other_obc": 7.5,
-                "koli_chamar_sc": 18.0, "khatik": 3.0, "other_sc": 3.0,
+                "koli_dalit_sc": 18.0, "khatik": 3.0, "other_sc": 3.0,
                 "muslim_total": 8.5, "muslim_pasmanda": 6.0, "muslim_ashraf": 2.5,
                 "bundela_rajput": 10.0, "brahmin": 10.5, "baniya_vaishya": 3.5, "other_general": 1.5
             }
@@ -773,7 +773,7 @@ DISTRICT_PROFILES = {
         "caste": {
             "breakdown": {
                 "nishad_kewat": 14.0, "patel_kurmi": 10.0, "yadav": 7.5, "kushwaha": 6.0, "other_obc": 6.5,
-                "chamar_jatav": 17.0, "kori": 4.0, "other_sc": 3.0,
+                "dalit_jatav": 17.0, "kori": 4.0, "other_sc": 3.0,
                 "muslim_total": 9.0, "muslim_pasmanda": 6.5, "muslim_ashraf": 2.5,
                 "brahmin": 11.5, "thakur_rajput": 8.0, "baniya_vaishya": 2.5, "other_general": 0.5
             }
