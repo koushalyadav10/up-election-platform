@@ -3,6 +3,7 @@ import { fetchAssemblyConstituencies, AssemblyConstituencyItem, ACComparisonItem
 import { SourceBadge } from '../components/common/SourceBadge';
 import { ACDossierModal } from '../components/common/ACDossierModal';
 import { PinCompareDrawer } from '../components/common/PinCompareDrawer';
+import { AssemblyToLokSabhaTrendCard } from '../components/analytics/AssemblyToLokSabhaTrendCard';
 import { 
   Search, 
   ArrowUpDown, 
@@ -298,6 +299,9 @@ export const VidhanSabhaExplorer: React.FC<VidhanSabhaExplorerProps> = ({ onSele
             );
           })}
       </div>
+
+      {/* Historical Assembly vs Lok Sabha Power Shift & 2027 Forecast Card */}
+      <AssemblyToLokSabhaTrendCard />
 
       {/* 4. Search & Detailed Filter Bar */}
       <div className="bg-white dark:bg-[#181B19] p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
