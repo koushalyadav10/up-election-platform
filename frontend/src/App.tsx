@@ -240,7 +240,7 @@ function MainApp() {
               title={language === 'hi' ? 'एक कदम पीछे जाएं' : 'Go back one step'}
             >
               <ArrowLeft className="w-4 h-4 text-rose-600 dark:text-rose-400" />
-              <span>{language === 'hi' ? '← पीछे जाएं (Back)' : '← Back'}</span>
+              <span>{language === 'hi' ? 'पीछे जाएं' : 'Back'}</span>
             </button>
             
             <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-mono overflow-x-auto ml-2">

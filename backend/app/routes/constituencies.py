@@ -142,25 +142,61 @@ def get_constituency_detail(
             "is_winner": c.is_winner
         })
 
-    # Assembly Segments with 2022 actuals and 2024 segment leads
+    # Assembly Segments with dynamic prior Vidhan Sabha actuals and Lok Sabha segment leads
     from app.models import ACHistoricalIntelligence
+    selected_result_year = res.election.year if res.election else (year or 2024)
+    is_2019 = (selected_result_year == 2019)
+    
     mappings = db.query(PCACMapping).filter(PCACMapping.pc_id == pc_id).all()
     segments = []
     for m in mappings:
         ac = m.ac
         ac_intel = db.query(ACHistoricalIntelligence).filter(ACHistoricalIntelligence.ac_no == ac.ac_no).first()
+        
+        # Determine dynamic historical MLA & LS lead fields
+        if is_2019:
+            mla_yr = 2017
+            mla_party = ac_intel.winner_2017_party if ac_intel else "N/A"
+            mla_candidate = ac_intel.winner_2017_candidate if ac_intel else "N/A"
+            mla_margin = ac_intel.margin_2017 if ac_intel else 0
+            
+            ls_lead_yr = 2019
+            ls_party = ac_intel.lead_2019_party if ac_intel else "N/A"
+            ls_candidate = ac_intel.lead_2019_candidate if ac_intel else "N/A"
+            ls_margin = ac_intel.margin_2019 if ac_intel else 0
+        else:
+            mla_yr = 2022
+            mla_party = ac_intel.winner_2022_party if ac_intel else "N/A"
+            mla_candidate = ac_intel.winner_2022_candidate if ac_intel else "N/A"
+            mla_margin = ac_intel.margin_2022 if ac_intel else 0
+            
+            ls_lead_yr = 2024
+            ls_party = ac_intel.lead_2024_party if ac_intel else "N/A"
+            ls_candidate = ac_intel.lead_2024_candidate if ac_intel else "N/A"
+            ls_margin = ac_intel.margin_2024 if ac_intel else 0
+
         segments.append({
             "ac_id": ac.id,
             "ac_no": ac.ac_no,
             "name": ac.name,
             "category": ac.category,
             "district": ac.district.name if ac.district else "Uttar Pradesh",
-            "winner_2022": ac_intel.winner_2022_party if ac_intel else "N/A",
-            "winner_2022_candidate": ac_intel.winner_2022_candidate if ac_intel else "N/A",
-            "margin_2022": ac_intel.margin_2022 if ac_intel else 0,
-            "lead_2024": ac_intel.lead_2024_party if ac_intel else "N/A",
-            "lead_2024_candidate": ac_intel.lead_2024_candidate if ac_intel else "N/A",
-            "margin_2024": ac_intel.margin_2024 if ac_intel else 0,
+            "election_year": selected_result_year,
+            "mla_year": mla_yr,
+            "mla_party": mla_party,
+            "mla_candidate": mla_candidate,
+            "mla_margin": mla_margin,
+            "ls_lead_year": ls_lead_yr,
+            "ls_lead_party": ls_party,
+            "ls_lead_candidate": ls_candidate,
+            "ls_lead_margin": ls_margin,
+            # Backwards compatibility keys
+            "winner_2022": mla_party,
+            "winner_2022_candidate": mla_candidate,
+            "margin_2022": mla_margin,
+            "lead_2024": ls_party,
+            "lead_2024_candidate": ls_candidate,
+            "margin_2024": ls_margin,
             "strategic_category": ac_intel.strategic_category if ac_intel else "COMPETITIVE"
         })
 

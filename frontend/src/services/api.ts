@@ -139,6 +139,15 @@ export interface ConstituencyDetail {
     name: string;
     category: string;
     district: string;
+    election_year?: number;
+    mla_year?: number;
+    mla_party?: string;
+    mla_candidate?: string;
+    mla_margin?: number;
+    ls_lead_year?: number;
+    ls_lead_party?: string;
+    ls_lead_candidate?: string;
+    ls_lead_margin?: number;
     winner_2022?: string;
     winner_2022_candidate?: string;
     margin_2022?: number;
