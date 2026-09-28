@@ -26,7 +26,9 @@ import {
   Sparkles,
   Menu,
   X,
-  Users
+  Users,
+  Palette,
+  FileText
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -46,6 +48,7 @@ interface NavbarProps {
   selectedElection: SelectedElection;
   setSelectedElection: (election: SelectedElection) => void;
   onOpenNotifications?: () => void;
+  onOpenChanakya?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -56,21 +59,27 @@ export const Navbar: React.FC<NavbarProps> = ({
   setDarkMode,
   selectedElection,
   setSelectedElection,
-  onOpenNotifications
+  onOpenNotifications,
+  onOpenChanakya
 }) => {
   const { language, toggleLanguage, t } = useLanguage();
   const { role, openAuthModal } = useAuth();
   const { toggleElectra, unreadCount } = useElectra();
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [warRoomMenuOpen, setWarRoomMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement>(null);
+  const warRoomMenuRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
         setMoreMenuOpen(false);
+      }
+      if (warRoomMenuRef.current && !warRoomMenuRef.current.contains(event.target as Node)) {
+        setWarRoomMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -91,6 +100,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const moreTabs = ['ac-comparison', 'election-comparison', 'scenario-lab', 'parties', 'close-contests', 'delimitation', 'data-quality', 'sources', 'ask-ai'];
   const isMoreTabActive = moreTabs.includes(activeTab);
+  const isWarRoomActive = ['poster-studio', 'vip-dossier', 'chanakya-ai'].includes(activeTab);
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors shadow-sm">
@@ -193,6 +203,78 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Users className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               <span>{language === 'hi' ? 'जाति समीकरण' : 'Caste Equation'}</span>
             </button>
+
+            {/* War Room 2027 Dropdown */}
+            <div className="relative" ref={warRoomMenuRef}>
+              <button
+                onClick={() => setWarRoomMenuOpen(!warRoomMenuOpen)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  isWarRoomActive
+                    ? 'bg-gradient-to-r from-red-600 to-rose-700 text-white font-extrabold shadow-sm ring-1 ring-red-400'
+                    : 'bg-red-50 text-red-700 hover:bg-red-100 dark:bg-red-950/40 dark:text-red-300 dark:hover:bg-red-950/70 font-bold border border-red-200/80 dark:border-red-900/50'
+                }`}
+              >
+                <Flame className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+                <span>{language === 'hi' ? 'वॉर रूम 2027' : 'War Room 2027'}</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${warRoomMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {warRoomMenuOpen && (
+                <div className="absolute top-full left-0 mt-1.5 w-64 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <button
+                    onClick={() => {
+                      if (onOpenChanakya) onOpenChanakya();
+                      setWarRoomMenuOpen(false);
+                    }}
+                    className="w-full text-left px-3.5 py-2.5 text-xs flex items-center gap-2.5 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors text-slate-800 dark:text-slate-200 cursor-pointer"
+                  >
+                    <div className="w-7 h-7 rounded-lg bg-red-600 flex items-center justify-center text-white shrink-0 shadow-xs">
+                      <Bot className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="font-extrabold text-slate-900 dark:text-white block">🤖 चुनावी चाणक्य AI</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">वॉर रूम राजनीतिक सलाहकार व वॉयस चैट</span>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setActiveTab('poster-studio');
+                      setWarRoomMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-3.5 py-2.5 text-xs flex items-center gap-2.5 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer ${
+                      activeTab === 'poster-studio' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : 'text-slate-800 dark:text-slate-200'
+                    }`}
+                  >
+                    <div className="w-7 h-7 rounded-lg bg-amber-500 flex items-center justify-center text-white shrink-0 shadow-xs">
+                      <Palette className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="font-extrabold text-slate-900 dark:text-white block">🎨 सोशल मीडिया पोस्टर स्टूडियो</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">1-क्लिक WhatsApp / Insta पोस्टर जेनरेटर</span>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setActiveTab('vip-dossier');
+                      setWarRoomMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-3.5 py-2.5 text-xs flex items-center gap-2.5 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer ${
+                      activeTab === 'vip-dossier' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : 'text-slate-800 dark:text-slate-200'
+                    }`}
+                  >
+                    <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white shrink-0 shadow-xs">
+                      <FileText className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="font-extrabold text-slate-900 dark:text-white block">📄 VIP रैली बुकलेट (PDF)</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">1-क्लिक 4-पेज प्रिंटेबल डॉसियर</span>
+                    </div>
+                  </button>
+                </div>
+              )}
+            </div>
 
             {/* Road to 2027 */}
             <button
@@ -321,6 +403,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* 3. Utility Controls */}
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            {/* Chanakya AI War Room Button */}
+            {onOpenChanakya && (
+              <button
+                onClick={onOpenChanakya}
+                className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-black transition-all bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white shadow-sm hover:shadow-md hover:shadow-red-600/30 active:scale-95 cursor-pointer ring-1 ring-red-400/40"
+                title="चुनावी चाणक्य AI - War Room Advisor"
+              >
+                <Bot className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+                <span className="hidden md:inline">चाणक्य AI</span>
+              </button>
+            )}
+
             {/* Ask Electra Pill Button */}
             <button
               onClick={toggleElectra}
@@ -534,6 +628,38 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Users className="w-4 h-4 text-blue-600" />
             <span>{language === 'hi' ? 'जातिगत समीकरण' : 'Caste Equations'}</span>
           </button>
+
+          {/* War Room 2027 Mobile Section */}
+          <div className="pt-2 pb-1 border-t border-slate-200 dark:border-slate-800">
+            <span className="px-3 text-[10px] font-mono font-bold uppercase tracking-wider text-red-600 dark:text-red-400 block mb-1">
+              🔥 वॉर रूम 2027 (WAR ROOM)
+            </span>
+            <button
+              onClick={() => { if (onOpenChanakya) onOpenChanakya(); setMobileMenuOpen(false); }}
+              className="w-full text-left px-3.5 py-2 text-xs font-bold rounded-xl flex items-center gap-2.5 text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors"
+            >
+              <Bot className="w-4 h-4 text-red-600" />
+              <span>🤖 चुनावी चाणक्य AI (Advisor)</span>
+            </button>
+            <button
+              onClick={() => { setActiveTab('poster-studio'); setMobileMenuOpen(false); }}
+              className={`w-full text-left px-3.5 py-2 text-xs font-bold rounded-xl flex items-center gap-2.5 transition-colors ${
+                activeTab === 'poster-studio' ? 'bg-red-50 text-red-700 dark:bg-red-950/60 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <Palette className="w-4 h-4 text-amber-500" />
+              <span>🎨 सोशल मीडिया पोस्टर स्टूडियो</span>
+            </button>
+            <button
+              onClick={() => { setActiveTab('vip-dossier'); setMobileMenuOpen(false); }}
+              className={`w-full text-left px-3.5 py-2 text-xs font-bold rounded-xl flex items-center gap-2.5 transition-colors ${
+                activeTab === 'vip-dossier' ? 'bg-red-50 text-red-700 dark:bg-red-950/60 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <FileText className="w-4 h-4 text-blue-600" />
+              <span>📄 VIP रैली बुकलेट (4-Page PDF)</span>
+            </button>
+          </div>
 
           <button
             onClick={() => { setActiveTab('road-to-2027'); setMobileMenuOpen(false); }}

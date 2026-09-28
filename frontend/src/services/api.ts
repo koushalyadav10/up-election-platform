@@ -1404,6 +1404,12 @@ export async function fetchDistrictGroundIntelligence(name: string): Promise<Dis
   return res.json();
 }
 
+export async function fetchAllGroundIntelligence(): Promise<Record<string, DistrictGroundIntelligence>> {
+  const res = await fetch(`${API_BASE}/districts/ground-intelligence-all`);
+  if (!res.ok) throw new Error(`Failed to fetch all ground intelligence (HTTP ${res.status})`);
+  return res.json();
+}
+
 export async function compareElections(
   year1: number, 
   type1: string, 
@@ -2236,5 +2242,62 @@ export async function deleteElectraSubscription(id: number): Promise<void> {
 export async function fetchElectraTraceLogs(): Promise<ElectraTraceLogItem[]> {
   const res = await fetch(`${API_BASE}/electra/debug-trace`);
   if (!res.ok) return [];
+  return res.json();
+}
+
+// ----------------------------------------------------
+// CHUNAVEE CHANAKYA AI WAR ROOM ADVISOR API
+// ----------------------------------------------------
+export interface ChanakyaResponse {
+  query: string;
+  district_name?: string | null;
+  answer: string;
+  key_stats?: Record<string, any>;
+  speech_snippet?: string;
+  suggested_followups?: string[];
+}
+
+export interface ChanakyaPrompt {
+  id: string;
+  label: string;
+  query: string;
+}
+
+export interface VoteShiftSimulation {
+  shift_pct: number;
+  base_india_seats_2024: number;
+  flipped_seats_count: number;
+  total_projected_india: number;
+  majority_mark: number;
+  surplus_above_majority: number;
+  sample_flipped_acs: Array<{
+    ac_no: number;
+    ac_name: string;
+    district: string;
+    margin_2024: number;
+    margin_pct: number;
+    bjp_lead_candidate: string;
+  }>;
+}
+
+export async function askChanakya(query: string, language: string = 'auto'): Promise<ChanakyaResponse> {
+  const res = await fetch(`${API_BASE}/chanakya/ask`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, language })
+  });
+  if (!res.ok) throw new Error('Failed to query Chanakya AI');
+  return res.json();
+}
+
+export async function fetchChanakyaPrompts(): Promise<{ prompts: ChanakyaPrompt[] }> {
+  const res = await fetch(`${API_BASE}/chanakya/quick-prompts`);
+  if (!res.ok) return { prompts: [] };
+  return res.json();
+}
+
+export async function fetchVoteShiftSimulation(shift: number = 6.0): Promise<VoteShiftSimulation> {
+  const res = await fetch(`${API_BASE}/chanakya/vote-simulation?shift=${shift}`);
+  if (!res.ok) throw new Error('Failed to fetch vote simulation');
   return res.json();
 }

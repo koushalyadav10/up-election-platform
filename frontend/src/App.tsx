@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Home, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Home, ChevronRight, Bot, Flame } from 'lucide-react';
 import { Navbar, SelectedElection } from './components/layout/Navbar';
 import { GlobalSearchModal } from './components/layout/GlobalSearchModal';
 import { OverviewPage } from './pages/OverviewPage';
@@ -10,6 +10,9 @@ import { VidhanSabhaExplorer } from './pages/VidhanSabhaExplorer';
 import { PCDetailPage } from './pages/PCDetailPage';
 import { DistrictIntelligencePage } from './pages/DistrictIntelligencePage';
 import { CasteEquationsPage } from './pages/CasteEquationsPage';
+import { CampaignPosterStudioPage } from './pages/CampaignPosterStudioPage';
+import { VipRallyDossierPage } from './pages/VipRallyDossierPage';
+import { ChanakyaAssistantModal } from './components/chanakya/ChanakyaAssistantModal';
 import { ACComparisonLabPage } from './pages/ACComparisonLabPage';
 import { ElectionComparisonLabPage } from './pages/ElectionComparisonLabPage';
 import { PartyIntelligencePage } from './pages/PartyIntelligencePage';
@@ -54,6 +57,7 @@ function MainApp() {
   const [selectedACNo, setSelectedACNo] = useState<number | null>(initialParams.acNo);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(initialParams.search);
   const [isNotificationOpen, setIsNotificationOpen] = useState<boolean>(initialParams.notif);
+  const [isChanakyaOpen, setIsChanakyaOpen] = useState<boolean>(false);
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
@@ -218,6 +222,7 @@ function MainApp() {
         selectedElection={selectedElection}
         setSelectedElection={setSelectedElection}
         onOpenNotifications={handleOpenNotifications}
+        onOpenChanakya={() => setIsChanakyaOpen(true)}
       />
 
       {/* 2. Global Analytical Search Palette */}
@@ -317,6 +322,14 @@ function MainApp() {
           <CasteEquationsPage />
         )}
 
+        {activeTab === 'poster-studio' && (
+          <CampaignPosterStudioPage />
+        )}
+
+        {activeTab === 'vip-dossier' && (
+          <VipRallyDossierPage />
+        )}
+
         {activeTab === 'road-to-2027' && (
           <RoadTo2027Page />
         )}
@@ -389,6 +402,32 @@ function MainApp() {
       />
       <DailyDigestModal />
       <ElectraObservabilityModal />
+
+      {/* 4.3 Chunavee Chanakya AI Floating Assistant */}
+      {!isChanakyaOpen && (
+        <button
+          onClick={() => setIsChanakyaOpen(true)}
+          className="fixed bottom-5 right-5 z-40 flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-red-600/40 hover:shadow-red-600/60 transition-all hover:scale-105 active:scale-95 cursor-pointer ring-2 ring-red-400/50 group"
+          title="चुनावी चाणक्य AI - War Room Advisor"
+        >
+          <div className="relative">
+            <Bot className="w-5 h-5 animate-pulse" />
+            <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400"></span>
+            </span>
+          </div>
+          <span className="tracking-tight">🤖 चुनावी चाणक्य AI</span>
+          <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] bg-white/20 uppercase font-black">
+            वॉर रूम 2027
+          </span>
+        </button>
+      )}
+
+      <ChanakyaAssistantModal
+        isOpen={isChanakyaOpen}
+        onClose={() => setIsChanakyaOpen(false)}
+      />
 
       {/* 5. Editorial & Provenance Footer */}
       <footer className="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 text-xs text-slate-500 dark:text-slate-400 transition-colors">

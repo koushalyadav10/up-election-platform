@@ -19,7 +19,8 @@ from app.routes import (
     data_quality, 
     search,
     electra,
-    candidates
+    candidates,
+    chanakya
 )
 import os
 from pathlib import Path
@@ -61,6 +62,7 @@ app.include_router(importer.router)
 app.include_router(sources.router)
 app.include_router(reports.router)
 app.include_router(candidates.router)
+app.include_router(chanakya.router)
 
 @app.get("/api/health")
 def health_check():
