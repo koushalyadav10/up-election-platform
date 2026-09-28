@@ -230,6 +230,9 @@ export const VidhanSabhaExplorer: React.FC<VidhanSabhaExplorerProps> = ({ onSele
         )}
       </div>
 
+      {/* Historical Assembly vs Lok Sabha Power Shift & 2027 Forecast Card */}
+      <AssemblyToLokSabhaTrendCard />
+
       {/* 2. Horizontal Election Year Switcher */}
       <div className="bg-white dark:bg-[#181B19] p-2 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
@@ -299,9 +302,6 @@ export const VidhanSabhaExplorer: React.FC<VidhanSabhaExplorerProps> = ({ onSele
             );
           })}
       </div>
-
-      {/* Historical Assembly vs Lok Sabha Power Shift & 2027 Forecast Card */}
-      <AssemblyToLokSabhaTrendCard />
 
       {/* 4. Search & Detailed Filter Bar */}
       <div className="bg-white dark:bg-[#181B19] p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
