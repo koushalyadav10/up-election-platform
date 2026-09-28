@@ -1,0 +1,27 @@
+name: Auto Deploy to AWS EC2
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to AWS EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/eci
+            git pull origin main
+            source venv/bin/activate
+            pip install -r backend/requirements.txt
+            cd frontend
+            npm install
+            npm run build
+            cd ..
+            sudo systemctl restart election-platform
+            echo "Deployment completed successfully!"

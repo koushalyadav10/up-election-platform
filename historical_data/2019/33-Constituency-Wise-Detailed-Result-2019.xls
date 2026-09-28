@@ -1,0 +1,2589 @@
+<!DOCTYPE html>
+<html lang="en-IN" dir="ltr">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&amp;display=swap" integrity="sha384-H4g6sXbv+CDfflYOe++3QksoA0pj3R1HhFu3eCNO3X233jrFJkxpHljPsFCq7cmZ" crossorigin="anonymous" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="shortcut icon" href="img/icons/favicon.ico" type="image/x-icon">
+    <meta name="google-site-verification" content="Yjr9lGbtCxqzPmDMDV0zkMcVEvc-Thsgniusravt2jA">
+    <link rel="stylesheet" href="https://old.eci.gov.in/applications/core/interface/font/fontawesome-webfont.woff2?v=4.7.0" media="all">
+      <link rel="stylesheet" href="https://old.eci.gov.in/asset/Cstm.css" media="all">
+    <link rel="stylesheet" href="https://old.eci.gov.in/asset/Rsponsive.css" media="all">
+     <link rel="stylesheet" href="https://old.eci.gov.in/asset/bootstrap4.css" media="all">
+   
+  
+        <meta charset="utf-8">
+        <title>33. Constituency wise detailed result - Election Commission of India</title>
+        
+            <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QXVG15JR85"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-QXVG15JR85');
+</script>
+        
+        
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+	
+	
+		<meta property="og:image" content="https://old.eci.gov.in/uploads/monthly_2018_09/eci200x200.png.0b64512a61d9374ccebae62e674b8879.png">
+	
+
+
+	<meta name="twitter:card" content="summary_large_image" />
+
+
+	
+		<meta name="twitter:site" content="@ecisveep" />
+	
+
+
+	
+		
+			
+				<meta name="robots" content="noindex">
+			
+		
+	
+
+	
+		
+			
+				<meta property="og:site_name" content="Election Commission of India">
+			
+		
+	
+
+	
+		
+			
+				<meta property="og:locale" content="en_IN">
+			
+		
+	
+
+
+
+
+
+<link rel="manifest" href="https://old.eci.gov.in/manifest.webmanifest/">
+<meta name="msapplication-config" content="https://old.eci.gov.in/browserconfig.xml/">
+<meta name="msapplication-starturl" content="/home/">
+<meta name="application-name" content="">
+<meta name="apple-mobile-web-app-title" content="">
+
+	<meta name="theme-color" content="#f3f6f4">
+
+
+	<meta name="msapplication-TileColor" content="#eeeeee">
+
+
+
+
+
+	
+
+	
+		
+			<link rel="icon" sizes="36x36" href="https://old.eci.gov.in/uploads/monthly_2022_05/android-chrome-36x36.png">
+		
+	
+
+	
+		
+			<link rel="icon" sizes="48x48" href="https://old.eci.gov.in/uploads/monthly_2022_05/android-chrome-48x48.png">
+		
+	
+
+	
+		
+			<link rel="icon" sizes="72x72" href="https://old.eci.gov.in/uploads/monthly_2022_05/android-chrome-72x72.png">
+		
+	
+
+	
+		
+			<link rel="icon" sizes="96x96" href="https://old.eci.gov.in/uploads/monthly_2022_05/android-chrome-96x96.png">
+		
+	
+
+	
+		
+			<link rel="icon" sizes="144x144" href="https://old.eci.gov.in/uploads/monthly_2022_05/android-chrome-144x144.png">
+		
+	
+
+	
+		
+			<link rel="icon" sizes="192x192" href="https://old.eci.gov.in/uploads/monthly_2022_05/android-chrome-192x192.png">
+		
+	
+
+	
+		
+			<link rel="icon" sizes="256x256" href="https://old.eci.gov.in/uploads/monthly_2022_05/android-chrome-256x256.png">
+		
+	
+
+	
+		
+			<link rel="icon" sizes="384x384" href="https://old.eci.gov.in/uploads/monthly_2022_05/android-chrome-384x384.png">
+		
+	
+
+	
+		
+			<link rel="icon" sizes="512x512" href="https://old.eci.gov.in/uploads/monthly_2022_05/android-chrome-512x512.png">
+		
+	
+
+	
+		
+			<meta name="msapplication-square70x70logo" content="https://old.eci.gov.in/uploads/monthly_2022_05/msapplication-square70x70logo.png"/>
+		
+	
+
+	
+		
+			<meta name="msapplication-TileImage" content="https://old.eci.gov.in/uploads/monthly_2022_05/msapplication-TileImage.png"/>
+		
+	
+
+	
+		
+			<meta name="msapplication-square150x150logo" content="https://old.eci.gov.in/uploads/monthly_2022_05/msapplication-square150x150logo.png"/>
+		
+	
+
+	
+		
+			<meta name="msapplication-wide310x150logo" content="https://old.eci.gov.in/uploads/monthly_2022_05/msapplication-wide310x150logo.png"/>
+		
+	
+
+	
+		
+			<meta name="msapplication-square310x310logo" content="https://old.eci.gov.in/uploads/monthly_2022_05/msapplication-square310x310logo.png"/>
+		
+	
+
+	
+		
+			
+				<link rel="apple-touch-icon" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-touch-icon-57x57.png">
+			
+		
+	
+
+	
+		
+			
+				<link rel="apple-touch-icon" sizes="60x60" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-touch-icon-60x60.png">
+			
+		
+	
+
+	
+		
+			
+				<link rel="apple-touch-icon" sizes="72x72" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-touch-icon-72x72.png">
+			
+		
+	
+
+	
+		
+			
+				<link rel="apple-touch-icon" sizes="76x76" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-touch-icon-76x76.png">
+			
+		
+	
+
+	
+		
+			
+				<link rel="apple-touch-icon" sizes="114x114" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-touch-icon-114x114.png">
+			
+		
+	
+
+	
+		
+			
+				<link rel="apple-touch-icon" sizes="120x120" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-touch-icon-120x120.png">
+			
+		
+	
+
+	
+		
+			
+				<link rel="apple-touch-icon" sizes="144x144" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-touch-icon-144x144.png">
+			
+		
+	
+
+	
+		
+			
+				<link rel="apple-touch-icon" sizes="152x152" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-touch-icon-152x152.png">
+			
+		
+	
+
+	
+		
+			
+				<link rel="apple-touch-icon" sizes="180x180" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-touch-icon-180x180.png">
+			
+		
+	
+
+
+
+
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-touch-fullscreen" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 568px) and (device-height: 320px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1136x640.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 812px) and (device-height: 375px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2436x1125.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 896px) and (device-height: 414px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1792x828.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-828x1792.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 667px) and (device-height: 375px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1334x750.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1242x2688.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 736px) and (device-height: 414px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2208x1242.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1125x2436.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1242x2208.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 1366px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2732x2048.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 896px) and (device-height: 414px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2688x1242.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 1112px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2224x1668.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-750x1334.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2048x2732.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 1194px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2388x1668.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1668x2224.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-640x1136.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1668x2388.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 768px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2048x1536.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1536x2048.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2360x1640.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 1180px) and (device-height: 820px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1640x2360.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2160x1620.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 1080px) and (device-height: 810px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1620x2160.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 926px) and (device-height: 428px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2778x1284.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1284x2778.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 844px) and (device-height: 390px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2532x1170.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-1170x2532.png">
+		
+	
+		
+			<link rel="apple-touch-startup-image" media="screen and (device-width: 780px) and (device-height: 360px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="https://old.eci.gov.in/uploads/monthly_2022_05/apple-startup-2340x1080.png">
+		
+	
+
+
+<link rel="preload" href="//old.eci.gov.in/applications/core/interface/font/fontawesome-webfont.woff2?v=4.7.0" as="font" crossorigin="anonymous">
+        
+
+
+	
+		<link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,700,700i" rel="stylesheet" referrerpolicy="origin">
+	
+
+
+
+	<link rel='stylesheet' href='https://old.eci.gov.in/uploads/css_built_28/341e4a57816af3ba440d891ca87450ff_framework.css?v=dca8e5e1081788331375' media='all'>
+
+	<link rel='stylesheet' href='https://old.eci.gov.in/uploads/css_built_28/05e81b71abe4f22d6eb8d1a929494829_responsive.css?v=dca8e5e1081788331375' media='all'>
+
+	<link rel='stylesheet' href='https://old.eci.gov.in/uploads/css_built_28/20446cf2d164adcc029377cb04d43d17_flags.css?v=dca8e5e1081788331375' media='all'>
+
+	<link rel='stylesheet' href='https://old.eci.gov.in/uploads/css_built_28/0782d83dae5df26e7a323b16d304270e_swiperslider.css?v=dca8e5e1081788331375' media='all'>
+
+	<link rel='stylesheet' href='https://old.eci.gov.in/uploads/css_built_28/90eb5adf50a8c640f633d47fd7eb1778_core.css?v=dca8e5e1081788331375' media='all'>
+
+	<link rel='stylesheet' href='https://old.eci.gov.in/uploads/css_built_28/5a0da001ccc2200dc5625c3f3934497d_core_responsive.css?v=dca8e5e1081788331375' media='all'>
+
+	<link rel='stylesheet' href='https://old.eci.gov.in/uploads/css_built_28/63225940445060c5a9f21d31e95bf58e_downloads.css?v=dca8e5e1081788331375' media='all'>
+
+	<link rel='stylesheet' href='https://old.eci.gov.in/uploads/css_built_28/20e9fb241d987e07d4fc702c601c3ed8_downloads_responsive.css?v=dca8e5e1081788331375' media='all'>
+
+
+
+
+
+<link rel='stylesheet' href='https://old.eci.gov.in/uploads/css_built_28/258adbb6e4f3e83cd3b355f84e3fa002_custom.css?v=dca8e5e1081788331375' media='all'>
+
+
+
+
+      
+        
+        
+
+	
+	<link rel='shortcut icon' href='https://old.eci.gov.in/uploads/monthly_2018_12/favicon.ico.611e985e6b1b537a2ed8442a86ff19e4.ico' type="image/x-icon">
+
+      <style>
+ h3.banner_title {
+    background-image: linear-gradient(to right bottom, #051937, #262559, #542a74, #892586, #c2048a);
+    color: #fff;
+    text-align: center;
+   position: relative;
+    padding: 2.5rem 0;
+    border-radius: 0;
+    margin: 0.5rem 0;
+    font-size:1.15rem;
+    display: block;
+}
+</style>
+    </head>
+    <body class="ipsApp ipsApp_front ipsJS_none ipsClearfix" data-controller="core.front.core.app"  data-message=""  data-pageapp="downloads" data-pagelocation="front" data-pagemodule="downloads" data-pagecontroller="view" data-pageid="13539"  >
+      
+    
+
+	<div id='top-bar-app' class="ipsResponsive_hideDesktop">
+	
+	
+<style>
+.vertical-center {
+  margin: 0;  
+  top: 10%;
+}
+</style>
+<div  style="height:45px; background:#056565;">
+<div class='ipsGrid'>
+	<div class='ipsGrid_span2'style="text-align:center ;"><img src="/img/voterapp30.png" style="margin-top:7px"></div>
+	<div class='ipsGrid_span4 vertical-center' style="text-align:left;  margin-left:0px;"><span style="color:#fff; font-size:14px; position:absolute; margin-top:14px;"> Voter Helpline App</span></div>
+	<div class='ipsGrid_span6' style="text-align:right; padding-left:10px;"><a class="ipsButton ipsButton_verySmall ipsButton_primary" href="https://play.google.com/store/apps/details?id=com.eci.citizen&hl=en" style="line-height:25px; background:#083e54;  margin-top:10px; padding-left:10px; padding-right:10px">Android</a> &nbsp;&nbsp;<a class="ipsButton ipsButton_verySmall ipsButton_primary" href="https://apps.apple.com/us/app/voter-helpline/id1456535004" style="line-height:25px; background:#083e54;  margin-top:10px; margin-right: -15px; padding-left:10px; padding-right:10px">iOS</a></div>
+	
+</div>
+</div>
+</div>
+
+
+ 
+     <a href="#ipsLayout_mainArea" class="ipsHide" title="Go to main content on this page" accesskey="m">Jump to content</a>
+        
+            <div id="ipsLayout_header" class="ipsClearfix">
+                
+
+
+
+
+
+            
+                
+<style>.evm-vvpatheading {
+    color: #fbca38 !important;
+    font-size: 1.1rem;
+}
+  
+  .menu-list h4 {
+    color: #FBCA38;
+    font-size: 1.1rem;
+}
+
+</style>
+<header id="admin" class="header">
+      <div class="top-head">
+        <div class="container-fluid">
+          <div class="menu-toll-link">
+            <div class="menu-btn">
+              <span>
+                <i class="fa-solid fa-bars"></i>
+              </span>
+              Menu
+            </div>
+            <div class="toll-links">
+              <span>
+                <a rel="noopener noreferrer" href="https://www.eci.gov.in/">
+                  <i class="fa-solid fa-house"></i>
+                </a>
+              </span>
+              <span class="toll-btn">Toll Free - 1950</span>
+              <span class="soc-links">
+                <ul>
+                  <li>
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/ECI/">
+                      <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      target="_blank" rel="noopener noreferrer"
+                      href="https://www.instagram.com/ecisveep/"
+                    >
+                      <i class="fa-brands fa-instagram"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      target="_blank" rel="noopener noreferrer"
+                      href="https://twitter.com/SpokespersonECI"
+                    >
+                      <img src="/uploads/pages_media/0_twitter.png" alt=""  style="height: 14px;">
+                    </a>
+                  </li>
+                  <li>
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/eci">
+                      <i class="fa-brands fa-youtube"></i>
+                    </a>
+                  </li>
+                </ul>
+              </span>
+              <span>
+                <a href="">Screen Reader Access </a>
+              </span>
+              <span>
+                <a href="#section1">Skip to Main Content</a>
+              </span>
+              <div>
+                <span>
+                  <button>A+</button>
+                </span>
+                <span>
+                  <button>A-</button>
+                </span>
+              </div>
+
+              <span>
+                <a rel="noopener noreferrer"
+                  href="https://hindi.eci.gov.in/"
+                  target="_blank"
+                  class="btn btn-sm pink-btn"
+                >
+                  हिंदी में देखें
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="nav-wrap" style="font-size:15px;">
+          <div class="scroll-menu">
+            <nav class="main-menu" style="background:none;">
+              <div class="menu-list">
+                <h4>
+                <a rel="noopener noreferrer" href="https://www.eci.gov.in/electors" class="evm-vvpatheading">VOTERS</a>
+                </h4>
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" target="_blank" href="https://voters.eci.gov.in">
+                      Register in Electoral Roll
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" target="_blank" href="https://voters.eci.gov.in">
+                      Track Application Status
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" target="_blank" href="https://voters.eci.gov.in">
+                      Download E-EPIC
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      target="_blank" rel="noopener noreferrer"
+                      href="https://electoralsearch.eci.gov.in/"
+                    >
+                      Search Electoral Roll
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer"
+                      
+                      href="https://www.eci.gov.in/download-forms"
+                    >
+                      Forms For Registration In Electoral Roll
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="menu-list" style="margin-top: 30px">
+                <ul>
+                  <li>
+                    <a
+                      target="_blank" rel="noopener noreferrer"
+                      href="https://electoralsearch.eci.gov.in/pollingstation"
+                    >
+                      Know Your Polling Booth
+                    </a>
+                  </li>
+                  <li>
+                    <a target="_blank" rel="noopener noreferrer" href="https://servicevoter.eci.nic.in/">
+                      Service Voters
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/Overseas-voters" >
+                      Overseas Voters
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      target="_blank" rel="noopener noreferrer"
+                      href="https://eci-citizenservices.eci.nic.in/"
+                    >
+                      Register Complaint
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/voter-education">Voter Education</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="menu-list">
+			  <h4>
+               <a rel="noopener noreferrer" href="https://www.eci.gov.in/election-management" class="evm-vvpatheading">ELECTION MANAGEMENT</a></h4>
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer"
+                      href="https://www.eci.gov.in/assembly-elections-new"
+                    >
+                      Current Elections
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/assembly-election/">Past Assembly Elections</a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/ge-2019">Past Parliamentary Elections</a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer"
+                      href="https://www.eci.gov.in/bye-elections"
+                    >
+                      Past Bye Elections
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/term-of-the-houses">Term of The Houses</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="menu-list" style="margin-top: 30px">
+                <ul>
+                  <li>
+                    <a target="_blank" rel="noopener noreferrer" href="https://results.eci.gov.in/">
+                      Election Results
+                    </a>
+                  </li>
+                  <!--<li>
+                    <a
+                      href="https://old.eci.gov.in/statistical-report/statistical-reports/"
+                    >
+                      Results And Statistics
+                    </a>
+                  </li>-->
+                  <li>
+                    <a rel="noopener noreferrer"
+                      href="https://www.eci.gov.in/electoral-roll" 
+                    >
+                      Electoral Roll
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/mcc">
+                      Model Code Of Conduct
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/judicial-reference">
+                      Judicial Reference
+                    </a>
+                  </li>
+				  <li><a rel="noopener noreferrer" href="https://www.eci.gov.in/delimitation">Delimitation</a></li>
+                </ul>
+              </div>
+              <div class="menu-list">
+                <h4><a rel="noopener noreferrer" href="https://www.eci.gov.in/candidate-politicalparty" class="evm-vvpatheading">POLITICAL PARTIES/CANDIDATE</a></h4>
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/political-party-registration">
+                      Political Parties Registration
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/election-symbol">Election Symbol</a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer"
+                      href="https://www.eci.gov.in/contribution-reports"
+                    >
+                      Contribution Reports
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer"
+                      href="https://www.eci.gov.in/expenditure-reports"
+                    >
+                      Expenditure Report
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="menu-list" style="margin-top: 30px">
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/nomination-related-forms">
+                      Candidate Nomination and Other Forms
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/affidavitt-portal">Candidate Affidavits</a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/suvidha-candidate">Candidate App</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="menu-list">
+                <h4><a rel="noopener noreferrer" href="https://www.eci.gov.in/media-publication" class="evm-vvpatheading">MEDIA & PUBLICATION</a></h4>
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/eci-publication">ECI Publications</a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer"
+                      href="https://www.eci.gov.in/compendium-of-instructions"
+                    >
+                      Compendium of Instructions
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer"
+                      href="https://www.eci.gov.in/statistical-reports/"
+                    >
+                      Election Results & Statistics
+                    </a>
+                  </li>
+				  
+				  <li><a rel="noopener noreferrer" href="https://www.eci.gov.in/narrative-reports-and-other-publication">Narrative Report & Other Publications</a></li>
+
+                  <li>
+                    <a rel="noopener noreferrer"
+                      href="https://www.eci.gov.in/electoral-statistics-pocket-books"
+                    >
+                      Electoral Statistics Pocket Books
+                    </a>
+                  </li>
+				  <li><a rel="noopener noreferrer" href="https://www.eci.gov.in/miscellaneous-statistics-and-papers">Miscellaneous Statistics & Papers</a></li>
+                </ul>
+              </div>
+              <div class="menu-list">
+              <h4><a rel="noopener noreferrer" href="https://www.eci.gov.in/evm-vvpat" class="evm-vvpatheading">EVM/VVPAT</a></h4>
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/evm-vvpat">FAQs On EVM</a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/evm-vvpat"
+                    >
+                      Presentation On EVM
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/evm-vvpat"
+                    >
+                      Status Paper On EVM
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/evm-vvpat"
+                    >
+                      Manual On EVM And VVPAT
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/evm-vvpat"
+                    >
+                      Legal History Of EVMs And VVPATs
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="menu-list" style="margin-bottom:0.2rem!important">
+                <h4><a rel="noopener noreferrer" href="https://www.eci.gov.in/eci-officials" class="evm-vvpatheading">ECI OFFICIALS</a></h4>
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/eci-officials">Quick Links For ECI Officials</a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/issue-details-page/instructions">
+                      ECI Instructions
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/observer-portal-web">
+                      Observer Portal
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="menu-list" style="margin-top: 30px">
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/handbooks-manuals-modelchecklist">
+                      Handbooks/Manuals/Model Check List
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/faq/">FAQs</a>
+                  </li>
+                   <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/eBooks">eBooks</a>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="menu-list">
+                <h4><a rel="noopener noreferrer" href="https://www.eci.gov.in/about-eci" class="evm-vvpatheading">About ECI</a></h4>
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/about-eci">About ECI</a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/honble-commission">Hon’ble Commission</a>
+                  </li>
+				  <li><a rel="noopener noreferrer" href="https://www.eci.gov.in/former-cec-ec">Former CEC/EC </a></li>
+                  <!--<li>
+                    <a
+                      href="https://old.eci.gov.in/divisions-of-eci/divisions-of-eci/"
+                    >
+                      Divisions of ECI
+                    </a>
+                  </li>-->
+                </ul>
+              </div>
+              <div class="menu-list" style="margin-top: 30px">
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/officers-directory">
+                      Officer's Directory
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer"
+                      href="https://www.eci.gov.in/international-corporation"
+                    >
+                      International Cooperation
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://www.eci.gov.in/photo-gallery">Media Gallery</a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+            <div class="cloze-btn">
+              <i class="fa-solid fa-xmark"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="logo-search">
+          <div class="logo">
+            <a rel="noopener noreferrer" href="https://www.eci.gov.in/">
+              <img src="https://old.eci.gov.in/img/eci-logo.png" alt="" />
+            </a>
+          </div>
+          <div id="header" class="search-area">
+            <span>
+              <a rel="noopener noreferrer"
+                href="https://www.eci.gov.in/advance-search"
+                class="btn btn-sm pink-btn"
+              >
+                <i class="fa fa-magnifying-glass"></i>
+              </a>
+            </span>
+          </div>
+          <div class="mob-search-btn d-sm-block d-md-none">
+            <a rel="noopener noreferrer" href="https://www.eci.gov.in/advance-search" class="btn btn-lg">
+              <i class="fa fa-magnifying-glass"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+                
+<ul id='elMobileNav' class='ipsResponsive_hideDesktop' data-controller='core.front.core.mobileNav'>
+	
+		
+			
+			
+				
+				
+			
+				
+				
+			
+				
+					<li id='elMobileBreadcrumb'>
+						<a href='https://old.eci.gov.in/files/category/1551-general-election-2019-including-vellore-pc/'>
+							<span>General Election 2019 (Including Vellore PC)</span>
+						</a>
+					</li>
+				
+				
+			
+				
+				
+			
+		
+	
+	
+	
+	<li >
+		<a data-action="defaultStream" href='https://old.eci.gov.in/discover/followed-members/'><i class="fa fa-newspaper-o" aria-hidden="true"></i></a>
+	</li>
+
+	
+
+	
+</ul>
+            
+            
+              
+      </div>
+        
+       
+        
+
+
+
+
+
+
+<main id="ipsLayout_body" class="ipsLayout_container">
+          
+         <h3 class="ipsType_reset ipsWidget_title banner_title">33. Constituency wise detailed result - Election Commission of India</h3>
+        <!-- -->
+            <div style=" margin-left: -15px; margin-right: -15px;">
+      
+          
+
+
+
+
+
+
+       
+          
+        </div>
+            <div id="ipsLayout_contentArea">
+                <div id="ipsLayout_contentWrapper">
+                    
+                    
+                    <div id="ipsLayout_mainArea">
+                        
+                        
+                        
+                        
+
+	
+
+
+
+
+                        
+<div data-controller='downloads.front.view.download'>
+	
+		
+<div class='ipsPad'>
+	<h1 class='ipsType_pageTitle'>Download your files</h1>
+	<p class='ipsType_reset ipsType_normal ipsType_light'>2 files</p>
+	<hr class='ipsHr'>
+	<ul class='ipsDataList ipsDataList_reducedSpacing'>
+		
+			
+			<li class='ipsDataItem'>
+				<div class='ipsDataItem_main'>
+					<h4 class='ipsDataItem_title ipsContained_container'><span class='ipsType_break ipsContained'>33. Constituency Wise Detailed Result.xls</span></h4>
+					<p class='ipsType_reset ipsDataItem_meta'>2.15 MB</p>
+				</div>
+				
+				<div class='ipsDataItem_generic ipsDataItem_size4 ipsType_right'>
+					<span class="ipsHide" data-role="downloadCounterContainer">Download begins in  <span data-role="downloadCounter"></span> seconds</span>
+					<a href='https://old.eci.gov.in/files/file/13539-33-constituency-wise-detailed-result/?do=download&amp;r=37785&amp;confirm=1&amp;t=1&amp;csrfKey=580f6387602eed9a764e940f9e66b311' class='ipsButton ipsButton_primary ipsButton_small' data-action="download" data-wait='true'>Download</a>
+				</div>
+			</li>
+		
+			
+			<li class='ipsDataItem'>
+				<div class='ipsDataItem_main'>
+					<h4 class='ipsDataItem_title ipsContained_container'><span class='ipsType_break ipsContained'>33. Constituency wise detailed result.pdf</span></h4>
+					<p class='ipsType_reset ipsDataItem_meta'>1.93 MB</p>
+				</div>
+				
+				<div class='ipsDataItem_generic ipsDataItem_size4 ipsType_right'>
+					<span class="ipsHide" data-role="downloadCounterContainer">Download begins in  <span data-role="downloadCounter"></span> seconds</span>
+					<a href='https://old.eci.gov.in/files/file/13539-33-constituency-wise-detailed-result/?do=download&amp;r=37787&amp;confirm=1&amp;t=1&amp;csrfKey=580f6387602eed9a764e940f9e66b311' class='ipsButton ipsButton_primary ipsButton_small' data-action="download" data-wait='true'>Download</a>
+				</div>
+			</li>
+		
+	</ul>
+</div>
+	
+</div>
+                        
+
+
+                    </div>
+                    
+                
+                </div>
+            </div>
+            
+        </main>
+      
+       
+
+
+
+
+
+<style>
+  .ta_NT {
+        margin-left: -15px !important;
+    margin-right: -15px !important;
+}
+    
+img {
+    border: 0;
+    max-width: 100%}
+
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+
+  & > [class^="col-"],
+  & > [class*=" col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+.no-gutter.row,
+.no-gutter.container,
+.no-gutter.container-fluid{
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.no-gutter>[class^="col-"]{
+  padding-left: 0;
+  padding-right: 0;
+}
+
+
+
+.custom-ul-video li, .icon-cacts, .icon-pbushan, .icon-tvaward, .icon-vrward {
+    width: 20px;
+    line-height: 20px;
+}
+
+
+
+
+
+.hover-img img:hover{
+	transform: scale(1.02);
+}
+.hover-img img{
+	transition: all .3s ease-out;
+}
+
+	   @media (min-width:1024px) {
+    .custom-accesibility {
+    float: right;
+}
+		
+	  }
+	  
+	  
+	  @media only screen and (max-width: 1023px) and (min-width: 768px)
+	  {
+    .custom-accesibility {
+    float: right;
+}
+		  
+	  }
+	  
+		  @media(max-width:580px) {
+    .cust-title {
+/*    width: 60px!important;*/
+}
+			  .seven-cols > .col, .col-sm-4 {
+    position: relative;
+    width: 33% !important;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+}@media (max-width:768px) {
+    .custom-text-center-new {
+    text-align: center!important;
+}
+    </style>
+<!--
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<div class="container-fluid hidden-sm-down visible-lg visible-md d-none d-xl-block d-lg-block d-md-block" style="background: linear-gradient(to bottom,rgba(0, 123, 255, 0.22) 0%,rgba(64, 148, 148, 0) 48%),rgba(255, 255, 255, 0.0);background-size: cover;position: relative;">-->
+  
+  <div id="elContent" class="container-fluid " style="background: linear-gradient(to bottom,rgba(0, 123, 255, 0.22) 0%,rgba(64, 148, 148, 0) 48%),rgba(255, 255, 255, 0.0);background-size: cover;position: relative;">
+ 
+<div class="ipsLayout_container" style="background:rgba(0,0,0, 0.0)">
+
+<section style="padding:10px 0px;">
+
+<div class="row no-gutters" >
+      
+  <div class="col-lg-2 col-sm-4 col-xs-4 hover-img ipsGrid_span2">
+					<a href="https://www.nvsp.in/" target="_blank" rel="noopener noreferrer"  >
+                    	<img src="/img/voter-services-icon.png" class="img-fluid" alt="Voter Services" title="Voter Services"/>
+                         </a>
+                     </div>
+              
+
+
+                      <div class="col-lg-2 col-sm-4 col-xs-4 hover-img ipsGrid_span2">
+                        <a href="/voter/voter-education/" >
+                    	<img src="/img/voter-education-icon.png" class="img-fluid"  alt="Voter Education" title="Voter Education" />
+                         </a>
+                     </div>
+                     <div class="col-lg-2 col-sm-4 col-xs-4 hover-img ipsGrid_span2">
+                            <a href="/elections/election/" >
+                    	<img src="/img/election-icon.png" class="img-fluid" alt="Elections"  title="Elections" />
+                         </a>
+                     </div>
+                     <div class="col-lg-2 col-sm-4 col-xs-4 hover-img ipsGrid_span2">
+                        <a href="/candidate-political-parties/candidate-politicalparties/" >
+                    	<img src="/img/political-party-icon.png" alt="Candidate/Political Party" title="Candidate/Political Party" />
+                         </a>
+                     </div>
+
+                     <div class="col-lg-2 col-sm-4 col-xs-4 hover-img ipsGrid_span2">
+                         <a href="/media-publication/media-publication/" >
+                    	<img src="/img/publication-icon.png" alt="Publications" title="Publications" />
+                         </a>
+                     </div>
+
+                     
+
+                     <div class="col-lg-2 col-sm-4 col-xs-4 hover-img ipsGrid_span2">
+                         <a href="/divisions-of-eci/ict-apps/">
+                    	<img src="/img/ict-apps-icon.png" alt="ICT APPS" title="ICT APPS" />
+                         </a>
+                     </div>
+
+                     
+					 
+                 
+               
+            </div>
+
+</section>
+</div>
+  </div>
+
+
+
+
+ 
+     
+        
+        <footer class="footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3 col-12">
+            <div class="first-foot">
+              <div class="footer-head">
+                <h6>Election Commission of India</h6>
+              </div>
+              <div class="row align-items-center padd">
+                <div class="col-md-4 col-12">
+                  <figure style="margin: 0em 0px!important;">
+                    <img src="https://old.eci.gov.in/img/eci-logo-white.png" alt="">
+                  </figure>
+                </div>
+                <div class="col-md-8 col-12">
+                  <p>
+                    The Election Commission of India is an autonomous
+                    constitutional authority responsible for administering
+                    election processes in India. The body administers elections
+                    to the Lok Sabha, Rajya Sabha, State Legislative Assemblies
+                    in India, and the offices of the President and Vice
+                    President in the country.
+                  </p>
+                </div>
+              </div>
+              <div class="locate">
+                <i class="fa-solid fa-location-dot"></i>
+                Nirvachan Sadan, Ashoka Road, New Delhi 110001
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-12">
+            <div class="Second-foot">
+              <div class="footer-head">
+                <h6>Quick Links</h6>
+              </div>
+              <div class="padd flex-box">
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://eci.gov.in/about-eci">About ECI</a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://eci.gov.in/officers-directory">
+                      Officers Directory
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://eci.gov.in/contact-us">
+                      Contact Us
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://eci.gov.in/national-greivance-service-portal">
+                      Public Grievance
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://eci.gov.in/rti-online-portal">
+                      RTI Online
+                    </a>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" target="_blank" href="https://voters.eci.gov.in/">
+                      Apply for Voter Card
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://eci.gov.in/voter-education">SVEEP</a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://eci.gov.in/service-voter-registration-portal">
+                      Service Voter Portal
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://eci.gov.in/cvigil-app">
+                      Download cVIGIL
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://eci.gov.in/affidavit-portal">
+                      Candidate Affidavits
+                    </a>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://old.eci.gov.in/divisions-of-eci/international-cooperation/">
+                      International Cooperation
+                    </a>
+                  </li>
+                  <li>
+                    <a target="_blank" rel="noopener noreferrer" href="https://indiaawebcentre.org/">
+                      India A-WEB Centre
+                    </a>
+                  </li>
+                  <li>
+                    <a target="_blank" rel="noopener noreferrer" href="https://voicenet.in/">
+                      VoiceNet
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://eci.gov.in/mcc">
+                      MCC Cases
+                    </a>
+                  </li>
+                  <li>
+                    <a rel="noopener noreferrer" href="https://eci.gov.in/political-party-registration">
+                      Political Parties Registration
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-12">
+            <div class="Second-foot">
+              <div class="footer-head">
+                <h6>ECI Apps Links</h6>
+              </div>
+              <div class="padd row">
+                <div class="app-link">
+                  <a rel="noopener noreferrer" href="https://eci.gov.in/voter-helpline-app">
+                    <img src="https://old.eci.gov.in/img/voter-helpline.png" alt="voter-helpline" title="Voter Helpline App">
+                  </a>
+                </div>
+                <div class="app-link">
+                  <a rel="noopener noreferrer" href="https://eci.gov.in/saksham-app">
+                    <img src="https://old.eci.gov.in/img/saksham-eci.png" alt="saksham-eci" title="Saksham ECI App">
+                  </a>
+                </div>
+              </div>
+              <div class="padd row">
+                <div class="app-link">
+                  <a rel="noopener noreferrer" href="https://eci.gov.in/kyc-ict-app">
+                    <img src="https://old.eci.gov.in/img/kyc-eci.png" alt="kyc-eci" title="KYC ECI App">
+                  </a>
+                </div>
+                <div class="app-link">
+                  <a rel="noopener noreferrer" href="https://eci.gov.in/cvigil-app">
+                    <img src="https://old.eci.gov.in/img/cVigil.png" alt="" title="cVigil App">
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="social-mail">
+          <div class="row align-items-center">
+            <div class="col-md-4 col-12">
+              <div class="soc-links">
+                <ul>
+                  <li>
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/ECI/">
+                      <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/ecisveep/">
+                      <i class="fa-brands fa-instagram"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/SpokespersonECI">
+                      <i class="fa-brands fa-twitter"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/eci">
+                      <i class="fa-brands fa-youtube"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-4 col-12"></div>
+          </div>
+        </div>
+      </div>
+      <div class="copyRights">
+        © Copyright Election Commission of India 2023
+      </div>
+      <div class="scroll-back">
+        <i class="fa-solid fa-arrow-up"></i>
+      </div>
+    </footer>
+     
+      
+     
+   
+     
+            
+<div id='elMobileDrawer' class='ipsDrawer ipsHide'>
+	<div class='ipsDrawer_menu'>
+		<a href='#' class='ipsDrawer_close' data-action='close'><span>&times;</span></a>
+		<div class='ipsDrawer_content ipsFlex ipsFlex-fd:column'>
+			
+				<div class='ipsPadding'>
+					
+				</div>
+			
+
+			<ul class='ipsDrawer_list ipsFlex-flex:11'>
+				
+
+				
+				
+				
+				
+					
+						
+						
+							<li><a href='https://old.eci.gov.in' >Home</a></li>
+						
+					
+				
+					
+						
+						
+							<li><a href='https://old.eci.gov.in/candidate-political-parties/instructions-on-covid-19/' >Instructions on Covid-19</a></li>
+						
+					
+				
+					
+				
+					
+						
+						
+							<li><a href='https://old.eci.gov.in/files/category/10-current-issues/' >Current Issues</a></li>
+						
+					
+				
+					
+						
+						
+							<li><a href='https://old.eci.gov.in/files/category/11-press-releases/' >Press Releases</a></li>
+						
+					
+				
+					
+						
+						
+							<li class='ipsDrawer_itemParent'>
+								<h4 class='ipsDrawer_title'><a href='#'>Electors</a></h4>
+								<ul class='ipsDrawer_list'>
+									<li data-action="back"><a href='#'>Back</a></li>
+									
+									
+										
+										
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+									
+													
+									
+										<li><a href='https://old.eci.gov.in/voter/voter/'>Electors</a></li>
+									
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href='https://voterportal.eci.gov.in/' target='_blank' rel="noopener">
+					Register to Vote
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://voterportal.eci.gov.in/' target='_blank' rel="noopener">
+					Track Your Application
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/electoral-roll/forms/' >
+					Download Forms
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='http://servicevoter.nic.in/' target='_blank' rel="noopener">
+					Service Voters
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/voter/overseas-electors/' >
+					Overseas Electors
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/persons-with-disabilities/' >
+					Persons with Disabilities
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/electoral-roll/electoral-roll/' >
+					Electoral Roll
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://eci-citizenservices.eci.nic.in/' target='_blank' rel="noopener">
+					Lodge a Complain
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/faqs/' >
+					FAQs
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='http://ecisveep.nic.in' target='_blank' rel="noopener">
+					Voter Education
+				</a>
+			</li>
+		
+	
+
+										
+								</ul>
+							</li>
+						
+					
+				
+					
+						
+						
+							<li class='ipsDrawer_itemParent'>
+								<h4 class='ipsDrawer_title'><a href='#'>Elections</a></h4>
+								<ul class='ipsDrawer_list'>
+									<li data-action="back"><a href='#'>Back</a></li>
+									
+									
+										
+										
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+													
+														
+													
+														
+													
+														
+													
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+													
+														
+													
+														
+													
+														
+													
+												
+											
+										
+											
+												
+											
+										
+									
+													
+									
+										<li><a href='https://old.eci.gov.in/elections/election/'>Elections</a></li>
+									
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/elections/currentelections/' >
+					Current Elections
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/elections/future-elections/' >
+					Future Elections
+				</a>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class='ipsDrawer_itemParent'>
+				<h4 class='ipsDrawer_title'><a href='#'>Past Elections</a></h4>
+				<ul class='ipsDrawer_list'>
+					<li data-action="back"><a href='#'>Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/assembly-election/assembly-election/' >
+					Assembly Election
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/general-election/general-election/' >
+					General Election
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/bye-election/bye-elections/' >
+					Bye Elections
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/statistical-report/election-results/' >
+					Results and Statistics
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/elections/term-of-houses/' >
+					Term of the Houses
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/electoral-roll/electoral-roll/' >
+					Electoral Roll
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/election-laws/election-law/' >
+					Election Law
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/mcc/' >
+					Model Code of Conduct
+				</a>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class='ipsDrawer_itemParent'>
+				<h4 class='ipsDrawer_title'><a href='#'>Judicial Reference</a></h4>
+				<ul class='ipsDrawer_list'>
+					<li data-action="back"><a href='#'>Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/files/category/15-office-of-profit/' >
+					Office of Profit (Reference Cases)
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/files/category/16-orders-notices-model-code-of-conduct/' >
+					Model Code of Conduct
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/files/category/17-orders-notices-miscellaneous/' >
+					Miscellaneous
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/election-manifestos/' >
+					Election Manifestos
+				</a>
+			</li>
+		
+	
+
+										
+								</ul>
+							</li>
+						
+					
+				
+					
+						
+						
+							<li class='ipsDrawer_itemParent'>
+								<h4 class='ipsDrawer_title'><a href='#'>EVM/VVPAT</a></h4>
+								<ul class='ipsDrawer_list'>
+									<li data-action="back"><a href='#'>Back</a></li>
+									
+									
+										
+										
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+									
+													
+									
+										<li><a href='https://old.eci.gov.in/evm/'>EVM/VVPAT</a></li>
+									
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/files/file/9228-evm-credibility-technological-and-administrative-safeguards/' >
+					Presentation on EVM
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/files/file/8756-status-paper-on-evm-edition-3/' >
+					Status Paper on EVM
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/faqs/evm/general-qa/electronic-voting-machine-r2/' >
+					FAQs on EVM
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/files/file/13911-manual-on-electronic-voting-machine-and-vvpat-december-2021/' >
+					Manual on EVM and VVPAT
+				</a>
+			</li>
+		
+	
+
+										
+								</ul>
+							</li>
+						
+					
+				
+					
+						
+						
+							<li class='ipsDrawer_itemParent'>
+								<h4 class='ipsDrawer_title'><a href='#'>Candidate / Political Party</a></h4>
+								<ul class='ipsDrawer_list'>
+									<li data-action="back"><a href='#'>Back</a></li>
+									
+									
+										
+										
+										
+											
+												
+											
+										
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+										
+											
+												
+											
+										
+									
+													
+									
+										<li><a href='https://old.eci.gov.in/candidate-political-parties/candidate-politicalparties/'>Candidate / Political Party</a></li>
+									
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/candidate-political-parties/nomination-related-forms/' >
+					Candidate Nomination & other Forms
+				</a>
+			</li>
+		
+	
+
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/candidate-political-parties/link-to-candidate-affidavits/' >
+					Links to Candidate Affidavits
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/candidate-political-parties/political-parties-registration/' >
+					Political Parties Registration
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/candidate-political-parties/election-symbol/' >
+					Political Parties & Election Symbol
+				</a>
+			</li>
+		
+	
+
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/candidate-political-parties/instructions-on-covid-19/' >
+					Instructions on Covid-19
+				</a>
+			</li>
+		
+	
+
+										
+								</ul>
+							</li>
+						
+					
+				
+					
+						
+						
+							<li class='ipsDrawer_itemParent'>
+								<h4 class='ipsDrawer_title'><a href='#'>Media & Publication</a></h4>
+								<ul class='ipsDrawer_list'>
+									<li data-action="back"><a href='#'>Back</a></li>
+									
+									
+										
+										
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+										
+									
+													
+									
+										<li><a href='https://old.eci.gov.in/media-publication/media-publication/'>Media & Publication</a></li>
+									
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/statistical-report/statistical-reports/' >
+					Election Results & Statics
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/media-publication/publication/' >
+					ECI Publications
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/files/category/8-compendium-of-instructions/' >
+					Compendium of Instructions
+				</a>
+			</li>
+		
+	
+
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/election-laws/election-law/' >
+					Election Law
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/files/category/1581-pocket-books/' >
+					Electoral Statistics Pocket Books
+				</a>
+			</li>
+		
+	
+
+	
+
+										
+								</ul>
+							</li>
+						
+					
+				
+					
+						
+						
+							<li class='ipsDrawer_itemParent'>
+								<h4 class='ipsDrawer_title'><a href='#'>About ECI</a></h4>
+								<ul class='ipsDrawer_list'>
+									<li data-action="back"><a href='#'>Back</a></li>
+									
+									
+										
+										
+										
+											
+												
+											
+										
+											
+												
+											
+										
+											
+												
+											
+										
+									
+													
+									
+										<li><a href='https://old.eci.gov.in/about/about-eci/'>About ECI</a></li>
+									
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/divisions-of-eci/divisions-of-eci/' >
+					Divisions of ECI
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/contact-us/directory/' >
+					ECI Officials Contact Details
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/contact-us/contact-us/' >
+					Contact Us
+				</a>
+			</li>
+		
+	
+
+										
+								</ul>
+							</li>
+						
+					
+				
+					
+						
+						
+							<li><a href='https://old.eci.gov.in/gallery/' >Gallery</a></li>
+						
+					
+				
+					
+						
+						
+							<li class='ipsDrawer_itemParent'>
+								<h4 class='ipsDrawer_title'><a href='#'>For ECI Officials</a></h4>
+								<ul class='ipsDrawer_list'>
+									<li data-action="back"><a href='#'>Back</a></li>
+									
+									
+										
+										
+										
+											
+												
+													
+													
+									
+													
+									
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/eci-officials/' >
+					Quick Links for ECI Officials
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href='https://old.eci.gov.in/important-instructions/' >
+					Important Instructions
+				</a>
+			</li>
+		
+	
+
+										
+								</ul>
+							</li>
+						
+					
+				
+					
+				
+					
+						
+						
+							<li><a href='https://hindi.eci.gov.in/' >हिंदी में देखें </a></li>
+						
+					
+				
+				
+			</ul>
+
+			
+		</div>
+	</div>
+</div>
+
+<div id='elMobileCreateMenuDrawer' class='ipsDrawer ipsHide'>
+	<div class='ipsDrawer_menu'>
+		<a href='#' class='ipsDrawer_close' data-action='close'><span>&times;</span></a>
+		<div class='ipsDrawer_content ipsSpacer_bottom ipsPad'>
+			<ul class='ipsDrawer_list'>
+				<li class="ipsDrawer_listTitle ipsType_reset">Create New...</li>
+				
+			</ul>
+		</div>
+	</div>
+</div>
+            
+            
+
+	
+	<script type='text/javascript'>
+		var ipsDebug = false;		
+	
+		var CKEDITOR_BASEPATH = '//old.eci.gov.in/applications/core/interface/ckeditor/ckeditor/';
+	
+		var ipsSettings = {
+			
+			
+			cookie_path: "/",
+			
+			cookie_prefix: "ips4_",
+			
+			
+			cookie_ssl: true,
+			
+			upload_imgURL: "",
+			message_imgURL: "",
+			notification_imgURL: "",
+			baseURL: "//old.eci.gov.in/",
+			jsURL: "//old.eci.gov.in/applications/core/interface/js/js.php",
+			csrfKey: "580f6387602eed9a764e940f9e66b311",
+			antiCache: "dca8e5e1081788331375",
+			jsAntiCache: "dca8e5e1081788408087",
+			disableNotificationSounds: true,
+			useCompiledFiles: true,
+			links_external: true,
+			memberID: 0,
+			lazyLoadEnabled: true,
+			blankImg: "//old.eci.gov.in/applications/core/interface/js/spacer.png",
+			googleAnalyticsEnabled: true,
+			matomoEnabled: false,
+			viewProfiles: false,
+			mapProvider: 'none',
+			mapApiKey: '',
+			pushPublicKey: "BPwVFgAkZXIjC-KemcyRPLr6u6Qonknc4xmd2C6ifLf6phDaSCvN4xMqwPdEHKAg_IjN-T-krxJrymYuz_-q4nc",
+			relativeDates: true
+		};
+		
+		
+		
+		
+			ipsSettings['maxImageDimensions'] = {
+				width: 1200,
+				height: 1000
+			};
+		
+		
+	</script>
+
+
+
+
+
+<script type='text/javascript' src='https://old.eci.gov.in/uploads/javascript_global/root_library.js?v=dca8e5e1081788408087' data-ips></script>
+
+
+<script type='text/javascript' src='https://old.eci.gov.in/uploads/javascript_global/root_js_lang_1.js?v=dca8e5e1081788408087' data-ips></script>
+
+
+<script type='text/javascript' src='https://old.eci.gov.in/uploads/javascript_global/root_framework.js?v=dca8e5e1081788408087' data-ips></script>
+
+
+<script type='text/javascript' src='https://old.eci.gov.in/uploads/javascript_core/global_global_core.js?v=dca8e5e1081788408087' data-ips></script>
+
+
+<script type='text/javascript' src='https://old.eci.gov.in/uploads/javascript_global/root_front.js?v=dca8e5e1081788408087' data-ips></script>
+
+
+<script type='text/javascript' src='https://old.eci.gov.in/uploads/javascript_core/front_front_core.js?v=dca8e5e1081788408087' data-ips></script>
+
+
+<script type='text/javascript' src='https://old.eci.gov.in/uploads/javascript_downloads/front_front_view.js?v=dca8e5e1081788408087' data-ips></script>
+
+
+<script type='text/javascript' src='https://old.eci.gov.in/uploads/javascript_global/root_map.js?v=dca8e5e1081788408087' data-ips></script>
+
+
+
+	<script type='text/javascript'>
+		
+			ips.setSetting( 'date_format', jQuery.parseJSON('"wednesday dd mm yy"') );
+		
+			ips.setSetting( 'date_first_day', jQuery.parseJSON('0') );
+		
+			ips.setSetting( 'ipb_url_filter_option', jQuery.parseJSON('"none"') );
+		
+			ips.setSetting( 'url_filter_any_action', jQuery.parseJSON('"allow"') );
+		
+			ips.setSetting( 'bypass_profanity', jQuery.parseJSON('0') );
+		
+			ips.setSetting( 'emoji_style', jQuery.parseJSON('"native"') );
+		
+			ips.setSetting( 'emoji_shortcodes', jQuery.parseJSON('true') );
+		
+			ips.setSetting( 'emoji_ascii', jQuery.parseJSON('true') );
+		
+			ips.setSetting( 'emoji_cache', jQuery.parseJSON('1631866961') );
+		
+			ips.setSetting( 'image_jpg_quality', jQuery.parseJSON('90') );
+		
+			ips.setSetting( 'cloud2', jQuery.parseJSON('false') );
+		
+			ips.setSetting( 'isAnonymous', jQuery.parseJSON('false') );
+		
+		
+	</script>
+
+
+
+<script type='application/ld+json'>
+{
+    "@context": "http://www.schema.org",
+    "publisher": "https://old.eci.gov.in/#organization",
+    "@type": "WebSite",
+    "@id": "https://old.eci.gov.in/#website",
+    "mainEntityOfPage": "https://old.eci.gov.in/",
+    "name": "Election Commission of India",
+    "url": "https://old.eci.gov.in/",
+    "potentialAction": {
+        "type": "SearchAction",
+        "query-input": "required name=query",
+        "target": "https://old.eci.gov.in/forum/search/?q={query}"
+    },
+    "inLanguage": [
+        {
+            "@type": "Language",
+            "name": "English (USA)",
+            "alternateName": "en-IN"
+        }
+    ]
+}	
+</script>
+
+<script type='application/ld+json'>
+{
+    "@context": "http://www.schema.org",
+    "@type": "Organization",
+    "@id": "https://old.eci.gov.in/#organization",
+    "mainEntityOfPage": "https://old.eci.gov.in/",
+    "name": "Election Commission of India",
+    "url": "https://old.eci.gov.in/",
+    "logo": {
+        "@type": "ImageObject",
+        "@id": "https://old.eci.gov.in/#logo",
+        "url": "https://old.eci.gov.in/uploads/monthly_2022_06/logo.png.d0e6aee2d64193769bffbc6e720bbe96.png"
+    },
+    "sameAs": [
+        "https://www.facebook.com/eci/",
+        "https://www.youtube.com/eci/",
+        "https://twitter.com/ECISVEEP",
+        "https://www.instagram.com/ecisveep/"
+    ],
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Nirvachan Sadan Ashoka Road",
+        "addressLocality": "Delhi",
+        "addressRegion": "Delhi",
+        "postalCode": "110001",
+        "addressCountry": "IN"
+    }
+}	
+</script>
+
+<script type='application/ld+json'>
+{
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+                "@id": "https://old.eci.gov.in/files_05_old/",
+                "name": "Downloads"
+            }
+        },
+        {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+                "@id": "https://old.eci.gov.in/files/category/64-statistical-report/",
+                "name": "Statistical Report"
+            }
+        },
+        {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+                "@id": "https://old.eci.gov.in/files/category/1551-general-election-2019-including-vellore-pc/",
+                "name": "General Election 2019 (Including Vellore PC)"
+            }
+        },
+        {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+                "@id": "https://old.eci.gov.in/files/file/13539-33-constituency-wise-detailed-result/",
+                "name": "33. Constituency wise detailed result"
+            }
+        }
+    ]
+}	
+</script>
+
+
+
+<script type='text/javascript'>
+    (() => {
+        let gqlKeys = [];
+        for (let [k, v] of Object.entries(gqlKeys)) {
+            ips.setGraphQlData(k, v);
+        }
+    })();
+</script>
+
+            
+            
+        
+        <!--ipsQueryLog-->
+        <!--ipsCachingLog-->
+        
+        
+            
+        
+<script src="https://old.eci.gov.in/asset/jquery-3.7.0.min.js"></script>
+ <script src="https://old.eci.gov.in/asset/bootstrap.min.js"></script>
+<script type='text/javascript' src='https://old.eci.gov.in/asset/CstmjQuery.js' data-ips></script>   
+<script type='text/javascript' src='https://old.eci.gov.in/asset/CstmjQuerys.js' data-ips></script>   
+      
+
+    <script src="https://old.eci.gov.in/asset/cdnjs.cloudflare.com_ajax_libs_Swiper_4.4.2_js_swiper.min.js"></script>
+<script type="text/javascript">
+    var swiper = new Swiper('.swiper-container', {
+      preloadImages: false,
+      lazy: {
+        loadPrevNext: true,
+        preloaderClass: 'Ta-lazyPreloader-wrapper',
+      },
+      parallax: true,
+      grabCursor: true,
+      effect: 'slide',
+      loop: true,
+      
+  		autoplay: {
+    		delay: 6000,
+  		},
+      
+      
+      
+      	navigation: {
+    		nextEl: '.swiper-next',
+    		prevEl: '.swiper-prev',
+  	  	},
+      
+    });
+</script>
+<script type="text/javascript">
+;( function($, _, undefined){
+    "use strict";
+    ips.controller.register('ta_swiperslider.toggle', {
+        initialize: function () {
+          this.on( 'click', '[data-do="hide"]', this.dismissslider);
+        },
+				dismissslider: function (e) {
+    			if( $('.ta_Slider').hasClass('ta_hideSlider') ){
+    				ips.utils.cookie.unset('tahideSlider');
+    			} else {
+    				ips.utils.cookie.set('tahideSlider', true, true);
+    			}
+          $('.ta_Slider').toggleClass('ta_hideSlider');
+    		}
+        
+    });
+}(jQuery, _));
+</script>
+</body>
+</html>
+

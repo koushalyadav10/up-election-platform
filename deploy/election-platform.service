@@ -1,0 +1,17 @@
+[Unit]
+Description=UP Election Intelligence & War Room Platform
+After=network.target
+
+[Service]
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/eci
+Environment="PATH=/home/ubuntu/eci/venv/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/home/ubuntu/eci/venv/bin/uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --workers 2
+Restart=always
+RestartSec=5
+StandardOutput=append:/var/log/election-platform.log
+StandardError=append:/var/log/election-platform-error.log
+
+[Install]
+WantedBy=multi-user.target

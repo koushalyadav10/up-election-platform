@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --z-base: 0;
+    --z-sticky: 10;
+    --z-dropdown: 100;
+    --z-tooltip: 200;
+    --z-backdrop: 1000;
+    --z-modal: 1100;
+    --z-drawer-backdrop: 1200;
+    --z-drawer: 1300;
+    --z-command: 1400;
+    --z-toast: 1500;
+
+    --bg-paper: #F8FAFC;
+    --bg-stone: #F1F5F9;
+    --card-surface: #FFFFFF;
+    --border-subtle: #E2E8F0;
+    --text-primary: #0F172A;
+    --text-muted: #475569;
+    --accent-terracotta: #2563EB;
+    --accent-teal: #0D9488;
+    --accent-gold: #D97706;
+    --status-forest: #16A34A;
+    --status-brick: #DC2626;
+  }
+
+  .dark {
+    --bg-paper: #0B0F19;
+    --bg-stone: #111827;
+    --card-surface: #1F2937;
+    --border-subtle: #374151;
+    --text-primary: #F8FAFC;
+    --text-muted: #CBD5E1;
+  }
+
+  body {
+    background-color: var(--bg-paper);
+    color: var(--text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Tabular numbers for clean data tables and numbers */
+  .font-data,
+  .font-tabular-nums {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+}
+
+@layer utilities {
+  .z-base { z-index: var(--z-base); }
+  .z-sticky-bar { z-index: var(--z-sticky); }
+  .z-dropdown-menu { z-index: var(--z-dropdown); }
+  .z-tooltip-card { z-index: var(--z-tooltip); }
+  .z-modal-backdrop { z-index: var(--z-backdrop); }
+  .z-modal-container { z-index: var(--z-modal); }
+  .z-drawer-backdrop { z-index: var(--z-drawer-backdrop); }
+  .z-drawer-container { z-index: var(--z-drawer); }
+  .z-command-overlay { z-index: var(--z-command); }
+  .z-toast-alert { z-index: var(--z-toast); }
+
+  .modal-scroll-lock {
+    overflow: hidden !important;
+  }
+}
+
+/* Subtle Electoral Grid Background Motif */
+.electoral-grid-bg {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(23, 25, 24, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(23, 25, 24, 0.035) 1px, transparent 1px);
+}
+
+.dark .electoral-grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(241, 239, 232, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(241, 239, 232, 0.04) 1px, transparent 1px);
+}
+
+/* Custom scrollbar for data tables */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(98, 103, 98, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(98, 103, 98, 0.45);
+}
+
+/* Leaflet map overrides */
+.leaflet-container {
+  background-color: #ECEAE3 !important;
+  font-family: 'Manrope', system-ui, sans-serif !important;
+}
+
+.dark .leaflet-container {
+  background-color: #181B19 !important;
+}
+
+.leaflet-tooltip {
+  background: #FFFFFF !important;
+  color: #171918 !important;
+  border: 1px solid #E2DFD6 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+  padding: 8px 12px !important;
+  font-family: 'Manrope', sans-serif !important;
+}
+
+.dark .leaflet-tooltip {
+  background: #202421 !important;
+  color: #F1EFE8 !important;
+  border: 1px solid #2A302B !important;
+}
