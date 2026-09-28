@@ -85,6 +85,7 @@ export interface ConstituencyListItem {
 export interface CandidatePerformance {
   rank: number;
   name: string;
+  candidate_id?: number;
   party: string;
   party_name: string;
   symbol?: string;
@@ -251,9 +252,11 @@ export interface CloseContestItem {
   pc_no: number;
   pc_name: string;
   winner_name: string;
+  winner_candidate_id?: number;
   winner_party: string;
   winner_party_color: string;
   runner_up_name: string;
+  runner_up_candidate_id?: number;
   runner_up_party: string;
   runner_up_party_color: string;
   margin: number;

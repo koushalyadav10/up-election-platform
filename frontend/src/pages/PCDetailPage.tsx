@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { fetchConstituencyDetail, ConstituencyDetail } from '../services/api';
 import { SourceBadge } from '../components/common/SourceBadge';
+import { LeaderAvatar } from '../components/common/LeaderAvatar';
+import { LeaderDossierModal } from '../components/common/LeaderDossierModal';
+import { PartySymbol } from '../components/common/PartySymbol';
 import { 
   ArrowLeft, 
   Printer, 
@@ -30,6 +33,8 @@ export const PCDetailPage: React.FC<PCDetailPageProps> = ({ pcId, onBack, onSele
   const [detail, setDetail] = useState<ConstituencyDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedLeader, setSelectedLeader] = useState<{ name: string; candidateId?: number } | null>(null);
+  const [isLeaderModalOpen, setIsLeaderModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     loadDetail(selectedYear);
@@ -407,16 +412,35 @@ export const PCDetailPage: React.FC<PCDetailPageProps> = ({ pcId, onBack, onSele
                     {c.rank}
                     {c.is_winner && <Award className="w-3.5 h-3.5 text-amber-500 inline ml-1" />}
                   </td>
-                  <td className="py-2.5 px-3 font-medium text-slate-900 dark:text-white">
-                    {c.name}
+                  <td className="py-2.5 px-3">
+                    <div className="flex items-center gap-2.5">
+                      <LeaderAvatar
+                        name={c.name}
+                        candidateId={c.candidate_id}
+                        party={c.party}
+                        partyColor={c.color}
+                        size="xs"
+                        shape="passport"
+                        showBadge={true}
+                        onClick={() => {
+                          setSelectedLeader({ name: c.name, candidateId: c.candidate_id });
+                          setIsLeaderModalOpen(true);
+                        }}
+                      />
+                      <button
+                        onClick={() => {
+                          setSelectedLeader({ name: c.name, candidateId: c.candidate_id });
+                          setIsLeaderModalOpen(true);
+                        }}
+                        className="font-medium text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 text-left transition-colors"
+                        title="नेताजी संपूर्ण प्रोफाइल व चुनावी इतिहास देखें"
+                      >
+                        {c.name}
+                      </button>
+                    </div>
                   </td>
                   <td className="py-2.5 px-3">
-                    <span 
-                      className="px-2 py-0.5 rounded text-[11px] font-bold text-white shadow-xs"
-                      style={{ backgroundColor: c.color }}
-                    >
-                      {c.party}
-                    </span>
+                    <PartySymbol party={c.party} size="xs" variant="pill" showName={true} />
                   </td>
                   <td className="py-2.5 px-3 font-mono text-right text-slate-600 dark:text-slate-400">
                     {c.general_votes.toLocaleString()}
@@ -497,6 +521,16 @@ export const PCDetailPage: React.FC<PCDetailPageProps> = ({ pcId, onBack, onSele
         </div>
       </div>
 
+      {/* Embedded Leader & Netaji Dossier Modal */}
+      <LeaderDossierModal
+        candidateId={selectedLeader?.candidateId}
+        candidateName={selectedLeader?.name}
+        isOpen={isLeaderModalOpen}
+        onClose={() => {
+          setIsLeaderModalOpen(false);
+          setSelectedLeader(null);
+        }}
+      />
     </div>
   );
 };

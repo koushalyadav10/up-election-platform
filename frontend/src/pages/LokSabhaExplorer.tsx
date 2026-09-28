@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { fetchConstituencies, ConstituencyListItem } from '../services/api';
 import { SourceBadge } from '../components/common/SourceBadge';
+import { LeaderAvatar } from '../components/common/LeaderAvatar';
+import { LeaderDossierModal } from '../components/common/LeaderDossierModal';
+import { PartySymbol } from '../components/common/PartySymbol';
 import { Search, ArrowUpDown, Filter, Download, ChevronRight, Calendar, Award, Users, Vote } from 'lucide-react';
 
 interface LokSabhaExplorerProps {
@@ -15,6 +18,8 @@ export const LokSabhaExplorer: React.FC<LokSabhaExplorerProps> = ({ onSelectPC }
   const [search, setSearch] = useState<string>('');
   const [sortBy, setSortBy] = useState<'pc_no' | 'margin' | 'turnout_pct' | 'name'>('pc_no');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [selectedLeader, setSelectedLeader] = useState<{ name: string; candidateId?: number } | null>(null);
+  const [isLeaderModalOpen, setIsLeaderModalOpen] = useState(false);
 
   useEffect(() => {
     loadData(selectedYear);
@@ -263,14 +268,34 @@ export const LokSabhaExplorer: React.FC<LokSabhaExplorerProps> = ({ onSelectPC }
                       )}
                     </td>
 
-                    <td className="py-2.5 px-3">
-                      <div className="flex items-center gap-1.5">
-                        <span className={`px-2 py-0.5 rounded text-[11px] font-bold border ${getPartyBadgeColor(pc.winner.party)}`}>
-                          {pc.winner.party}
-                        </span>
-                        <span className="font-semibold text-[#171918] dark:text-[#F1EFE8] truncate max-w-[160px]">
-                          {pc.winner.name}
-                        </span>
+                    <td className="py-2.5 px-3" onClick={e => e.stopPropagation()}>
+                      <div className="flex items-center gap-2">
+                        <LeaderAvatar
+                          name={pc.winner.name}
+                          party={pc.winner.party}
+                          size="xs"
+                          shape="passport"
+                          showBadge={true}
+                          onClick={() => {
+                            setSelectedLeader({ name: pc.winner.name });
+                            setIsLeaderModalOpen(true);
+                          }}
+                        />
+                        <div className="flex flex-col">
+                          <button
+                            onClick={() => {
+                              setSelectedLeader({ name: pc.winner.name });
+                              setIsLeaderModalOpen(true);
+                            }}
+                            className="font-bold text-[#171918] dark:text-[#F1EFE8] hover:text-[#B85C38] text-left transition-colors truncate max-w-[150px]"
+                            title="नेताजी प्रोफाइल देखें"
+                          >
+                            {pc.winner.name}
+                          </button>
+                          <div className="mt-0.5">
+                            <PartySymbol party={pc.winner.party} size="xs" variant="pill" showName={false} />
+                          </div>
+                        </div>
                       </div>
                     </td>
 
@@ -279,14 +304,34 @@ export const LokSabhaExplorer: React.FC<LokSabhaExplorerProps> = ({ onSelectPC }
                       <div className="text-[10px] text-gray-400">({pc.winner.vote_pct.toFixed(1)}%)</div>
                     </td>
 
-                    <td className="py-2.5 px-3">
-                      <div className="flex items-center gap-1.5">
-                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium border ${getPartyBadgeColor(pc.runner_up.party)}`}>
-                          {pc.runner_up.party}
-                        </span>
-                        <span className="text-gray-600 dark:text-gray-400 text-xs truncate max-w-[150px]">
-                          {pc.runner_up.name}
-                        </span>
+                    <td className="py-2.5 px-3" onClick={e => e.stopPropagation()}>
+                      <div className="flex items-center gap-2">
+                        <LeaderAvatar
+                          name={pc.runner_up.name}
+                          party={pc.runner_up.party}
+                          size="xs"
+                          shape="passport"
+                          showBadge={true}
+                          onClick={() => {
+                            setSelectedLeader({ name: pc.runner_up.name });
+                            setIsLeaderModalOpen(true);
+                          }}
+                        />
+                        <div className="flex flex-col">
+                          <button
+                            onClick={() => {
+                              setSelectedLeader({ name: pc.runner_up.name });
+                              setIsLeaderModalOpen(true);
+                            }}
+                            className="text-gray-600 dark:text-gray-400 hover:text-[#B85C38] text-left transition-colors text-xs truncate max-w-[140px]"
+                            title="नेताजी प्रोफाइल देखें"
+                          >
+                            {pc.runner_up.name}
+                          </button>
+                          <div className="mt-0.5">
+                            <PartySymbol party={pc.runner_up.party} size="xs" variant="pill" showName={false} />
+                          </div>
+                        </div>
                       </div>
                     </td>
 
@@ -317,6 +362,16 @@ export const LokSabhaExplorer: React.FC<LokSabhaExplorerProps> = ({ onSelectPC }
         )}
       </div>
 
+      {/* Embedded Leader & Netaji Dossier Modal */}
+      <LeaderDossierModal
+        candidateId={selectedLeader?.candidateId}
+        candidateName={selectedLeader?.name}
+        isOpen={isLeaderModalOpen}
+        onClose={() => {
+          setIsLeaderModalOpen(false);
+          setSelectedLeader(null);
+        }}
+      />
     </div>
   );
 };

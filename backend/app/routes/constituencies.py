@@ -125,6 +125,7 @@ def get_constituency_detail(
     for c in c_res:
         candidates_list.append({
             "rank": c.rank,
+            "candidate_id": c.candidate_id,
             "name": c.candidate.name if c.candidate else "Unknown",
             "party": c.party.code if c.party else "IND",
             "party_name": c.party.name if c.party else "Independent",

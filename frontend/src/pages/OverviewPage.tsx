@@ -9,6 +9,10 @@ import { UPMap } from '../components/maps/UPMap';
 import { SourceBadge } from '../components/common/SourceBadge';
 import { PartySeatsModal } from '../components/common/PartySeatsModal';
 import { ACDossierModal } from '../components/common/ACDossierModal';
+import { MobileExploreHub } from '../components/layout/MobileExploreHub';
+import { LeaderAvatar } from '../components/common/LeaderAvatar';
+import { LeaderDossierModal } from '../components/common/LeaderDossierModal';
+import { PartySymbol } from '../components/common/PartySymbol';
 import { 
   Layers, 
   Users, 
@@ -54,6 +58,8 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
     color: string;
   } | null>(null);
   const [modalACNo, setModalACNo] = useState<number | null>(null);
+  const [selectedLeader, setSelectedLeader] = useState<{ name: string; candidateId?: number } | null>(null);
+  const [isLeaderModalOpen, setIsLeaderModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
@@ -136,6 +142,16 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
 
         </div>
       </section>
+ 
+      {/* 1.5 Mobile-Only Dedicated Navigation & Exploration Card Hub */}
+      <MobileExploreHub
+        onNavigateTab={onNavigateTab}
+        onOpenSearch={onOpenSearch}
+        onOpenLeaderDossier={(name, candidateId) => {
+          setSelectedLeader({ name, candidateId });
+          setIsLeaderModalOpen(true);
+        }}
+      />
 
       {/* 2. Headline Database KPIs Ribbon */}
       <section className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 text-xs">
@@ -351,27 +367,89 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
                   <td className="p-3 font-mono font-bold text-slate-500">{c.pc_no}</td>
                   <td className="p-3 font-bold text-slate-900 dark:text-white">{c.pc_name}</td>
                   <td className="p-3">
-                    <span className="font-semibold text-slate-900 dark:text-white">{c.winner_name}</span>
-                    <span className="ml-1.5 font-bold font-mono text-[10px] px-1.5 py-0.2 rounded" style={{ backgroundColor: `${c.winner_party_color}20`, color: c.winner_party_color }}>
-                      {c.winner_party}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <LeaderAvatar
+                        name={c.winner_name}
+                        candidateId={c.winner_candidate_id}
+                        party={c.winner_party}
+                        partyColor={c.winner_party_color}
+                        size="xs"
+                        shape="passport"
+                        showBadge={true}
+                        onClick={() => {
+                          setSelectedLeader({ name: c.winner_name, candidateId: c.winner_candidate_id });
+                          setIsLeaderModalOpen(true);
+                        }}
+                      />
+                      <div className="flex flex-col">
+                        <button
+                          onClick={() => {
+                            setSelectedLeader({ name: c.winner_name, candidateId: c.winner_candidate_id });
+                            setIsLeaderModalOpen(true);
+                          }}
+                          className="font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 text-left transition-colors truncate max-w-[130px] sm:max-w-[180px]"
+                        >
+                          {c.winner_name}
+                        </button>
+                        <div className="mt-0.5">
+                          <PartySymbol party={c.winner_party} size="xs" variant="pill" showName={false} />
+                        </div>
+                      </div>
+                    </div>
                   </td>
                   <td className="p-3">
-                    <span className="font-semibold text-slate-700 dark:text-slate-300">{c.runner_up_name}</span>
-                    <span className="ml-1.5 font-bold font-mono text-[10px] px-1.5 py-0.2 rounded" style={{ backgroundColor: `${c.runner_up_party_color}20`, color: c.runner_up_party_color }}>
-                      {c.runner_up_party}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <LeaderAvatar
+                        name={c.runner_up_name}
+                        candidateId={c.runner_up_candidate_id}
+                        party={c.runner_up_party}
+                        partyColor={c.runner_up_party_color}
+                        size="xs"
+                        shape="passport"
+                        showBadge={true}
+                        onClick={() => {
+                          setSelectedLeader({ name: c.runner_up_name, candidateId: c.runner_up_candidate_id });
+                          setIsLeaderModalOpen(true);
+                        }}
+                      />
+                      <div className="flex flex-col">
+                        <button
+                          onClick={() => {
+                            setSelectedLeader({ name: c.runner_up_name, candidateId: c.runner_up_candidate_id });
+                            setIsLeaderModalOpen(true);
+                          }}
+                          className="font-semibold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 text-left transition-colors truncate max-w-[130px] sm:max-w-[180px]"
+                        >
+                          {c.runner_up_name}
+                        </button>
+                        <div className="mt-0.5">
+                          <PartySymbol party={c.runner_up_party} size="xs" variant="pill" showName={false} />
+                        </div>
+                      </div>
+                    </div>
                   </td>
                   <td className="p-3 text-right font-mono font-bold text-red-600 dark:text-red-400">
                     {c.margin.toLocaleString()} votes
                   </td>
                   <td className="p-3 text-right">
-                    <button
-                      onClick={() => onSelectPC(c.pc_id)}
-                      className="px-2.5 py-1 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 rounded-lg font-bold hover:bg-blue-100 transition-colors"
-                    >
-                      Dossier →
-                    </button>
+                    <div className="flex items-center justify-end gap-1.5">
+                      <button
+                        onClick={() => {
+                          setSelectedLeader({ name: c.winner_name, candidateId: c.winner_candidate_id });
+                          setIsLeaderModalOpen(true);
+                        }}
+                        className="px-2 py-1 bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 rounded-lg font-bold hover:bg-amber-100 transition-colors text-[11px] whitespace-nowrap"
+                        title="विजेता नेताजी का चुनावी इतिहास देखें"
+                      >
+                        नेताजी प्रोफाइल 👤
+                      </button>
+                      <button
+                        onClick={() => onSelectPC(c.pc_id)}
+                        className="px-2 py-1 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 rounded-lg font-bold hover:bg-blue-100 transition-colors text-[11px] whitespace-nowrap"
+                      >
+                        PC Dossier →
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -385,6 +463,17 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
         acNo={modalACNo}
         isOpen={modalACNo !== null}
         onClose={() => setModalACNo(null)}
+      />
+
+      {/* Embedded Leader & Netaji Dossier Modal */}
+      <LeaderDossierModal
+        candidateId={selectedLeader?.candidateId}
+        candidateName={selectedLeader?.name}
+        isOpen={isLeaderModalOpen}
+        onClose={() => {
+          setIsLeaderModalOpen(false);
+          setSelectedLeader(null);
+        }}
       />
 
     </div>
