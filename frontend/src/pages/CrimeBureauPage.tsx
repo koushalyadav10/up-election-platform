@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   ShieldCheck, 
+  ShieldAlert,
   FileText, 
   Search, 
   Bot, 
@@ -35,13 +36,11 @@ import {
   CrimeAIResponse
 } from '../services/api';
 import { SourceBadge } from '../components/common/SourceBadge';
-import { useLanguage } from '../context/LanguageContext';
 
 export const CrimeBureauPage: React.FC = () => {
-  const { language } = useLanguage();
-
   // State
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [overview, setOverview] = useState<CrimeOverviewResponse | null>(null);
   const [selectedYear, setSelectedYear] = useState<number>(2022);
   const [districtsData, setDistrictsData] = useState<CrimeDistrictItem[]>([]);
@@ -65,23 +64,24 @@ export const CrimeBureauPage: React.FC = () => {
 
   const loadData = async () => {
     setLoading(true);
+    setError(null);
     try {
       const [ovData, distData] = await Promise.all([
         fetchCrimeOverview(),
         fetchCrimeDistricts()
       ]);
       setOverview(ovData);
-      setDistrictsData(distData.districts || []);
-      if (ovData.available_years && ovData.available_years.length > 0) {
-        // default to latest official year, preferably 2022
+      setDistrictsData(distData?.districts || []);
+      if (ovData?.available_years && ovData.available_years.length > 0) {
         if (ovData.available_years.includes(2022)) {
           setSelectedYear(2022);
         } else {
           setSelectedYear(ovData.available_years[ovData.available_years.length - 1]);
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to load Crime Bureau data:', err);
+      setError(err?.message || 'Failed to load official crime data from server.');
     } finally {
       setLoading(false);
     }
@@ -113,11 +113,52 @@ export const CrimeBureauPage: React.FC = () => {
     }
   };
 
-  const currentYearItem: CrimeYearTimelineItem | undefined = overview?.timeline.find(t => t.year === selectedYear);
+  // 1. Loading State
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
+        <div className="relative w-12 h-12">
+          <div className="absolute inset-0 rounded-full border-4 border-red-200 dark:border-red-950 animate-ping"></div>
+          <div className="w-12 h-12 rounded-full border-4 border-t-red-600 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+        </div>
+        <div className="text-center space-y-1">
+          <h3 className="font-display font-bold text-base text-slate-800 dark:text-slate-200">
+            Loading Official NCRB Crime Bureau Repository...
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Fetching verified 2000–2024 crime series, police investigation disposal, and court trial rates.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
-  const selectedDistrict = districtsData.find(
-    d => d.district_name.toLowerCase() === selectedDistrictName.toLowerCase()
-  ) || districtsData[0];
+  // 2. Error / Offline State
+  if (error || !overview) {
+    return (
+      <div className="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center space-y-4 max-w-lg mx-auto my-12 shadow-sm">
+        <AlertCircle className="w-10 h-10 text-red-500 mx-auto" />
+        <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white">
+          Unable to Load Crime Bureau Records
+        </h3>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          {error || 'Could not connect to the official NCRB database.'}
+        </p>
+        <button
+          onClick={loadData}
+          className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition-colors cursor-pointer shadow-sm"
+        >
+          Retry Loading
+        </button>
+      </div>
+    );
+  }
+
+  const currentYearItem: CrimeYearTimelineItem | undefined = overview.timeline?.find(t => t.year === selectedYear) || overview.timeline?.[0];
+
+  const selectedDistrict: CrimeDistrictItem | null = districtsData.length > 0
+    ? (districtsData.find(d => d.district_name.toLowerCase() === selectedDistrictName.toLowerCase()) || districtsData[0])
+    : null;
 
   const filteredDistricts = districtsData.filter(d => 
     d.district_name.toLowerCase().includes(districtSearch.toLowerCase())
@@ -147,7 +188,7 @@ export const CrimeBureauPage: React.FC = () => {
             </div>
 
             <h1 className="font-display font-black text-2xl sm:text-4xl tracking-tight text-white">
-              {language === 'hi' ? 'उत्तर प्रदेश अपराध ब्यूरो' : 'Uttar Pradesh Crime Bureau'}
+              Uttar Pradesh Crime Bureau
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
               Official Crime Intelligence repository for Uttar Pradesh. Sourced exclusively from certified annual publications of the{' '}
@@ -182,126 +223,128 @@ export const CrimeBureauPage: React.FC = () => {
       {/* ------------------------------------------------------------- */}
       {/* 2. EXECUTIVE BENCHMARK COMPARISON SCORECARD (2012 vs 2017 vs 2022) */}
       {/* ------------------------------------------------------------- */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
-          <div>
-            <h2 className="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
-              <Scale className="w-5 h-5 text-red-600 dark:text-red-400" />
-              <span>State Benchmark Scorecard: Key Crime Indices (2012 vs 2017 vs 2022)</span>
-            </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Direct comparison across administration transition benchmarks sourced from certified NCRB annual editions.
-            </p>
+      {overview.comparison_scorecard && overview.comparison_scorecard.length > 0 && (
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+            <div>
+              <h2 className="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                <Scale className="w-5 h-5 text-red-600 dark:text-red-400" />
+                <span>State Benchmark Scorecard: Key Crime Indices (2012 vs 2017 vs 2022)</span>
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Direct comparison across administration transition benchmarks sourced from certified NCRB annual editions.
+              </p>
+            </div>
+            <SourceBadge type="OFFICIAL" document="NCRB Crime in India (2012, 2017, 2022)" />
           </div>
-          <SourceBadge type="OFFICIAL" document="NCRB Crime in India (2012, 2017, 2022)" />
-        </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">
-                <th className="py-3 px-3">Crime Category</th>
-                <th className="py-3 px-3 text-right">2012 (SP Regime Entry)</th>
-                <th className="py-3 px-3 text-right">2017 (BJP Regime Entry)</th>
-                <th className="py-3 px-3 text-right">2022 (Latest Official)</th>
-                <th className="py-3 px-3 text-center">Net Trend (2017–2022)</th>
-                <th className="py-3 px-3 text-center">Provenance</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-sans">
-              {overview?.comparison_scorecard.map((item, idx) => {
-                const val2012 = item.values['2012'];
-                const val2017 = item.values['2017'];
-                const val2022 = item.values['2022'];
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">
+                  <th className="py-3 px-3">Crime Category</th>
+                  <th className="py-3 px-3 text-right">2012 (SP Regime Entry)</th>
+                  <th className="py-3 px-3 text-right">2017 (BJP Regime Entry)</th>
+                  <th className="py-3 px-3 text-right">2022 (Latest Official)</th>
+                  <th className="py-3 px-3 text-center">Net Trend (2017–2022)</th>
+                  <th className="py-3 px-3 text-center">Provenance</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-sans">
+                {overview.comparison_scorecard.map((item, idx) => {
+                  const val2012 = item.values?.['2012'];
+                  const val2017 = item.values?.['2017'];
+                  const val2022 = item.values?.['2022'];
 
-                const cases17 = val2017?.cases;
-                const cases22 = val2022?.cases;
-                let trendEl = <span className="text-slate-400 font-mono">—</span>;
-                if (cases17 && cases22) {
-                  const diff = cases22 - cases17;
-                  const pct = ((diff / cases17) * 100).toFixed(1);
-                  if (diff > 0) {
-                    trendEl = (
-                      <span className="inline-flex items-center gap-1 font-bold text-red-600 dark:text-red-400">
-                        <TrendingUp className="w-3.5 h-3.5" />
-                        +{diff.toLocaleString()} (+{pct}%)
-                      </span>
-                    );
-                  } else {
-                    trendEl = (
-                      <span className="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400">
-                        <TrendingDown className="w-3.5 h-3.5" />
-                        {diff.toLocaleString()} ({pct}%)
-                      </span>
-                    );
+                  const cases17 = val2017?.cases;
+                  const cases22 = val2022?.cases;
+                  let trendEl = <span className="text-slate-400 font-mono">—</span>;
+                  if (cases17 && cases22) {
+                    const diff = cases22 - cases17;
+                    const pct = ((diff / cases17) * 100).toFixed(1);
+                    if (diff > 0) {
+                      trendEl = (
+                        <span className="inline-flex items-center gap-1 font-bold text-red-600 dark:text-red-400">
+                          <TrendingUp className="w-3.5 h-3.5" />
+                          +{diff.toLocaleString()} (+{pct}%)
+                        </span>
+                      );
+                    } else {
+                      trendEl = (
+                        <span className="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400">
+                          <TrendingDown className="w-3.5 h-3.5" />
+                          {diff.toLocaleString()} ({pct}%)
+                        </span>
+                      );
+                    }
                   }
-                }
 
-                return (
-                  <tr key={idx} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
-                    <td className="py-3 px-3 font-bold text-slate-800 dark:text-slate-200">
-                      {item.metric}
-                    </td>
-                    <td className="py-3 px-3 text-right font-mono font-medium">
-                      {val2012?.cases !== null && val2012?.cases !== undefined ? (
-                        <div>
-                          <span className="text-slate-900 dark:text-white font-bold">{val2012.cases.toLocaleString()}</span>
-                          {val2012.crime_rate && <div className="text-[10px] text-slate-400">Rate: {val2012.crime_rate}</div>}
-                        </div>
-                      ) : (
-                        <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A (Not Classified)</span>
-                      )}
-                    </td>
-                    <td className="py-3 px-3 text-right font-mono font-medium">
-                      {val2017?.cases !== null && val2017?.cases !== undefined ? (
-                        <div>
-                          <span className="text-slate-900 dark:text-white font-bold">{val2017.cases.toLocaleString()}</span>
-                          {val2017.crime_rate && <div className="text-[10px] text-slate-400">Rate: {val2017.crime_rate}</div>}
-                        </div>
-                      ) : (
-                        <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A (Not Classified)</span>
-                      )}
-                    </td>
-                    <td className="py-3 px-3 text-right font-mono font-medium">
-                      {val2022?.cases !== null && val2022?.cases !== undefined ? (
-                        <div>
-                          <span className="text-slate-900 dark:text-white font-bold text-sm text-red-600 dark:text-red-400">
-                            {val2022.cases.toLocaleString()}
-                          </span>
-                          {val2022.crime_rate && <div className="text-[10px] text-slate-400">Rate: {val2022.crime_rate}</div>}
-                        </div>
-                      ) : (
-                        <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A</span>
-                      )}
-                    </td>
-                    <td className="py-3 px-3 text-center">
-                      {trendEl}
-                    </td>
-                    <td className="py-3 px-3 text-center">
-                      <button
-                        onClick={() => {
-                          if (val2022) {
-                            setSourceModalMetric({
-                              name: item.metric,
-                              detail: val2022,
-                              year: 2022,
-                              reportName: "NCRB Crime in India 2022 (70th Edition)"
-                            });
-                          }
-                        }}
-                        className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline font-semibold flex items-center justify-center gap-1 mx-auto cursor-pointer"
-                      >
-                        <FileText className="w-3 h-3" />
-                        <span>Source</span>
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                  return (
+                    <tr key={idx} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
+                      <td className="py-3 px-3 font-bold text-slate-800 dark:text-slate-200">
+                        {item.metric}
+                      </td>
+                      <td className="py-3 px-3 text-right font-mono font-medium">
+                        {val2012?.cases !== null && val2012?.cases !== undefined ? (
+                          <div>
+                            <span className="text-slate-900 dark:text-white font-bold">{val2012.cases.toLocaleString()}</span>
+                            {val2012.crime_rate && <div className="text-[10px] text-slate-400">Rate: {val2012.crime_rate}</div>}
+                          </div>
+                        ) : (
+                          <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A (Not Classified)</span>
+                        )}
+                      </td>
+                      <td className="py-3 px-3 text-right font-mono font-medium">
+                        {val2017?.cases !== null && val2017?.cases !== undefined ? (
+                          <div>
+                            <span className="text-slate-900 dark:text-white font-bold">{val2017.cases.toLocaleString()}</span>
+                            {val2017.crime_rate && <div className="text-[10px] text-slate-400">Rate: {val2017.crime_rate}</div>}
+                          </div>
+                        ) : (
+                          <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A (Not Classified)</span>
+                        )}
+                      </td>
+                      <td className="py-3 px-3 text-right font-mono font-medium">
+                        {val2022?.cases !== null && val2022?.cases !== undefined ? (
+                          <div>
+                            <span className="text-slate-900 dark:text-white font-bold text-sm text-red-600 dark:text-red-400">
+                              {val2022.cases.toLocaleString()}
+                            </span>
+                            {val2022.crime_rate && <div className="text-[10px] text-slate-400">Rate: {val2022.crime_rate}</div>}
+                          </div>
+                        ) : (
+                          <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A</span>
+                        )}
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        {trendEl}
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        <button
+                          onClick={() => {
+                            if (val2022) {
+                              setSourceModalMetric({
+                                name: item.metric,
+                                detail: val2022,
+                                year: 2022,
+                                reportName: "NCRB Crime in India 2022 (70th Edition)"
+                              });
+                            }
+                          }}
+                          className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline font-semibold flex items-center justify-center gap-1 mx-auto cursor-pointer"
+                        >
+                          <FileText className="w-3 h-3" />
+                          <span>Source</span>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* ------------------------------------------------------------- */}
       {/* 3. HISTORICAL TIMELINE SELECTOR (2000–2024) (Section 31 & 39) */}
@@ -329,7 +372,7 @@ export const CrimeBureauPage: React.FC = () => {
 
         {/* Year Pills */}
         <div className="flex flex-wrap items-center gap-2 pt-1">
-          {overview?.available_years.map(y => {
+          {overview.available_years?.map(y => {
             const isSelected = y === selectedYear;
             return (
               <button
@@ -376,7 +419,7 @@ export const CrimeBureauPage: React.FC = () => {
       {/* ------------------------------------------------------------- */}
       {/* 4. STATE CRIME CATEGORY CARDS (Section 34, 39, 40)            */}
       {/* ------------------------------------------------------------- */}
-      {currentYearItem && (
+      {currentYearItem && currentYearItem.categories && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
@@ -390,7 +433,7 @@ export const CrimeBureauPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {Object.entries(currentYearItem.categories).map(([catName, catDetail]) => {
-              const isAvailable = catDetail.data_status === 'AVAILABLE' && catDetail.cases !== null;
+              const isAvailable = catDetail?.data_status === 'AVAILABLE' && catDetail?.cases !== null;
 
               return (
                 <div 
@@ -416,9 +459,9 @@ export const CrimeBureauPage: React.FC = () => {
                     {isAvailable ? (
                       <div className="space-y-1">
                         <div className="font-mono font-black text-2xl text-slate-900 dark:text-white tracking-tight">
-                          {catDetail.cases?.toLocaleString()}
+                          {catDetail?.cases?.toLocaleString()}
                         </div>
-                        {catDetail.crime_rate !== null && (
+                        {catDetail?.crime_rate !== null && catDetail?.crime_rate !== undefined && (
                           <div className="text-xs font-mono text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
                             <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">
                               Rate: {catDetail.crime_rate}
@@ -436,8 +479,8 @@ export const CrimeBureauPage: React.FC = () => {
 
                   {/* Provenance Footer */}
                   <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
-                    <span className="text-slate-400 truncate max-w-[150px]" title={catDetail.table_number || currentYearItem.table_number}>
-                      {catDetail.table_number || currentYearItem.table_number || 'Official Table'}
+                    <span className="text-slate-400 truncate max-w-[150px]" title={catDetail?.table_number || currentYearItem.table_number}>
+                      {catDetail?.table_number || currentYearItem.table_number || 'Official Table'}
                     </span>
                     <button
                       onClick={() => setSourceModalMetric({
@@ -606,7 +649,7 @@ export const CrimeBureauPage: React.FC = () => {
 
             <div className="max-h-80 overflow-y-auto space-y-1 pr-1 border border-slate-100 dark:border-slate-800 rounded-xl p-1">
               {filteredDistricts.map(d => {
-                const isSelected = d.district_name.toLowerCase() === selectedDistrict.district_name.toLowerCase();
+                const isSelected = selectedDistrict && d.district_name.toLowerCase() === selectedDistrict.district_name.toLowerCase();
                 return (
                   <button
                     key={d.district_name}
@@ -627,100 +670,106 @@ export const CrimeBureauPage: React.FC = () => {
 
           {/* District Detail & Boundary Split Metadata */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-3">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white">
-                    {selectedDistrict.district_name}
-                  </h3>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
-                    selectedDistrict.boundary_status === 'STABLE'
-                      ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300'
-                      : 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300'
-                  }`}>
-                    {selectedDistrict.boundary_status}
-                  </span>
-                </div>
-                {selectedDistrict.parent_district && (
-                  <span className="text-xs text-slate-500 font-mono">
-                    Carved From: <strong>{selectedDistrict.parent_district}</strong> ({selectedDistrict.created_year || 'Historical'})
-                  </span>
-                )}
-              </div>
-
-              {/* Boundary / Renaming Historical Context Notice (Section 43) */}
-              {selectedDistrict.boundary_status !== 'STABLE' && (
-                <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-xs text-amber-800 dark:text-amber-300 space-y-1">
-                  <div className="font-bold flex items-center gap-1.5">
-                    <AlertCircle className="w-3.5 h-3.5" />
-                    <span>Boundary Evolution Note (Section 43 Compliance):</span>
+            {selectedDistrict ? (
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white">
+                      {selectedDistrict.district_name}
+                    </h3>
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                      selectedDistrict.boundary_status === 'STABLE'
+                        ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300'
+                        : 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300'
+                    }`}>
+                      {selectedDistrict.boundary_status}
+                    </span>
                   </div>
-                  <p className="text-[11px] leading-relaxed">
-                    {selectedDistrict.parent_district ? (
-                      `This district was reorganized and carved out of ${selectedDistrict.parent_district} around ${selectedDistrict.created_year || 'the reorganization era'}. Pre-reorganization crime statistics are recorded under the parent district.`
-                    ) : selectedDistrict.renamed_year ? (
-                      `Formerly named ${selectedDistrict.historical_names.join(', ')} until ${selectedDistrict.renamed_year}. NCRB archives prior to ${selectedDistrict.renamed_year} record statistics under its previous official designation.`
-                    ) : (
-                      `Jurisdiction reflects administrative restructuring or police commissionerate transition.`
-                    )}
-                  </p>
-                </div>
-              )}
-
-              {/* District Verified Crime Stats Table */}
-              <div className="space-y-2 pt-2">
-                <div className="font-bold text-xs text-slate-800 dark:text-slate-200">
-                  Official District Statistics Recorded in NCRB Reports:
+                  {selectedDistrict.parent_district && (
+                    <span className="text-xs text-slate-500 font-mono">
+                      Carved From: <strong>{selectedDistrict.parent_district}</strong> ({selectedDistrict.created_year || 'Historical'})
+                    </span>
+                  )}
                 </div>
 
-                {Object.keys(selectedDistrict.yearly_stats).length > 0 ? (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs">
-                      <thead>
-                        <tr className="border-b border-slate-200 dark:border-slate-700 text-slate-400 font-mono text-[11px]">
-                          <th className="py-2 px-2">Year</th>
-                          <th className="py-2 px-2">Crime Metric</th>
-                          <th className="py-2 px-2 text-right">Cases</th>
-                          <th className="py-2 px-2 text-center">Status</th>
-                          <th className="py-2 px-2 text-right">Table &amp; Page</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-200 dark:divide-slate-700/60 font-sans">
-                        {Object.entries(selectedDistrict.yearly_stats).map(([yr, ydata]) => (
-                          <React.Fragment key={yr}>
-                            {Object.entries(ydata.metrics).map(([mName, mVal], mIdx) => (
-                              <tr key={`${yr}-${mIdx}`} className="hover:bg-slate-100/60 dark:hover:bg-slate-700/40">
-                                <td className="py-2 px-2 font-mono font-bold text-slate-800 dark:text-slate-200">
-                                  {mIdx === 0 ? yr : ''}
-                                </td>
-                                <td className="py-2 px-2 font-medium text-slate-700 dark:text-slate-300">
-                                  {mName}
-                                </td>
-                                <td className="py-2 px-2 text-right font-mono font-bold text-slate-900 dark:text-white">
-                                  {mVal.cases?.toLocaleString() || 'N/A'}
-                                </td>
-                                <td className="py-2 px-2 text-center">
-                                  <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
-                                    {mVal.data_status}
-                                  </span>
-                                </td>
-                                <td className="py-2 px-2 text-right font-mono text-[10px] text-slate-400">
-                                  {ydata.table_number || 'District Table'}, {ydata.page_number || 'Page Ref'}
-                                </td>
-                              </tr>
-                            ))}
-                          </React.Fragment>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className="p-3 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs text-slate-500">
-                    District-level breakdown for {selectedDistrict.district_name} is consolidated under the regional commissionerate/parent district in this series.
+                {/* Boundary / Renaming Historical Context Notice (Section 43) */}
+                {selectedDistrict.boundary_status !== 'STABLE' && (
+                  <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-xs text-amber-800 dark:text-amber-300 space-y-1">
+                    <div className="font-bold flex items-center gap-1.5">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      <span>Boundary Evolution Note (Section 43 Compliance):</span>
+                    </div>
+                    <p className="text-[11px] leading-relaxed">
+                      {selectedDistrict.parent_district ? (
+                        `This district was reorganized and carved out of ${selectedDistrict.parent_district} around ${selectedDistrict.created_year || 'the reorganization era'}. Pre-reorganization crime statistics are recorded under the parent district.`
+                      ) : selectedDistrict.renamed_year ? (
+                        `Formerly named ${(selectedDistrict.historical_names || []).join(', ')} until ${selectedDistrict.renamed_year}. NCRB archives prior to ${selectedDistrict.renamed_year} record statistics under its previous official designation.`
+                      ) : (
+                        `Jurisdiction reflects administrative restructuring or police commissionerate transition.`
+                      )}
+                    </p>
                   </div>
                 )}
+
+                {/* District Verified Crime Stats Table */}
+                <div className="space-y-2 pt-2">
+                  <div className="font-bold text-xs text-slate-800 dark:text-slate-200">
+                    Official District Statistics Recorded in NCRB Reports:
+                  </div>
+
+                  {selectedDistrict.yearly_stats && Object.keys(selectedDistrict.yearly_stats).length > 0 ? (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-xs">
+                        <thead>
+                          <tr className="border-b border-slate-200 dark:border-slate-700 text-slate-400 font-mono text-[11px]">
+                            <th className="py-2 px-2">Year</th>
+                            <th className="py-2 px-2">Crime Metric</th>
+                            <th className="py-2 px-2 text-right">Cases</th>
+                            <th className="py-2 px-2 text-center">Status</th>
+                            <th className="py-2 px-2 text-right">Table &amp; Page</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-200 dark:divide-slate-700/60 font-sans">
+                          {Object.entries(selectedDistrict.yearly_stats).map(([yr, ydata]) => (
+                            <React.Fragment key={yr}>
+                              {Object.entries(ydata.metrics || {}).map(([mName, mVal], mIdx) => (
+                                <tr key={`${yr}-${mIdx}`} className="hover:bg-slate-100/60 dark:hover:bg-slate-700/40">
+                                  <td className="py-2 px-2 font-mono font-bold text-slate-800 dark:text-slate-200">
+                                    {mIdx === 0 ? yr : ''}
+                                  </td>
+                                  <td className="py-2 px-2 font-medium text-slate-700 dark:text-slate-300">
+                                    {mName}
+                                  </td>
+                                  <td className="py-2 px-2 text-right font-mono font-bold text-slate-900 dark:text-white">
+                                    {mVal.cases?.toLocaleString() || 'N/A'}
+                                  </td>
+                                  <td className="py-2 px-2 text-center">
+                                    <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                                      {mVal.data_status}
+                                    </span>
+                                  </td>
+                                  <td className="py-2 px-2 text-right font-mono text-[10px] text-slate-400">
+                                    {ydata.table_number || 'District Table'}, {ydata.page_number || 'Page Ref'}
+                                  </td>
+                                </tr>
+                              ))}
+                            </React.Fragment>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="p-3 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs text-slate-500">
+                      District-level breakdown for {selectedDistrict.district_name} is consolidated under the regional commissionerate/parent district in this series.
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-800 text-center text-xs text-slate-500">
+                Loading district crime statistics...
+              </div>
+            )}
           </div>
 
         </div>

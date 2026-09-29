@@ -100,7 +100,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const moreTabs = ['ac-comparison', 'election-comparison', 'scenario-lab', 'parties', 'close-contests', 'delimitation', 'data-quality', 'sources', 'ask-ai'];
   const isMoreTabActive = moreTabs.includes(activeTab);
-  const isWarRoomActive = ['poster-studio', 'vip-dossier', 'chanakya-ai', 'road-to-2027'].includes(activeTab);
+  const isWarRoomActive = ['poster-studio', 'vip-dossier', 'chanakya-ai', 'road-to-2027', 'crime-bureau'].includes(activeTab);
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors shadow-sm">
@@ -201,7 +201,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               <Users className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span>{language === 'hi' ? 'जाति समीकरण' : 'Caste Equation'}</span>
+              <span>Caste Equations</span>
             </button>
 
             {/* War Room 2027 Dropdown */}
@@ -215,12 +215,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }`}
               >
                 <Flame className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
-                <span>{language === 'hi' ? 'वॉर रूम 2027' : 'War Room 2027'}</span>
+                <span>War Room 2027</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform ${warRoomMenuOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {warRoomMenuOpen && (
-                <div className="absolute top-full left-0 mt-1.5 w-64 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute top-full left-0 mt-1.5 w-68 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <button
                     onClick={() => {
                       if (onOpenChanakya) onOpenChanakya();
@@ -232,8 +232,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <Bot className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="font-extrabold text-slate-900 dark:text-white block">🤖 चुनावी चाणक्य AI</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">वॉर रूम राजनीतिक सलाहकार व वॉयस चैट</span>
+                      <span className="font-extrabold text-slate-900 dark:text-white block">🤖 Chunavi Chanakya AI</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">War Room Political Advisor &amp; Voice Chat</span>
                     </div>
                   </button>
 
@@ -250,8 +250,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <Palette className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="font-extrabold text-slate-900 dark:text-white block">🎨 सोशल मीडिया पोस्टर स्टूडियो</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">1-क्लिक WhatsApp / Insta पोस्टर जेनरेटर</span>
+                      <span className="font-extrabold text-slate-900 dark:text-white block">🎨 Campaign Poster Studio</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">1-Click WhatsApp / Instagram Poster Generator</span>
                     </div>
                   </button>
 
@@ -268,8 +268,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <FileText className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="font-extrabold text-slate-900 dark:text-white block">📄 VIP रैली बुकलेट (PDF)</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">1-क्लिक 4-पेज प्रिंटेबल डॉसियर</span>
+                      <span className="font-extrabold text-slate-900 dark:text-white block">📄 VIP Rally Booklet (PDF)</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">1-Click 4-Page Printable Field Dossier</span>
                     </div>
                   </button>
 
@@ -286,26 +286,31 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <Target className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="font-extrabold text-slate-900 dark:text-white block">🎯 2027 चुनावी रोडमैप</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">सीट मार्जिन, स्विंग व रणनीति लैब</span>
+                      <span className="font-extrabold text-slate-900 dark:text-white block">🎯 Road to 2027 Roadmap</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">Seat Margin, Swing &amp; Strategy Lab</span>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setActiveTab('crime-bureau');
+                      setWarRoomMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-3.5 py-2.5 text-xs flex items-center gap-2.5 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer border-t border-slate-100 dark:border-slate-700/60 ${
+                      activeTab === 'crime-bureau' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : 'text-slate-800 dark:text-slate-200'
+                    }`}
+                  >
+                    <div className="w-7 h-7 rounded-lg bg-red-700 flex items-center justify-center text-white shrink-0 shadow-xs">
+                      <ShieldAlert className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="font-extrabold text-slate-900 dark:text-white block">🚨 UP Crime Bureau (NCRB)</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">Real 2000–2024 Crime Statistics &amp; Analytics</span>
                     </div>
                   </button>
                 </div>
               )}
             </div>
-
-            {/* Crime Bureau */}
-            <button
-              onClick={() => setActiveTab('crime-bureau')}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer ${
-                activeTab === 'crime-bureau'
-                  ? 'bg-red-50 text-red-700 dark:bg-red-950/60 dark:text-red-300 font-bold border border-red-200 dark:border-red-900 shadow-sm ring-1 ring-red-400'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800'
-              }`}
-            >
-              <ShieldAlert className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
-              <span>{language === 'hi' ? 'अपराध ब्यूरो' : 'Crime Bureau'}</span>
-            </button>
 
             {/* More Labs & Research Dropdown */}
             <div className="relative" ref={moreMenuRef}>
@@ -632,32 +637,20 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <Users className="w-4 h-4 text-blue-600" />
-            <span>{language === 'hi' ? 'जातिगत समीकरण' : 'Caste Equations'}</span>
-          </button>
-
-          <button
-            onClick={() => { setActiveTab('crime-bureau'); setMobileMenuOpen(false); }}
-            className={`w-full text-left px-3.5 py-2.5 text-xs font-semibold rounded-xl flex items-center gap-2.5 transition-colors ${
-              activeTab === 'crime-bureau'
-                ? 'bg-red-50 text-red-700 font-bold dark:bg-red-950/50 dark:text-red-300 border border-red-200 dark:border-red-900'
-                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            <ShieldAlert className="w-4 h-4 text-red-600" />
-            <span>{language === 'hi' ? 'उत्तर प्रदेश अपराध ब्यूरो' : 'UP Crime Bureau (NCRB)'}</span>
+            <span>Caste Equations</span>
           </button>
 
           {/* War Room 2027 Mobile Section */}
           <div className="pt-2 pb-1 border-t border-slate-200 dark:border-slate-800">
             <span className="px-3 text-[10px] font-mono font-bold uppercase tracking-wider text-red-600 dark:text-red-400 block mb-1">
-              🔥 वॉर रूम 2027 (WAR ROOM)
+              🔥 WAR ROOM 2027 (CAMPAIGN SUITE)
             </span>
             <button
               onClick={() => { if (onOpenChanakya) onOpenChanakya(); setMobileMenuOpen(false); }}
               className="w-full text-left px-3.5 py-2 text-xs font-bold rounded-xl flex items-center gap-2.5 text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors"
             >
               <Bot className="w-4 h-4 text-red-600" />
-              <span>🤖 चुनावी चाणक्य AI (Advisor)</span>
+              <span>🤖 Chunavi Chanakya AI (Advisor)</span>
             </button>
             <button
               onClick={() => { setActiveTab('poster-studio'); setMobileMenuOpen(false); }}
@@ -666,7 +659,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               <Palette className="w-4 h-4 text-amber-500" />
-              <span>🎨 सोशल मीडिया पोस्टर स्टूडियो</span>
+              <span>🎨 Campaign Poster Studio</span>
             </button>
             <button
               onClick={() => { setActiveTab('vip-dossier'); setMobileMenuOpen(false); }}
@@ -675,7 +668,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               <FileText className="w-4 h-4 text-blue-600" />
-              <span>📄 VIP रैली बुकलेट (4-Page PDF)</span>
+              <span>📄 VIP Rally Booklet (4-Page PDF)</span>
+            </button>
+            <button
+              onClick={() => { setActiveTab('crime-bureau'); setMobileMenuOpen(false); }}
+              className={`w-full text-left px-3.5 py-2 text-xs font-bold rounded-xl flex items-center gap-2.5 transition-colors ${
+                activeTab === 'crime-bureau' ? 'bg-red-50 text-red-700 dark:bg-red-950/60 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <ShieldAlert className="w-4 h-4 text-red-600" />
+              <span>🚨 UP Crime Bureau (NCRB Analytics)</span>
             </button>
           </div>
 
