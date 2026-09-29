@@ -220,20 +220,30 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
 
               {warRoomMenuOpen && (
-                <div className="absolute top-full left-0 mt-1.5 w-68 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute top-full left-0 mt-2 w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700/80 p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="px-2.5 py-1 mb-1 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-red-600 dark:text-red-400 flex items-center gap-1">
+                      <Flame className="w-3 h-3 text-amber-500" />
+                      War Room 2027 Suite
+                    </span>
+                    <span className="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 border border-red-200/50 dark:border-red-900/50">
+                      5 Modules
+                    </span>
+                  </div>
+
                   <button
                     onClick={() => {
                       if (onOpenChanakya) onOpenChanakya();
                       setWarRoomMenuOpen(false);
                     }}
-                    className="w-full text-left px-3.5 py-2.5 text-xs flex items-center gap-2.5 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors text-slate-800 dark:text-slate-200 cursor-pointer"
+                    className="w-full text-left p-2 rounded-xl text-xs flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-red-600 flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-600 to-rose-700 flex items-center justify-center text-white shrink-0 shadow-xs">
                       <Bot className="w-4 h-4" />
                     </div>
-                    <div>
-                      <span className="font-extrabold text-slate-900 dark:text-white block">🤖 Chunavi Chanakya AI</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">War Room Political Advisor &amp; Voice Chat</span>
+                    <div className="min-w-0 flex-1">
+                      <span className="font-extrabold text-slate-900 dark:text-white block truncate">Chunavi Chanakya AI</span>
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400 block truncate">War Room Political Advisor &amp; Voice Chat</span>
                     </div>
                   </button>
 
@@ -242,16 +252,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                       setActiveTab('poster-studio');
                       setWarRoomMenuOpen(false);
                     }}
-                    className={`w-full text-left px-3.5 py-2.5 text-xs flex items-center gap-2.5 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer ${
-                      activeTab === 'poster-studio' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : 'text-slate-800 dark:text-slate-200'
+                    className={`w-full text-left p-2 rounded-xl text-xs flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group ${
+                      activeTab === 'poster-studio' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : ''
                     }`}
                   >
-                    <div className="w-7 h-7 rounded-lg bg-amber-500 flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white shrink-0 shadow-xs">
                       <Palette className="w-4 h-4" />
                     </div>
-                    <div>
-                      <span className="font-extrabold text-slate-900 dark:text-white block">🎨 Campaign Poster Studio</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">1-Click WhatsApp / Instagram Poster Generator</span>
+                    <div className="min-w-0 flex-1">
+                      <span className="font-extrabold text-slate-900 dark:text-white block truncate">Campaign Poster Studio</span>
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400 block truncate">1-Click WhatsApp / Instagram Posters</span>
                     </div>
                   </button>
 
@@ -260,16 +270,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                       setActiveTab('vip-dossier');
                       setWarRoomMenuOpen(false);
                     }}
-                    className={`w-full text-left px-3.5 py-2.5 text-xs flex items-center gap-2.5 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer ${
-                      activeTab === 'vip-dossier' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : 'text-slate-800 dark:text-slate-200'
+                    className={`w-full text-left p-2 rounded-xl text-xs flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group ${
+                      activeTab === 'vip-dossier' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : ''
                     }`}
                   >
-                    <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white shrink-0 shadow-xs">
                       <FileText className="w-4 h-4" />
                     </div>
-                    <div>
-                      <span className="font-extrabold text-slate-900 dark:text-white block">📄 VIP Rally Booklet (PDF)</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">1-Click 4-Page Printable Field Dossier</span>
+                    <div className="min-w-0 flex-1">
+                      <span className="font-extrabold text-slate-900 dark:text-white block truncate">VIP Rally Booklet (PDF)</span>
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400 block truncate">1-Click 4-Page Field Dossier</span>
                     </div>
                   </button>
 
@@ -278,34 +288,36 @@ export const Navbar: React.FC<NavbarProps> = ({
                       setActiveTab('road-to-2027');
                       setWarRoomMenuOpen(false);
                     }}
-                    className={`w-full text-left px-3.5 py-2.5 text-xs flex items-center gap-2.5 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer border-t border-slate-100 dark:border-slate-700/60 ${
-                      activeTab === 'road-to-2027' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : 'text-slate-800 dark:text-slate-200'
+                    className={`w-full text-left p-2 rounded-xl text-xs flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group ${
+                      activeTab === 'road-to-2027' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : ''
                     }`}
                   >
-                    <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 flex items-center justify-center text-white shrink-0 shadow-xs">
                       <Target className="w-4 h-4" />
                     </div>
-                    <div>
-                      <span className="font-extrabold text-slate-900 dark:text-white block">🎯 Road to 2027 Roadmap</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">Seat Margin, Swing &amp; Strategy Lab</span>
+                    <div className="min-w-0 flex-1">
+                      <span className="font-extrabold text-slate-900 dark:text-white block truncate">2027 Electoral Roadmap</span>
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400 block truncate">Seat Margin, Swing &amp; Strategy Lab</span>
                     </div>
                   </button>
+
+                  <div className="my-1 border-t border-slate-100 dark:border-slate-800" />
 
                   <button
                     onClick={() => {
                       setActiveTab('crime-bureau');
                       setWarRoomMenuOpen(false);
                     }}
-                    className={`w-full text-left px-3.5 py-2.5 text-xs flex items-center gap-2.5 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer border-t border-slate-100 dark:border-slate-700/60 ${
-                      activeTab === 'crime-bureau' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : 'text-slate-800 dark:text-slate-200'
+                    className={`w-full text-left p-2 rounded-xl text-xs flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group ${
+                      activeTab === 'crime-bureau' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : ''
                     }`}
                   >
-                    <div className="w-7 h-7 rounded-lg bg-red-700 flex items-center justify-center text-white shrink-0 shadow-xs">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-rose-700 to-red-900 flex items-center justify-center text-white shrink-0 shadow-xs">
                       <ShieldAlert className="w-4 h-4" />
                     </div>
-                    <div>
-                      <span className="font-extrabold text-slate-900 dark:text-white block">🚨 UP Crime Bureau (NCRB)</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400">Real 2000–2024 Crime Statistics &amp; Analytics</span>
+                    <div className="min-w-0 flex-1">
+                      <span className="font-extrabold text-slate-900 dark:text-white block truncate">UP Crime Bureau (NCRB)</span>
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400 block truncate">Real 2000–2024 Crime Statistics &amp; Analytics</span>
                     </div>
                   </button>
                 </div>
