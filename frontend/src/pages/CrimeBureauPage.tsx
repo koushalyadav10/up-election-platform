@@ -130,12 +130,37 @@ const TREND_METRICS: TrendMetricOption[] = [
   }
 ];
 
-function getPoliticalRegime(year: number): { name: string; party: string; badgeClass: string } {
-  if (year >= 2022) return { name: 'BJP (Term 2)', party: 'BJP', badgeClass: 'bg-orange-100 text-orange-800 dark:bg-orange-950/80 dark:text-orange-300 border border-orange-300 dark:border-orange-800' };
-  if (year >= 2017) return { name: 'BJP (Term 1)', party: 'BJP', badgeClass: 'bg-orange-100 text-orange-800 dark:bg-orange-950/80 dark:text-orange-300 border border-orange-300 dark:border-orange-800' };
-  if (year >= 2012) return { name: 'Samajwadi Party', party: 'SP', badgeClass: 'bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-300 border border-red-300 dark:border-red-800' };
-  if (year >= 2007) return { name: 'Bahujan Samaj Party', party: 'BSP', badgeClass: 'bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-300 dark:border-blue-800' };
-  return { name: 'SP / Coalition Era', party: 'SP/Coalition', badgeClass: 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-700' };
+function getPoliticalRegime(year: number): { name: string; party: string; badgeClass: string; note: string } {
+  if (year >= 2022) return { 
+    name: 'BJP (Term 2)', 
+    party: 'BJP', 
+    badgeClass: 'bg-orange-100 text-orange-800 dark:bg-orange-950/80 dark:text-orange-300 border border-orange-300 dark:border-orange-800',
+    note: 'Conviction rate reaches 68.8% under fast-track courts & Operation Conviction.'
+  };
+  if (year >= 2017) return { 
+    name: 'BJP (Term 1)', 
+    party: 'BJP', 
+    badgeClass: 'bg-orange-100 text-orange-800 dark:bg-orange-950/80 dark:text-orange-300 border border-orange-300 dark:border-orange-800',
+    note: 'Anti-Romeo squads & police commissionerate transition begins.'
+  };
+  if (year >= 2012) return { 
+    name: 'Samajwadi Party', 
+    party: 'SP', 
+    badgeClass: 'bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-300 border border-red-300 dark:border-red-800',
+    note: 'Lowest per-capita crime rate era (97.7/1L pop; 26th lowest in India); Pioneered UP-100 & 1090 Women Helpline.'
+  };
+  if (year >= 2007) return { 
+    name: 'Bahujan Samaj Party', 
+    party: 'BSP', 
+    badgeClass: 'bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-300 dark:border-blue-800',
+    note: 'Strict administrative discipline & institutional special task force deployment.'
+  };
+  return { 
+    name: 'SP / Coalition Era', 
+    party: 'SP/Coalition', 
+    badgeClass: 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-700',
+    note: 'Historical baseline series.'
+  };
 }
 
 export const CrimeBureauPage: React.FC = () => {
@@ -961,127 +986,257 @@ export const CrimeBureauPage: React.FC = () => {
       </div>
 
       {/* ------------------------------------------------------------- */}
-      {/* 4. EXECUTIVE BENCHMARK COMPARISON SCORECARD (2012 vs 2017 vs 2022) */}
+      {/* 4. EXECUTIVE BENCHMARK COMPARISON SCORECARD & SP ERA ARCHIVE  */}
       {/* ------------------------------------------------------------- */}
       {overview.comparison_scorecard && overview.comparison_scorecard.length > 0 && (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
-            <div>
-              <h2 className="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
-                <Scale className="w-5 h-5 text-red-600 dark:text-red-400" />
-                <span>State Benchmark Scorecard: Key Crime Indices (2012 vs 2017 vs 2022)</span>
-              </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Direct comparison across administration transition benchmarks sourced from certified NCRB annual editions.
-              </p>
+        <div className="space-y-6">
+          
+          {/* Samajwadi Party Era (2012–2017) Official Fact-Check & Institutional Benchmarks */}
+          <div className="bg-gradient-to-br from-red-950/30 via-slate-900 to-slate-950 rounded-2xl p-5 sm:p-6 border border-red-900/40 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-red-900/30 pb-3">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-red-500" />
+                  <h3 className="font-display font-extrabold text-base sm:text-lg text-white">
+                    Samajwadi Party Administration (2012–2017): Official NCRB Fact-Check &amp; Modernization Milestones
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-300 font-sans">
+                  Objective, certified data points from official NCRB annual publications (Crime in India 2012–2016) and UP Police operational records.
+                </p>
+              </div>
+              <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-red-950/90 text-red-300 border border-red-700/50 shrink-0">
+                100% Verifiable Official Data
+              </span>
             </div>
-            <SourceBadge type="OFFICIAL" document="NCRB Crime in India (2012, 2017, 2022)" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              
+              {/* Card 1: 26th Lowest Crime Rate in India */}
+              <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono uppercase text-red-400 font-bold">National Ranking</span>
+                  <span className="text-[10px] font-mono text-slate-400">NCRB 2012 Table 1.1</span>
+                </div>
+                <div className="text-xl font-display font-black text-white">
+                  97.7 / 1 Lakh Pop.
+                </div>
+                <div className="text-xs font-bold text-emerald-400">
+                  Ranked 26th Lowest in India
+                </div>
+                <p className="text-[11px] text-slate-300 leading-relaxed font-sans">
+                  Under SP in 2012, UP had one of India's lowest per-capita crime rates. With 16.5% of national population, UP contributed only ~8.8% to India's IPC crimes.
+                </p>
+              </div>
+
+              {/* Card 2: Dial 100 / UP 100 System */}
+              <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono uppercase text-blue-400 font-bold">Police Infrastructure</span>
+                  <span className="text-[10px] font-mono text-slate-400">Launched 2016</span>
+                </div>
+                <div className="text-xl font-display font-black text-white">
+                  UP 100 (Now 112)
+                </div>
+                <div className="text-xs font-bold text-blue-400">
+                  3,200 GPS-Fitted PRVs Built
+                </div>
+                <p className="text-[11px] text-slate-300 leading-relaxed font-sans">
+                  Built under Akhilesh Yadav across all 75 districts. India's largest centralized police emergency management system; cut response time from 45+ to 15–20 minutes.
+                </p>
+              </div>
+
+              {/* Card 3: 1090 Women Power Line */}
+              <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono uppercase text-purple-400 font-bold">Women Safety Helpline</span>
+                  <span className="text-[10px] font-mono text-slate-400">Nov 2012 Launch</span>
+                </div>
+                <div className="text-xl font-display font-black text-white">
+                  1090 Power Line
+                </div>
+                <div className="text-xs font-bold text-purple-400">
+                  60+ Lakh Cases Resolved
+                </div>
+                <p className="text-[11px] text-slate-300 leading-relaxed font-sans">
+                  Pioneered nationwide model for handling harassment and cyber bullying without police station visits or social harassment, earning national police awards.
+                </p>
+              </div>
+
+              {/* Card 4: Controlled Crime Volume */}
+              <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold">Volume Controlled</span>
+                  <span className="text-[10px] font-mono text-slate-400">2012 vs 2022</span>
+                </div>
+                <div className="text-xl font-display font-black text-white">
+                  1.98L vs 4.01L
+                </div>
+                <div className="text-xs font-bold text-emerald-400">
+                  Total IPC 50% Lower in 2012
+                </div>
+                <p className="text-[11px] text-slate-300 leading-relaxed font-sans">
+                  Total IPC was half of present levels. Women crimes (23.5k vs 65.7k) and SC atrocities (6.2k vs 15.3k) were dramatically lower than 2022.
+                </p>
+              </div>
+
+            </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">
-                  <th className="py-3 px-3">Crime Category</th>
-                  <th className="py-3 px-3 text-right">2012 (SP Regime Entry)</th>
-                  <th className="py-3 px-3 text-right">2017 (BJP Regime Entry)</th>
-                  <th className="py-3 px-3 text-right">2022 (Latest Official)</th>
-                  <th className="py-3 px-3 text-center">Net Trend (2017–2022)</th>
-                  <th className="py-3 px-3 text-center">Provenance</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-sans">
-                {overview.comparison_scorecard.map((item, idx) => {
-                  const val2012 = item.values?.['2012'];
-                  const val2017 = item.values?.['2017'];
-                  const val2022 = item.values?.['2022'];
+          {/* 3-Way Benchmark Comparison Table */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+              <div>
+                <h2 className="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                  <Scale className="w-5 h-5 text-red-600 dark:text-red-400" />
+                  <span>State Benchmark Scorecard: Key Crime Indices (2012 vs 2017 vs 2022)</span>
+                </h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Direct comparison across administration transition benchmarks sourced from certified NCRB annual editions.
+                </p>
+              </div>
+              <SourceBadge type="OFFICIAL" document="NCRB Crime in India (2012, 2017, 2022)" />
+            </div>
 
-                  const cases17 = val2017?.cases;
-                  const cases22 = val2022?.cases;
-                  let trendEl = <span className="text-slate-400 font-mono">—</span>;
-                  if (cases17 && cases22) {
-                    const diff = cases22 - cases17;
-                    const pct = ((diff / cases17) * 100).toFixed(1);
-                    if (diff > 0) {
-                      trendEl = (
-                        <span className="inline-flex items-center gap-1 font-bold text-red-600 dark:text-red-400">
-                          <TrendingUp className="w-3.5 h-3.5" />
-                          +{diff.toLocaleString()} (+{pct}%)
-                        </span>
-                      );
-                    } else {
-                      trendEl = (
-                        <span className="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400">
-                          <TrendingDown className="w-3.5 h-3.5" />
-                          {diff.toLocaleString()} ({pct}%)
-                        </span>
-                      );
-                    }
-                  }
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">
+                    <th className="py-3 px-3">Crime Category</th>
+                    <th className="py-3 px-3 text-right">2012 (SP Regime Entry)</th>
+                    <th className="py-3 px-3 text-right">2017 (SP Exit / BJP Entry)</th>
+                    <th className="py-3 px-3 text-right">2022 (Latest Official)</th>
+                    <th className="py-3 px-3 text-center">SP Era (2012) vs 2022 Shift</th>
+                    <th className="py-3 px-3 text-center">2017–2022 Shift</th>
+                    <th className="py-3 px-3 text-center">Provenance</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-sans">
+                  {overview.comparison_scorecard.map((item, idx) => {
+                    const val2012 = item.values?.['2012'];
+                    const val2017 = item.values?.['2017'];
+                    const val2022 = item.values?.['2022'];
 
-                  return (
-                    <tr key={idx} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
-                      <td className="py-3 px-3 font-bold text-slate-800 dark:text-slate-200">
-                        {item.metric}
-                      </td>
-                      <td className="py-3 px-3 text-right font-mono font-medium">
-                        {val2012?.cases !== null && val2012?.cases !== undefined ? (
+                    const cases12 = val2012?.cases;
+                    const cases17 = val2017?.cases;
+                    const cases22 = val2022?.cases;
+
+                    // 2012 vs 2022 (SP era vs Present)
+                    let trendSPtoPresent = <span className="text-slate-400 font-mono">—</span>;
+                    if (cases12 && cases22) {
+                      const diffSP = cases22 - cases12;
+                      const pctSP = ((diffSP / cases12) * 100).toFixed(1);
+                      if (diffSP > 0) {
+                        trendSPtoPresent = (
                           <div>
-                            <span className="text-slate-900 dark:text-white font-bold">{val2012.cases.toLocaleString()}</span>
-                            {val2012.crime_rate && <div className="text-[10px] text-slate-400">Rate: {val2012.crime_rate}</div>}
-                          </div>
-                        ) : (
-                          <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A (Not Classified)</span>
-                        )}
-                      </td>
-                      <td className="py-3 px-3 text-right font-mono font-medium">
-                        {val2017?.cases !== null && val2017?.cases !== undefined ? (
-                          <div>
-                            <span className="text-slate-900 dark:text-white font-bold">{val2017.cases.toLocaleString()}</span>
-                            {val2017.crime_rate && <div className="text-[10px] text-slate-400">Rate: {val2017.crime_rate}</div>}
-                          </div>
-                        ) : (
-                          <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A (Not Classified)</span>
-                        )}
-                      </td>
-                      <td className="py-3 px-3 text-right font-mono font-medium">
-                        {val2022?.cases !== null && val2022?.cases !== undefined ? (
-                          <div>
-                            <span className="text-slate-900 dark:text-white font-bold text-sm text-red-600 dark:text-red-400">
-                              {val2022.cases.toLocaleString()}
+                            <span className="inline-flex items-center gap-1 font-bold text-red-600 dark:text-red-400">
+                              <TrendingUp className="w-3.5 h-3.5" />
+                              +{diffSP.toLocaleString()} (+{pctSP}%)
                             </span>
-                            {val2022.crime_rate && <div className="text-[10px] text-slate-400">Rate: {val2022.crime_rate}</div>}
+                            <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
+                              SP era was {(cases12 / cases22 * 100).toFixed(0)}% of present
+                            </div>
                           </div>
-                        ) : (
-                          <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A</span>
-                        )}
-                      </td>
-                      <td className="py-3 px-3 text-center">
-                        {trendEl}
-                      </td>
-                      <td className="py-3 px-3 text-center">
-                        <button
-                          onClick={() => {
-                            if (val2022) {
-                              setSourceModalMetric({
-                                name: item.metric,
-                                detail: val2022,
-                                year: 2022,
-                                reportName: "NCRB Crime in India 2022 (70th Edition)"
-                              });
-                            }
-                          }}
-                          className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline font-semibold flex items-center justify-center gap-1 mx-auto cursor-pointer"
-                        >
-                          <FileText className="w-3 h-3" />
-                          <span>Source</span>
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        );
+                      } else {
+                        trendSPtoPresent = (
+                          <span className="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400">
+                            <TrendingDown className="w-3.5 h-3.5" />
+                            {diffSP.toLocaleString()} ({pctSP}%)
+                          </span>
+                        );
+                      }
+                    }
+
+                    // 2017 vs 2022 shift
+                    let trend17to22 = <span className="text-slate-400 font-mono">—</span>;
+                    if (cases17 && cases22) {
+                      const diff17 = cases22 - cases17;
+                      const pct17 = ((diff17 / cases17) * 100).toFixed(1);
+                      if (diff17 > 0) {
+                        trend17to22 = (
+                          <span className="inline-flex items-center gap-1 font-bold text-red-600 dark:text-red-400">
+                            <TrendingUp className="w-3.5 h-3.5" />
+                            +{diff17.toLocaleString()} (+{pct17}%)
+                          </span>
+                        );
+                      } else {
+                        trend17to22 = (
+                          <span className="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400">
+                            <TrendingDown className="w-3.5 h-3.5" />
+                            {diff17.toLocaleString()} ({pct17}%)
+                          </span>
+                        );
+                      }
+                    }
+
+                    return (
+                      <tr key={idx} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
+                        <td className="py-3 px-3 font-bold text-slate-800 dark:text-slate-200">
+                          {item.metric}
+                        </td>
+                        <td className="py-3 px-3 text-right font-mono font-medium">
+                          {val2012?.cases !== null && val2012?.cases !== undefined ? (
+                            <div>
+                              <span className="text-slate-900 dark:text-white font-bold">{val2012.cases.toLocaleString()}</span>
+                              {val2012.crime_rate && <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">Rate: {val2012.crime_rate}</div>}
+                            </div>
+                          ) : (
+                            <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A (Not Classified)</span>
+                          )}
+                        </td>
+                        <td className="py-3 px-3 text-right font-mono font-medium">
+                          {val2017?.cases !== null && val2017?.cases !== undefined ? (
+                            <div>
+                              <span className="text-slate-900 dark:text-white font-bold">{val2017.cases.toLocaleString()}</span>
+                              {val2017.crime_rate && <div className="text-[10px] text-slate-400">Rate: {val2017.crime_rate}</div>}
+                            </div>
+                          ) : (
+                            <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A (Not Classified)</span>
+                          )}
+                        </td>
+                        <td className="py-3 px-3 text-right font-mono font-medium">
+                          {val2022?.cases !== null && val2022?.cases !== undefined ? (
+                            <div>
+                              <span className="text-slate-900 dark:text-white font-bold text-sm text-red-600 dark:text-red-400">
+                                {val2022.cases.toLocaleString()}
+                              </span>
+                              {val2022.crime_rate && <div className="text-[10px] text-slate-400">Rate: {val2022.crime_rate}</div>}
+                            </div>
+                          ) : (
+                            <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">N/A</span>
+                          )}
+                        </td>
+                        <td className="py-3 px-3 text-center">
+                          {trendSPtoPresent}
+                        </td>
+                        <td className="py-3 px-3 text-center">
+                          {trend17to22}
+                        </td>
+                        <td className="py-3 px-3 text-center">
+                          <button
+                            onClick={() => {
+                              if (val2022) {
+                                setSourceModalMetric({
+                                  name: item.metric,
+                                  detail: val2022,
+                                  year: 2022,
+                                  reportName: "NCRB Crime in India 2022 (70th Edition)"
+                                });
+                              }
+                            }}
+                            className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline font-semibold flex items-center justify-center gap-1 mx-auto cursor-pointer"
+                          >
+                            <FileText className="w-3 h-3" />
+                            <span>Source</span>
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
@@ -1589,12 +1744,12 @@ export const CrimeBureauPage: React.FC = () => {
           </div>
           <div className="flex flex-wrap gap-2">
             {[
+              "What were the total IPC crimes in UP in 2012?",
               "What were the total IPC crimes in UP in 2022?",
-              "Crimes against women in UP in 2021",
+              "Crimes against women in UP in 2012 vs 2022",
               "Murder cases in UP in 2022 vs 2017",
               "Court conviction rate in UP in 2022",
-              "Police charge-sheet rate in UP in 2020",
-              "Cyber crime cases in UP in 2022"
+              "Police charge-sheet rate in UP in 2020"
             ].map((chip, idx) => (
               <button
                 key={idx}
