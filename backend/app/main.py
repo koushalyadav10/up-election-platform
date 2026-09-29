@@ -20,7 +20,8 @@ from app.routes import (
     search,
     electra,
     candidates,
-    chanakya
+    chanakya,
+    crime_bureau
 )
 import os
 from pathlib import Path
@@ -63,6 +64,7 @@ app.include_router(sources.router)
 app.include_router(reports.router)
 app.include_router(candidates.router)
 app.include_router(chanakya.router)
+app.include_router(crime_bureau.router)
 
 @app.get("/api/health")
 def health_check():

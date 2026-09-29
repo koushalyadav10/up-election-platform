@@ -2301,3 +2301,133 @@ export async function fetchVoteShiftSimulation(shift: number = 6.0): Promise<Vot
   if (!res.ok) throw new Error('Failed to fetch vote simulation');
   return res.json();
 }
+
+// ----------------------------------------------------
+// CRIME BUREAU API CLIENT (Sections 30-47)
+// ----------------------------------------------------
+export interface CrimeMetricDetail {
+  cases: number | null;
+  crime_rate: number | null;
+  data_status: 'AVAILABLE' | 'NOT_AVAILABLE' | 'CLASSIFICATION_CHANGED' | 'CALCULATED';
+  metric_type?: string;
+  calculation_method?: string;
+  table_number?: string;
+  page_number?: string;
+  source_reference?: string;
+}
+
+export interface CrimeYearTimelineItem {
+  year: number;
+  population?: number;
+  categories: Record<string, CrimeMetricDetail>;
+  source_reference: string;
+  report_name: string;
+  table_number: string;
+  page_number: string;
+  source_file?: string;
+  investigation?: {
+    cases_registered: number;
+    cases_charge_sheeted: number;
+    cases_pending: number;
+    charge_sheet_rate: number;
+    table_number?: string;
+    page_number?: string;
+  };
+  trial?: {
+    cases_for_trial: number;
+    cases_decided: number;
+    convictions: number;
+    conviction_rate: number;
+    table_number?: string;
+    page_number?: string;
+  };
+}
+
+export interface CrimeOverviewResponse {
+  status: string;
+  scope: string;
+  source_agency: string;
+  data_provenance_guarantee: string;
+  available_years: number[];
+  timeline: CrimeYearTimelineItem[];
+  comparison_scorecard: Array<{
+    metric: string;
+    values: Record<string, CrimeMetricDetail>;
+  }>;
+  reports_registry: Array<{
+    year: number;
+    report_name: string;
+    source_url: string;
+    published_by: string;
+    report_version: string;
+  }>;
+}
+
+export interface CrimeDistrictItem {
+  district_name: string;
+  boundary_status: string;
+  parent_district?: string;
+  created_year?: number;
+  renamed_year?: number;
+  historical_names: string[];
+  yearly_stats: Record<string, {
+    year: number;
+    metrics: Record<string, {
+      cases: number | null;
+      crime_rate: number | null;
+      data_status: string;
+    }>;
+    source_reference: string;
+    table_number: string;
+    page_number: string;
+  }>;
+}
+
+export interface CrimeAIResponse {
+  query: string;
+  status: string;
+  answer: string;
+  primary_source?: string;
+  citations: Array<{
+    year: number;
+    report: string;
+    table: string;
+    page: string;
+    metric?: string;
+  }>;
+  evidence_payload: any[];
+  insufficient_data: boolean;
+}
+
+export async function fetchCrimeOverview(): Promise<CrimeOverviewResponse> {
+  const res = await fetch(`${API_BASE}/crime/overview`);
+  if (!res.ok) throw new Error('Failed to fetch crime overview');
+  return res.json();
+}
+
+export async function fetchCrimeDistricts(year?: number, district?: string): Promise<{ count: number; available_districts: string[]; districts: CrimeDistrictItem[] }> {
+  const params = new URLSearchParams();
+  if (year) params.set('year', String(year));
+  if (district) params.set('district', district);
+  const qs = params.toString() ? `?${params.toString()}` : '';
+  const res = await fetch(`${API_BASE}/crime/districts${qs}`);
+  if (!res.ok) throw new Error('Failed to fetch crime district data');
+  return res.json();
+}
+
+export async function fetchCrimeAuditReport(): Promise<{ status: string; compliance: string; audit_summary: any; markdown_report: string }> {
+  const res = await fetch(`${API_BASE}/crime/audit-report`);
+  if (!res.ok) throw new Error('Failed to fetch crime audit report');
+  return res.json();
+}
+
+export async function askCrimeAssistant(query: string): Promise<CrimeAIResponse> {
+  const res = await fetch(`${API_BASE}/crime/ask`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query })
+  });
+  if (!res.ok) throw new Error('Failed to query Crime Intelligence Assistant');
+  return res.json();
+}
+

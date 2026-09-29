@@ -1,0 +1,37 @@
+{
+  "reports_registered": 17,
+  "state_records_ingested": 192,
+  "district_records_ingested": 252,
+  "investigation_records_ingested": 16,
+  "trial_records_ingested": 16,
+  "mathematical_validations_passed": 192,
+  "structural_validations_passed": 192,
+  "years_covered": [
+    2024,
+    2023,
+    2022,
+    2021,
+    2020,
+    2019,
+    2018,
+    2017,
+    2016,
+    2015,
+    2014,
+    2013,
+    2012,
+    2011,
+    2010,
+    2005,
+    2000
+  ],
+  "categories_covered": [
+    "Crimes Against Women",
+    "Economic Offences",
+    "Cyber Crimes",
+    "Violent Crimes",
+    "Crimes Against SC/ST",
+    "Total Cognizable IPC Crimes"
+  ],
+  "audit_timestamp": "2026-09-29 13:46:45"
+}

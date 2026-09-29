@@ -22,6 +22,7 @@ import { DataQualityPage } from './pages/DataQualityPage';
 import { AskAIPage } from './pages/AskAIPage';
 import { DataSourcesPage } from './pages/DataSourcesPage';
 import { AdminImportPage } from './pages/AdminImportPage';
+import { CrimeBureauPage } from './pages/CrimeBureauPage';
 import { UPMap } from './components/maps/UPMap';
 import { ACDossierModal } from './components/common/ACDossierModal';
 import { AdminRoleModal } from './components/common/AdminRoleModal';
@@ -376,6 +377,10 @@ function MainApp() {
 
         {activeTab === 'sources' && (
           <DataSourcesPage />
+        )}
+
+        {activeTab === 'crime-bureau' && (
+          <CrimeBureauPage />
         )}
 
         {activeTab === 'importer' && (
