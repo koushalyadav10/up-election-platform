@@ -100,7 +100,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const moreTabs = ['ac-comparison', 'election-comparison', 'scenario-lab', 'parties', 'close-contests', 'delimitation', 'data-quality', 'sources', 'ask-ai'];
   const isMoreTabActive = moreTabs.includes(activeTab);
-  const isWarRoomActive = ['poster-studio', 'vip-dossier', 'chanakya-ai', 'road-to-2027', 'crime-bureau'].includes(activeTab);
+  const isWarRoomActive = ['poster-studio', 'vip-dossier', 'chanakya-ai', 'road-to-2027', 'crime-bureau', 'forensic-lab', 'counter-studio'].includes(activeTab);
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors shadow-sm">
@@ -227,7 +227,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       War Room 2027 Suite
                     </span>
                     <span className="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 border border-red-200/50 dark:border-red-900/50">
-                      5 Modules
+                      7 Modules
                     </span>
                   </div>
 
@@ -318,6 +318,44 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <div className="min-w-0 flex-1">
                       <span className="font-extrabold text-slate-900 dark:text-white block truncate">UP Crime Bureau (NCRB)</span>
                       <span className="text-[11px] text-slate-500 dark:text-slate-400 block truncate">Real 2000–2024 Crime Statistics &amp; Analytics</span>
+                    </div>
+                  </button>
+
+                  <div className="my-1 border-t border-slate-100 dark:border-slate-800" />
+
+                  <button
+                    onClick={() => {
+                      setActiveTab('forensic-lab');
+                      setWarRoomMenuOpen(false);
+                    }}
+                    className={`w-full text-left p-2 rounded-xl text-xs flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group ${
+                      activeTab === 'forensic-lab' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : ''
+                    }`}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-700 to-slate-900 flex items-center justify-center text-white shrink-0 shadow-xs">
+                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <span className="font-extrabold text-slate-900 dark:text-white block truncate">सत्य-चक्र (Media Forensics)</span>
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400 block truncate">AI Deepfake &amp; 2D FFT/ELA Image Verification</span>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setActiveTab('counter-studio');
+                      setWarRoomMenuOpen(false);
+                    }}
+                    className={`w-full text-left p-2 rounded-xl text-xs flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group ${
+                      activeTab === 'counter-studio' ? 'bg-red-50 dark:bg-red-950/50 font-bold' : ''
+                    }`}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-600 via-rose-600 to-amber-600 flex items-center justify-center text-white shrink-0 shadow-xs">
+                      <Sparkles className="w-4 h-4 text-amber-300" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <span className="font-extrabold text-slate-900 dark:text-white block truncate">चित्रगुप्त (Counter-Studio)</span>
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400 block truncate">AI Narrative Re-framer &amp; HD Counter-Creatives</span>
                     </div>
                   </button>
                 </div>
@@ -690,6 +728,24 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <ShieldAlert className="w-4 h-4 text-red-600" />
               <span>🚨 UP Crime Bureau (NCRB Analytics)</span>
+            </button>
+            <button
+              onClick={() => { setActiveTab('forensic-lab'); setMobileMenuOpen(false); }}
+              className={`w-full text-left px-3.5 py-2 text-xs font-bold rounded-xl flex items-center gap-2.5 transition-colors ${
+                activeTab === 'forensic-lab' ? 'bg-red-50 text-red-700 dark:bg-red-950/60 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <ShieldCheck className="w-4 h-4 text-emerald-500" />
+              <span>🛡️ सत्य-चक्र (Media Forensics)</span>
+            </button>
+            <button
+              onClick={() => { setActiveTab('counter-studio'); setMobileMenuOpen(false); }}
+              className={`w-full text-left px-3.5 py-2 text-xs font-bold rounded-xl flex items-center gap-2.5 transition-colors ${
+                activeTab === 'counter-studio' ? 'bg-red-50 text-red-700 dark:bg-red-950/60 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <span>⚡ चित्रगुप्त (Counter Studio)</span>
             </button>
           </div>
 

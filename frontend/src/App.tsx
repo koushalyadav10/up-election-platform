@@ -23,6 +23,8 @@ import { AskAIPage } from './pages/AskAIPage';
 import { DataSourcesPage } from './pages/DataSourcesPage';
 import { AdminImportPage } from './pages/AdminImportPage';
 import { CrimeBureauPage } from './pages/CrimeBureauPage';
+import { ForensicLabPage } from './pages/ForensicLabPage';
+import { CounterStudioPage } from './pages/CounterStudioPage';
 import { UPMap } from './components/maps/UPMap';
 import { ACDossierModal } from './components/common/ACDossierModal';
 import { AdminRoleModal } from './components/common/AdminRoleModal';
@@ -381,6 +383,14 @@ function MainApp() {
 
         {activeTab === 'crime-bureau' && (
           <CrimeBureauPage />
+        )}
+
+        {activeTab === 'forensic-lab' && (
+          <ForensicLabPage />
+        )}
+
+        {activeTab === 'counter-studio' && (
+          <CounterStudioPage />
         )}
 
         {activeTab === 'importer' && (

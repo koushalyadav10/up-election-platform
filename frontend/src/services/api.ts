@@ -2431,3 +2431,168 @@ export async function askCrimeAssistant(query: string): Promise<CrimeAIResponse>
   return res.json();
 }
 
+// -------------------------------------------------------------
+// MODULE 1: SATYA-CHAKRA (Media Forensics & Deepfake Detection)
+// -------------------------------------------------------------
+
+export interface ForensicAuditResponse {
+  status: string;
+  filename: string;
+  file_size_kb: number;
+  dimensions: { width: number; height: number };
+  verdict: {
+    classification: 'AUTHENTIC_PHOTO' | 'SUSPICIOUS_TAMPERED' | 'SYNTHETIC_AI_GENERATED';
+    synthetic_probability: number;
+    confidence_score: number;
+    badge_color: 'emerald' | 'amber' | 'rose';
+    headline_hi: string;
+    headline_en: string;
+    detailed_summary: string;
+  };
+  engines: {
+    fft_frequency: {
+      synthetic_frequency_score: number;
+      azimuthal_variance: number;
+      radial_falloff_decay: number;
+      anomaly_detected: boolean;
+      diagnostic: string;
+    };
+    ela_compression: {
+      tamper_score: number;
+      max_block_variance: number;
+      mean_block_variance: number;
+      compression_inconsistency: boolean;
+      diagnostic: string;
+    };
+    biological_noise: {
+      noise_variance: number;
+      biological_anomaly_score: number;
+      diagnostic: string;
+    };
+    graphic_typography: {
+      gradient_sharpness: number;
+      graphic_overlay_score: number;
+      diagnostic: string;
+    };
+  };
+  audit_ledger: Array<{
+    layer: string;
+    test_name: string;
+    result: string;
+    anomaly_detected: boolean;
+    details: string;
+  }>;
+  heatmaps: {
+    fft_base64: string;
+    ela_base64: string;
+  };
+  verification_certificate: {
+    hash_sha256: string;
+    timestamp: string;
+    protocol: string;
+    status: string;
+  };
+}
+
+export async function analyzeMediaForensics(file: File, claimContext?: string): Promise<ForensicAuditResponse> {
+  const formData = new FormData();
+  formData.append('file', file);
+  if (claimContext) {
+    formData.append('claim_context', claimContext);
+  }
+  const res = await fetch(`${API_BASE}/forensics/analyze-media`, {
+    method: 'POST',
+    body: formData
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || 'Forensic analysis failed.');
+  }
+  return res.json();
+}
+
+export async function fetchForensicDemoSamples(): Promise<{ samples: ForensicAuditResponse[] }> {
+  const res = await fetch(`${API_BASE}/forensics/demo-samples`);
+  if (!res.ok) throw new Error('Failed to load forensic demo samples');
+  return res.json();
+}
+
+// -------------------------------------------------------------
+// MODULE 2: CHITRAGUPTA (Universal Strategic Counter-Studio)
+// -------------------------------------------------------------
+
+export interface CounterCreativePayload {
+  opponent_claim: string;
+  target_vector?: 'AUTO_DETECT' | 'RELIGIOUS_COMMUNAL' | 'PARIVARWAAD' | 'LAW_AND_ORDER' | 'DEVELOPMENT' | 'CASTE_PDA';
+  opponent_image_base64?: string;
+  tone?: 'AGGRESSIVE_COUNTER' | 'FACTUAL_DIGNIFIED' | 'YOUTH_VIRAL';
+}
+
+export interface CounterCreativeResponse {
+  status: string;
+  detected_vector: string;
+  vector_label: string;
+  creative_assets: {
+    square_1080: {
+      title: string;
+      format: string;
+      image_base64: string;
+    };
+    story_916: {
+      title: string;
+      format: string;
+      caption: string;
+      hook: string;
+    };
+    banner_169: {
+      title: string;
+      format: string;
+      headline: string;
+      subhead: string;
+    };
+  };
+  copywriting: {
+    headline_hi: string;
+    sub_headline_hi: string;
+    body_hi: string;
+    call_to_action_hi: string;
+    hashtags: string[];
+  };
+  talking_points: string[];
+  official_data_citations: Array<{
+    metric: string;
+    sp_value: string;
+    bjp_value: string;
+    source: string;
+  }>;
+  spokesperson_caution: string;
+}
+
+export interface PresetAttack {
+  id: string;
+  vector: string;
+  label: string;
+  claim: string;
+  description: string;
+}
+
+export async function fetchPresetAttacks(): Promise<{ presets: PresetAttack[] }> {
+  const res = await fetch(`${API_BASE}/campaign/preset-attacks`);
+  if (!res.ok) throw new Error('Failed to load preset campaign attacks');
+  return res.json();
+}
+
+export async function generateCounterCreative(payload: CounterCreativePayload): Promise<CounterCreativeResponse> {
+  const res = await fetch(`${API_BASE}/campaign/generate-counter`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || 'Counter-creative generation failed.');
+  }
+  return res.json();
+}
+
+
