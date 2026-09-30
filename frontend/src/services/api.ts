@@ -2441,8 +2441,32 @@ export interface ForensicAuditResponse {
   file_size_kb: number;
   dimensions: { width: number; height: number };
   media_domain?: string;
+  ocr_extracted_text?: string;
+  online_fact_check?: {
+    status: string;
+    is_fake: boolean;
+    authenticity_score: number;
+    risk_level: string;
+    headline_hi: string;
+    headline_en: string;
+    simple_verdict_hi: string;
+    simple_verdict_en: string;
+    statement_origin: string;
+    verified_sources: Array<{
+      title: string;
+      url: string;
+      source: string;
+      date?: string;
+    }>;
+    plain_ranges?: {
+      sacchai_score: string;
+      tampering_check: string;
+      ai_check: string;
+      internet_status: string;
+    };
+  };
   verdict: {
-    classification: 'AUTHENTIC_PHOTO' | 'SUSPICIOUS_TAMPERED' | 'SYNTHETIC_AI_GENERATED';
+    classification: 'AUTHENTIC_PHOTO' | 'SUSPICIOUS_TAMPERED' | 'SYNTHETIC_AI_GENERATED' | 'DEBUNKED_FAKE_NEWS' | string;
     synthetic_probability: number;
     confidence_score: number;
     badge_color: 'emerald' | 'amber' | 'rose';

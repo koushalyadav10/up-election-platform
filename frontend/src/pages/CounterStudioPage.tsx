@@ -36,25 +36,312 @@ export const CounterStudioPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [response, setResponse] = useState<CounterCreativeResponse | null>(null);
   const [activeFormat, setActiveFormat] = useState<'square' | 'story' | 'banner'>('square');
-  const [posterStyle, setPosterStyle] = useState<'ai-poster' | 'pure-ai-art' | 'server-canvas'>('ai-poster');
+  const [posterStyle, setPosterStyle] = useState<'news-card' | 'quote-duel' | 'statement-card' | 'breaking-banner' | 'ai-poster' | 'pure-ai-art' | 'server-canvas'>('news-card');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [presets, setPresets] = useState<PresetAttack[]>([]);
 
-  const downloadRichPosterCanvas = () => {
+  const downloadRichPosterCanvas = async () => {
     if (!response) return;
     const canvas = document.createElement('canvas');
-    canvas.width = 1080;
-    canvas.height = 1080;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Load AI Background Image or draw studio gradient
+    const triggerDownload = (filename: string) => {
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    const loadImage = (src: string): Promise<HTMLImageElement> => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => reject();
+        img.src = src;
+      });
+    };
+
+    if (posterStyle === 'news-card') {
+      // 1. Amar Ujala / Digital News Card (1200 x 675 Landscape)
+      canvas.width = 1200;
+      canvas.height = 675;
+
+      // Off-white paper background
+      ctx.fillStyle = '#fbf9f5';
+      ctx.fillRect(0, 0, 1200, 675);
+
+      // Top Masthead: Amar Ujala logo
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.roundRect(520, 20, 36, 36, 6);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 24px Georgia, serif';
+      ctx.fillText('अ', 530, 48);
+
+      ctx.fillStyle = '#dc2626';
+      ctx.font = 'bold 36px Georgia, serif';
+      ctx.fillText('अमर उजाला', 565, 50);
+
+      ctx.fillStyle = '#7f1d1d';
+      ctx.font = 'bold 12px monospace';
+      ctx.fillText('amarujala.com', 568, 68);
+
+      // Main Headline
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 44px system-ui, sans-serif';
+      const headlineText = response.copywriting.headline_hi.split('•')[0].slice(0, 36) || 'योगी पर हमलावर अखिलेश';
+      ctx.textAlign = 'center';
+      ctx.fillText(headlineText, 600, 130);
+      ctx.textAlign = 'left';
+
+      // 3 Red Bullet Points
+      const tp1 = response.talking_points?.[0] ? response.talking_points[0].replace(/^[0-9]\.\s*/, '').slice(0, 50) : "'स्वजातीय टॉर्चर फोर्स' बनी एसटीएफ";
+      const tp2 = response.talking_points?.[1] ? response.talking_points[1].replace(/^[0-9]\.\s*/, '').slice(0, 50) : 'पीडीए से होने के कारण केशव का हो रहा अपमान';
+      const tp3 = response.talking_points?.[2] ? response.talking_points[2].replace(/^[0-9]\.\s*/, '').slice(0, 50) : 'डिंपल के फर्जी वीडियो बनवा रही है सरकार';
+
+      const drawBullet = (text: string, y: number) => {
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.arc(380, y - 8, 10, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 26px system-ui, sans-serif';
+        ctx.fillText(text, 405, y);
+      };
+
+      drawBullet(tp1, 230);
+      drawBullet(tp2, 330);
+      drawBullet(tp3, 430);
+
+      // Load Cutouts
+      try {
+        const [yogiImg, akhileshImg] = await Promise.all([
+          loadImage('/assets/leaders/cutouts/yogi_cutout.png'),
+          loadImage('/assets/leaders/cutouts/akhilesh_cutout.png')
+        ]);
+        // Draw Yogi on left
+        ctx.drawImage(yogiImg, 0, 180, 370, 495);
+        // Draw Akhilesh on right
+        ctx.drawImage(akhileshImg, 830, 150, 370, 525);
+      } catch (e) {
+        console.warn('Cutouts draw fallback:', e);
+      }
+
+      triggerDownload(`Amar_Ujala_News_Card_${Date.now()}.png`);
+      return;
+    }
+
+    if (posterStyle === 'quote-duel') {
+      // 2. Quote Duel - Split Screen (1080 x 1200)
+      canvas.width = 1080;
+      canvas.height = 1200;
+
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, 1080, 1200);
+
+      // Top Box (Opponent - Orange)
+      ctx.fillStyle = '#fff7ed';
+      ctx.strokeStyle = '#ea580c';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(30, 30, 1020, 540, 24);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#ea580c';
+      ctx.font = 'bold 70px Georgia, serif';
+      ctx.fillText('“', 65, 110);
+
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 38px system-ui, sans-serif';
+      const opText = opponentClaim || 'यूपी में कोई चोरी करेगा तो अगले दिन लंगड़ा हो जाएगा';
+      const opWords = opText.split(' ');
+      ctx.fillText(opWords.slice(0, 5).join(' '), 65, 180);
+      ctx.fillText(opWords.slice(5, 10).join(' '), 65, 235);
+      if (opWords.length > 10) ctx.fillText(opWords.slice(10).join(' '), 65, 290);
+
+      ctx.fillStyle = '#ea580c';
+      ctx.beginPath();
+      ctx.roundRect(65, 360, 280, 55, 12);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 24px system-ui, sans-serif';
+      ctx.fillText('- योगी आदित्यनाथ', 85, 398);
+
+      ctx.fillStyle = '#ea580c';
+      ctx.font = 'bold 20px system-ui, sans-serif';
+      ctx.fillText('CM, UP', 85, 450);
+
+      // Bottom Box (Samajwadi - Red)
+      ctx.fillStyle = '#fef2f2';
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(30, 630, 1020, 540, 24);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#dc2626';
+      ctx.font = 'bold 70px Georgia, serif';
+      ctx.fillText('“', 65, 710);
+
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 38px system-ui, sans-serif';
+      const spWords = response.copywriting.headline_hi.split(' ');
+      ctx.fillText(spWords.slice(0, 5).join(' '), 65, 780);
+      ctx.fillText(spWords.slice(5, 10).join(' '), 65, 835);
+      if (spWords.length > 10) ctx.fillText(spWords.slice(10).join(' '), 65, 890);
+
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.roundRect(65, 960, 260, 55, 12);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 24px system-ui, sans-serif';
+      ctx.fillText('- अखिलेश यादव', 85, 998);
+
+      ctx.fillStyle = '#dc2626';
+      ctx.font = 'bold 20px system-ui, sans-serif';
+      ctx.fillText('सपा प्रमुख', 85, 1050);
+
+      // Center VS Badge
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.arc(540, 600, 48, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 26px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('VS', 540, 608);
+      ctx.textAlign = 'left';
+
+      // Load Cutouts
+      try {
+        const [yogiImg, akhileshImg] = await Promise.all([
+          loadImage('/assets/leaders/cutouts/yogi_duel.png'),
+          loadImage('/assets/leaders/cutouts/akhilesh_duel.png')
+        ]);
+        ctx.drawImage(yogiImg, 620, 80, 400, 490);
+        ctx.drawImage(akhileshImg, 620, 680, 400, 490);
+      } catch (e) {
+        console.warn('Duel draw fallback:', e);
+      }
+
+      triggerDownload(`Quote_Duel_FaceOff_${Date.now()}.png`);
+      return;
+    }
+
+    if (posterStyle === 'statement-card') {
+      // 3. Statement Quote Card (1080 x 1080)
+      canvas.width = 1080;
+      canvas.height = 1080;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 1080, 1080);
+
+      // Left red bracket border
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(80, 120);
+      ctx.lineTo(80, 800);
+      ctx.stroke();
+
+      ctx.fillStyle = '#dc2626';
+      ctx.font = 'bold 80px Georgia, serif';
+      ctx.fillText('“', 95, 160);
+
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 36px system-ui, sans-serif';
+      const sWords = response.copywriting.headline_hi.split(' ');
+      ctx.fillText(sWords.slice(0, 5).join(' '), 105, 230);
+      ctx.fillText(sWords.slice(5, 10).join(' '), 105, 280);
+      if (sWords.length > 10) ctx.fillText(sWords.slice(10, 15).join(' '), 105, 330);
+      if (sWords.length > 15) ctx.fillText(sWords.slice(15).join(' '), 105, 380);
+
+      ctx.fillStyle = '#dc2626';
+      ctx.font = 'bold 60px Georgia, serif';
+      ctx.fillText('„', 105, 450);
+
+      ctx.fillStyle = '#dc2626';
+      ctx.font = 'bold 30px system-ui, sans-serif';
+      ctx.fillText('अखिलेश यादव', 105, 520);
+      ctx.fillStyle = '#64748b';
+      ctx.font = 'bold 22px system-ui, sans-serif';
+      ctx.fillText('सपा प्रमुख • पूर्व मुख्यमंत्री, उप्र', 105, 560);
+
+      // Bottom red curve bar
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(0, 1040, 1080, 40);
+
+      try {
+        const [akhileshImg, circleImg] = await Promise.all([
+          loadImage('/assets/leaders/cutouts/akhilesh_cutout.png'),
+          loadImage('/assets/leaders/cutouts/akhilesh_circle.png')
+        ]);
+        ctx.drawImage(circleImg, 780, 60, 220, 220);
+        ctx.drawImage(akhileshImg, 520, 360, 560, 680);
+      } catch (e) {
+        console.warn('Statement card fallback:', e);
+      }
+
+      triggerDownload(`Statement_Card_${Date.now()}.png`);
+      return;
+    }
+
+    if (posterStyle === 'breaking-banner') {
+      // 4. Yellow Breaking Banner (1080 x 1200)
+      canvas.width = 1080;
+      canvas.height = 1200;
+
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(0, 0, 1080, 1200);
+
+      // Yellow Center Banner
+      ctx.fillStyle = '#facc15';
+      ctx.fillRect(0, 500, 1080, 200);
+
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 36px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      const bWords = response.copywriting.headline_hi.split(' ');
+      ctx.fillText(bWords.slice(0, 6).join(' '), 540, 565);
+      if (bWords.length > 6) ctx.fillText(bWords.slice(6).join(' '), 540, 615);
+
+      ctx.fillStyle = '#991b1b';
+      ctx.font = 'bold 22px monospace';
+      ctx.fillText('AKHILESH YADAV • CHIEF, SAMAJWADI PARTY', 540, 665);
+      ctx.textAlign = 'left';
+
+      try {
+        const [akhileshImg, yogiImg] = await Promise.all([
+          loadImage('/assets/leaders/cutouts/akhilesh_cutout.png'),
+          loadImage('/assets/leaders/cutouts/yogi_cutout.png')
+        ]);
+        ctx.drawImage(akhileshImg, 320, 20, 440, 480);
+        ctx.drawImage(yogiImg, 320, 710, 440, 480);
+      } catch (e) {
+        console.warn('Breaking banner fallback:', e);
+      }
+
+      triggerDownload(`Breaking_Banner_${Date.now()}.png`);
+      return;
+    }
+
+    // Default Fallback: AI Photorealistic Poster (1080x1080)
+    canvas.width = 1080;
+    canvas.height = 1080;
     const bgUrl = response.creative_assets.square_1080.ai_visual_url;
     const img = new Image();
     img.crossOrigin = 'anonymous';
 
     const renderTextLayers = () => {
-      // Dark vignette overlay
       const grad = ctx.createLinearGradient(0, 0, 0, 1080);
       grad.addColorStop(0, 'rgba(127, 29, 29, 0.85)');
       grad.addColorStop(0.35, 'rgba(15, 23, 42, 0.88)');
@@ -62,19 +349,15 @@ export const CounterStudioPage: React.FC = () => {
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 1080, 1080);
 
-      // Top Red Stripe
       ctx.fillStyle = '#ef4444';
       ctx.fillRect(0, 0, 1080, 12);
 
-      // Header Tag
       ctx.fillStyle = '#fecaca';
       ctx.font = 'bold 22px system-ui, sans-serif';
       ctx.fillText('SAMAJWADI WAR ROOM 2027 • STRATEGIC FACT-CHECK', 60, 48);
-
       ctx.fillStyle = '#fbbf24';
       ctx.fillText('OFFICIAL COUNTER-PUNCH', 740, 48);
 
-      // Vector Pill
       ctx.fillStyle = '#7f1d1d';
       ctx.strokeStyle = '#dc2626';
       ctx.lineWidth = 2;
@@ -87,7 +370,6 @@ export const CounterStudioPage: React.FC = () => {
       ctx.font = 'bold 26px system-ui, sans-serif';
       ctx.fillText(`मुद्दे का पलटवार: ${response.vector_label}`, 85, 122);
 
-      // Headline Card
       ctx.fillStyle = '#1e1b4b';
       ctx.strokeStyle = '#6366f1';
       ctx.beginPath();
@@ -98,104 +380,14 @@ export const CounterStudioPage: React.FC = () => {
       ctx.fillStyle = '#fef08a';
       ctx.font = 'bold 34px system-ui, sans-serif';
       const hWords = response.copywriting.headline_hi.split(' ');
-      const h1 = hWords.slice(0, 7).join(' ');
-      const h2 = hWords.slice(7).join(' ');
-      ctx.fillText(h1, 85, 235);
-      if (h2) ctx.fillText(h2, 85, 280);
+      ctx.fillText(hWords.slice(0, 7).join(' '), 85, 235);
+      if (hWords.length > 7) ctx.fillText(hWords.slice(7).join(' '), 85, 280);
 
       ctx.fillStyle = '#c7d2fe';
       ctx.font = '20px system-ui, sans-serif';
       ctx.fillText(response.copywriting.sub_headline_hi.slice(0, 75), 85, 335);
 
-      // Official Proof Box
-      ctx.fillStyle = '#022c22';
-      ctx.strokeStyle = '#10b981';
-      ctx.beginPath();
-      ctx.roundRect(60, 405, 960, 250, 18);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#059669';
-      ctx.fillRect(85, 395, 340, 30);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 18px system-ui, sans-serif';
-      ctx.fillText('प्रमाणित सरकारी डेटा (OFFICIAL PROOF)', 95, 417);
-
-      const c1 = response.official_data_citations?.[0];
-      if (c1) {
-        ctx.fillStyle = '#a7f3d0';
-        ctx.font = 'bold 26px system-ui, sans-serif';
-        ctx.fillText(`1. ${c1.metric}:`, 85, 465);
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '22px system-ui, sans-serif';
-        ctx.fillText(`• सपा रिकॉर्ड: ${c1.sp_value}`, 115, 510);
-
-        ctx.fillStyle = '#f87171';
-        ctx.fillText(`• भाजपा रिकॉर्ड: ${c1.bjp_value}`, 115, 555);
-
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '17px system-ui, sans-serif';
-        ctx.fillText(`• आधिकारिक स्रोत: ${c1.source}`, 115, 600);
-      }
-
-      // Ground Reality Box
-      ctx.fillStyle = '#0f172a';
-      ctx.strokeStyle = '#334155';
-      ctx.beginPath();
-      ctx.roundRect(60, 685, 960, 240, 18);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#e2e8f0';
-      ctx.font = 'bold 24px system-ui, sans-serif';
-      ctx.fillText('सच्चाई और संकल्प (The Ground Reality):', 85, 725);
-
-      ctx.fillStyle = '#cbd5e1';
-      ctx.font = '20px system-ui, sans-serif';
-      ctx.fillText(response.copywriting.body_hi.slice(0, 60), 85, 770);
-      ctx.fillText(response.copywriting.body_hi.slice(60, 120), 85, 805);
-      ctx.fillText(response.copywriting.body_hi.slice(120, 180), 85, 840);
-
-      ctx.fillStyle = '#34d399';
-      ctx.font = 'bold 24px system-ui, sans-serif';
-      ctx.fillText(`नारा: ${response.copywriting.call_to_action_hi}`, 85, 890);
-
-      // Bottom Bar
-      ctx.fillStyle = '#090d16';
-      ctx.fillRect(0, 955, 1080, 125);
-      ctx.fillStyle = '#dc2626';
-      ctx.fillRect(0, 955, 1080, 5);
-
-      ctx.fillStyle = '#f87171';
-      ctx.font = 'bold 24px system-ui, sans-serif';
-      ctx.fillText('समाजवादी पार्टी • PDA (पिछड़ा, दलित, अल्पसंख्यक) परिवार', 60, 1000);
-
-      ctx.fillStyle = '#94a3b8';
-      ctx.font = '18px system-ui, sans-serif';
-      ctx.fillText('सत्य • समानता • सामाजिक न्याय • 2027 मिशन 202+', 60, 1035);
-
-      ctx.fillStyle = '#1e293b';
-      ctx.strokeStyle = '#10b981';
-      ctx.beginPath();
-      ctx.roundRect(720, 975, 300, 75, 12);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#34d399';
-      ctx.font = 'bold 18px system-ui, sans-serif';
-      ctx.fillText('✓ ECI & NCRB CERTIFIED', 740, 1005);
-      ctx.fillStyle = '#94a3b8';
-      ctx.font = '14px system-ui, sans-serif';
-      ctx.fillText('WAR ROOM FACT-CHECKED', 740, 1032);
-
-      // Export to PNG
-      const link = document.createElement('a');
-      link.download = `Samajwadi_Counter_Punch_${Date.now()}.png`;
-      link.href = canvas.toDataURL('image/png');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      triggerDownload(`Samajwadi_AI_Poster_${Date.now()}.png`);
     };
 
     if (bgUrl) {
@@ -203,9 +395,7 @@ export const CounterStudioPage: React.FC = () => {
         ctx.drawImage(img, 0, 0, 1080, 1080);
         renderTextLayers();
       };
-      img.onerror = () => {
-        renderTextLayers();
-      };
+      img.onerror = () => renderTextLayers();
       img.src = bgUrl;
     } else {
       renderTextLayers();
@@ -543,47 +733,341 @@ export const CounterStudioPage: React.FC = () => {
               {/* Render Area */}
               {activeFormat === 'square' && (
                 <div className="space-y-3">
-                  {/* Style Switcher for 1:1 Poster */}
-                  <div className="flex items-center justify-between text-xs pb-1">
-                    <span className="font-semibold text-slate-500">पोस्टर स्टाइल:</span>
-                    <div className="inline-flex rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 text-[11px] font-bold">
+                  {/* Style Switcher for Political Cards */}
+                  <div className="space-y-2 pb-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-bold text-slate-700 dark:text-slate-300">भारतीय राजनीतिक मीडिया कार्ड टेम्पलेट्स:</span>
+                      <span className="text-[10px] font-mono text-red-600 dark:text-red-400 font-semibold">1080p Studio Presets</span>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-bold">
                       <button
-                        onClick={() => setPosterStyle('ai-poster')}
-                        className={`px-2.5 py-1 rounded-md transition-all ${
-                          posterStyle === 'ai-poster'
+                        onClick={() => setPosterStyle('news-card')}
+                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                          posterStyle === 'news-card'
                             ? 'bg-red-600 text-white shadow-xs'
-                            : 'text-slate-600 dark:text-slate-300'
+                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
                         }`}
                       >
-                        🎨 DALL-E AI विज़ुअल पोस्टर
+                        <span>📰 अमर उजाला अखबारी कार्ड</span>
+                      </button>
+                      <button
+                        onClick={() => setPosterStyle('quote-duel')}
+                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                          posterStyle === 'quote-duel'
+                            ? 'bg-red-600 text-white shadow-xs'
+                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
+                        }`}
+                      >
+                        <span>⚔️ आमने-सामने वार-पलटवार</span>
+                      </button>
+                      <button
+                        onClick={() => setPosterStyle('statement-card')}
+                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                          posterStyle === 'statement-card'
+                            ? 'bg-red-600 text-white shadow-xs'
+                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
+                        }`}
+                      >
+                        <span>🎙️ बयान कार्ड / सिंगल पंच</span>
+                      </button>
+                      <button
+                        onClick={() => setPosterStyle('breaking-banner')}
+                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                          posterStyle === 'breaking-banner'
+                            ? 'bg-red-600 text-white shadow-xs'
+                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
+                        }`}
+                      >
+                        <span>⚡ पीला ब्रेकिंग बैनर</span>
+                      </button>
+                      <button
+                        onClick={() => setPosterStyle('ai-poster')}
+                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                          posterStyle === 'ai-poster'
+                            ? 'bg-red-600 text-white shadow-xs'
+                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
+                        }`}
+                      >
+                        <span>🎨 DALL-E AI पोस्टर</span>
                       </button>
                       <button
                         onClick={() => setPosterStyle('pure-ai-art')}
-                        className={`px-2.5 py-1 rounded-md transition-all ${
+                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
                           posterStyle === 'pure-ai-art'
                             ? 'bg-red-600 text-white shadow-xs'
-                            : 'text-slate-600 dark:text-slate-300'
+                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
                         }`}
                       >
-                        🖼️ केवल AI इमेज (Pure Art)
+                        <span>🖼️ केवल AI इमेज</span>
                       </button>
                       <button
                         onClick={() => setPosterStyle('server-canvas')}
-                        className={`px-2.5 py-1 rounded-md transition-all ${
+                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
                           posterStyle === 'server-canvas'
                             ? 'bg-red-600 text-white shadow-xs'
-                            : 'text-slate-600 dark:text-slate-300'
+                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
                         }`}
                       >
-                        📄 सर्वर कैनवस
+                        <span>📄 सर्वर कैनवस</span>
                       </button>
                     </div>
                   </div>
 
-                  {/* Mode 1: AI-Powered Composite Poster (Zero Tofu, 100% Crisp Native Fonts) */}
+                  {/* Mode 1: Amar Ujala / Digital News Media Card (Sample 1 Style) */}
+                  {posterStyle === 'news-card' && (
+                    <div className="relative aspect-video sm:aspect-[16/10] max-h-[480px] mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-300 dark:border-slate-700 bg-[#fbf9f5] text-slate-900 flex flex-col justify-between p-4 sm:p-6 select-none group">
+                      <div className="absolute inset-0 bg-[#fbf9f5] opacity-95 pointer-events-none" />
+
+                      {/* Masthead Logo */}
+                      <div className="relative z-10 flex flex-col items-center justify-center border-b border-red-200 pb-2">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-6 h-6 rounded bg-red-600 text-white font-black text-sm flex items-center justify-center font-serif">
+                            अ
+                          </span>
+                          <span className="text-xl sm:text-2xl font-black text-red-600 font-serif tracking-tight">
+                            अमर उजाला
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-red-700/80 font-mono tracking-widest uppercase">
+                          amarujala.com • राष्ट्रीय संस्करण
+                        </span>
+                      </div>
+
+                      {/* Main Bold Headline */}
+                      <div className="relative z-10 text-center my-1">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-black leading-tight drop-shadow-xs">
+                          {response.copywriting.headline_hi.split('•')[0].slice(0, 38) || 'योगी पर हमलावर अखिलेश'}
+                        </h3>
+                      </div>
+
+                      {/* 3 Red Bullet Points */}
+                      <div className="relative z-10 max-w-[55%] mx-auto space-y-2.5 my-auto bg-white/70 backdrop-blur-xs p-3.5 rounded-xl border border-red-100 shadow-xs">
+                        <div className="flex items-start gap-2 text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                          <span className="w-2.5 h-2.5 rounded-full bg-red-600 shrink-0 mt-1 shadow-xs" />
+                          <span>
+                            {response.talking_points?.[0]
+                              ? response.talking_points[0].replace(/^[0-9]\.\s*/, '').slice(0, 52)
+                              : "'स्वजातीय टॉर्चर फोर्स' बनी एसटीएफ"}
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2 text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                          <span className="w-2.5 h-2.5 rounded-full bg-red-600 shrink-0 mt-1 shadow-xs" />
+                          <span>
+                            {response.talking_points?.[1]
+                              ? response.talking_points[1].replace(/^[0-9]\.\s*/, '').slice(0, 52)
+                              : 'पीडीए से होने के कारण केशव का हो रहा अपमान'}
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2 text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                          <span className="w-2.5 h-2.5 rounded-full bg-red-600 shrink-0 mt-1 shadow-xs" />
+                          <span>
+                            {response.talking_points?.[2]
+                              ? response.talking_points[2].replace(/^[0-9]\.\s*/, '').slice(0, 52)
+                              : 'डिंपल के फर्जी वीडियो बनवा रही है सरकार'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Cutout Left: Yogi */}
+                      <img
+                        src="/assets/leaders/cutouts/yogi_cutout.png"
+                        alt="Yogi Adityanath Cutout"
+                        className="absolute bottom-0 left-0 max-h-[82%] w-[34%] object-contain pointer-events-none drop-shadow-md z-10"
+                      />
+
+                      {/* Cutout Right: Akhilesh */}
+                      <img
+                        src="/assets/leaders/cutouts/akhilesh_cutout.png"
+                        alt="Akhilesh Yadav Cutout"
+                        className="absolute bottom-0 right-0 max-h-[86%] w-[34%] object-contain pointer-events-none drop-shadow-md z-10"
+                      />
+
+                      {/* Footer Attribution */}
+                      <div className="relative z-10 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-200 pt-1 font-mono">
+                        <span>स्रोत: प्रेस कॉन्फ्रेंस / आधिकारिक बयान</span>
+                        <span className="text-red-600 font-bold">✓ डिजिटल न्यूज़ कार्ड</span>
+                      </div>
+
+                      {/* Hover Overlay for Download */}
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity z-20 flex items-center justify-center gap-3">
+                        <button
+                          onClick={downloadRichPosterCanvas}
+                          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 text-white font-bold text-xs flex items-center gap-2 shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>अखबारी कार्ड डाउनलोड करें (HD PNG)</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mode 2: Quote Duel - Split Screen (Sample 4 Style) */}
+                  {posterStyle === 'quote-duel' && (
+                    <div className="relative aspect-[4/5] max-h-[500px] mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-300 dark:border-slate-700 bg-white text-slate-900 flex flex-col justify-between p-3 select-none group">
+                      {/* Top Box: Opponent (Orange) */}
+                      <div className="relative flex-1 rounded-xl bg-gradient-to-br from-amber-50 to-orange-100/70 border border-orange-200 p-3 sm:p-4 flex flex-col justify-between overflow-hidden">
+                        <div className="relative z-10 max-w-[65%] space-y-1.5">
+                          <span className="text-3xl sm:text-4xl text-orange-600 font-serif font-black leading-none block">“</span>
+                          <p className="text-xs sm:text-sm font-black text-slate-900 leading-snug">
+                            '{opponentClaim || 'यूपी में कोई चोरी करेगा तो अगले दिन लंगड़ा हो जाएगा'}'
+                          </p>
+                          <div className="pt-2">
+                            <span className="inline-block px-2.5 py-0.5 rounded bg-orange-600 text-white text-[10px] font-bold">
+                              - योगी आदित्यनाथ
+                            </span>
+                            <span className="text-[10px] text-slate-600 font-bold block ml-1">CM, UP</span>
+                          </div>
+                        </div>
+                        <img
+                          src="/assets/leaders/cutouts/yogi_duel.png"
+                          alt="Yogi Duel Cutout"
+                          className="absolute right-0 bottom-0 max-h-[92%] w-[42%] object-contain pointer-events-none drop-shadow-sm"
+                        />
+                      </div>
+
+                      {/* Center Divider VS Badge */}
+                      <div className="relative z-20 flex items-center justify-center -my-3">
+                        <div className="w-10 h-10 rounded-full bg-white shadow-lg border-2 border-red-600 flex items-center justify-center text-[10px] font-black text-red-600">
+                          VS
+                        </div>
+                      </div>
+
+                      {/* Bottom Box: Samajwadi (Red) */}
+                      <div className="relative flex-1 rounded-xl bg-gradient-to-br from-rose-50 to-red-100/70 border border-red-200 p-3 sm:p-4 flex flex-col justify-between overflow-hidden mt-1">
+                        <div className="relative z-10 max-w-[65%] space-y-1.5">
+                          <span className="text-3xl sm:text-4xl text-red-600 font-serif font-black leading-none block">“</span>
+                          <p className="text-xs sm:text-sm font-black text-slate-900 leading-snug">
+                            '{response.copywriting.headline_hi}'
+                          </p>
+                          <div className="pt-2">
+                            <span className="inline-block px-2.5 py-0.5 rounded bg-red-600 text-white text-[10px] font-bold">
+                              - अखिलेश यादव
+                            </span>
+                            <span className="text-[10px] text-slate-600 font-bold block ml-1">सपा प्रमुख</span>
+                          </div>
+                        </div>
+                        <img
+                          src="/assets/leaders/cutouts/akhilesh_duel.png"
+                          alt="Akhilesh Duel Cutout"
+                          className="absolute right-0 bottom-0 max-h-[95%] w-[42%] object-contain pointer-events-none drop-shadow-sm"
+                        />
+                      </div>
+
+                      {/* Hover Overlay for Download */}
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity z-30 flex items-center justify-center gap-3">
+                        <button
+                          onClick={downloadRichPosterCanvas}
+                          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 text-white font-bold text-xs flex items-center gap-2 shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>आमने-सामने कार्ड डाउनलोड करें (HD PNG)</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mode 3: Statement Quote Card (Sample 2 & 3 Style) */}
+                  {posterStyle === 'statement-card' && (
+                    <div className="relative aspect-[4/5] max-h-[500px] mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-300 dark:border-slate-700 bg-white text-slate-900 flex flex-col justify-between p-4 select-none group">
+                      <div className="relative z-10 flex-1 flex flex-col justify-between">
+                        <div className="space-y-3 pl-3 border-l-4 border-red-600">
+                          <span className="text-4xl text-red-600 font-serif font-black leading-none block">“</span>
+                          <p className="text-sm sm:text-base font-black text-slate-900 leading-snug max-w-[65%]">
+                            '{response.copywriting.headline_hi}'
+                          </p>
+                          <span className="text-3xl text-red-600 font-serif font-black leading-none block">„</span>
+
+                          <div className="pt-2">
+                            <span className="text-sm font-black text-red-600 block">अखिलेश यादव</span>
+                            <span className="text-xs font-semibold text-slate-500 block">सपा प्रमुख • पूर्व मुख्यमंत्री, उप्र</span>
+                          </div>
+                        </div>
+
+                        {/* Circular Inset Photo */}
+                        <div className="absolute right-2 top-2 w-28 h-28 rounded-full border-4 border-red-600 overflow-hidden shadow-md">
+                          <img
+                            src="/assets/leaders/cutouts/akhilesh_circle.png"
+                            alt="Akhilesh Inset"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+
+                        {/* Large Cutout at Bottom */}
+                        <img
+                          src="/assets/leaders/cutouts/akhilesh_cutout.png"
+                          alt="Akhilesh Cutout"
+                          className="absolute right-0 bottom-0 max-h-[70%] w-[50%] object-contain pointer-events-none drop-shadow-md"
+                        />
+                      </div>
+
+                      <div className="relative z-10 mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                        <span className="text-red-600 font-bold">WAR ROOM OFFICIAL STATEMENT</span>
+                        <span>ECI COMPLIANT</span>
+                      </div>
+
+                      {/* Hover Overlay for Download */}
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity z-30 flex items-center justify-center gap-3">
+                        <button
+                          onClick={downloadRichPosterCanvas}
+                          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 text-white font-bold text-xs flex items-center gap-2 shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>बयान कार्ड डाउनलोड करें (HD PNG)</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mode 4: Yellow Breaking Banner (Sample 5 Style) */}
+                  {posterStyle === 'breaking-banner' && (
+                    <div className="relative aspect-[4/5] max-h-[500px] mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-300 dark:border-slate-700 bg-slate-900 text-white flex flex-col justify-between select-none group">
+                      <div className="relative h-[40%] w-full overflow-hidden bg-slate-950 flex items-center justify-center">
+                        <img
+                          src="/assets/leaders/cutouts/akhilesh_cutout.png"
+                          alt="Akhilesh Top"
+                          className="max-h-full object-contain drop-shadow-md"
+                        />
+                        <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/70 text-amber-300 text-[10px] font-mono font-bold">
+                          SAMAJWADI WAR ROOM
+                        </div>
+                      </div>
+
+                      <div className="relative z-10 bg-[#facc15] text-black px-4 py-3 text-center shadow-lg border-y-2 border-amber-600">
+                        <h4 className="text-xs sm:text-sm md:text-base font-black uppercase leading-tight font-sans">
+                          {response.copywriting.headline_hi}
+                        </h4>
+                        <div className="mt-1 text-[11px] font-black text-red-800 tracking-wide uppercase">
+                          AKHILESH YADAV • CHIEF, SAMAJWADI PARTY
+                        </div>
+                      </div>
+
+                      <div className="relative h-[40%] w-full overflow-hidden bg-slate-950 flex items-center justify-center">
+                        <img
+                          src="/assets/leaders/cutouts/yogi_cutout.png"
+                          alt="Yogi Bottom"
+                          className="max-h-full object-contain drop-shadow-md"
+                        />
+                        <div className="absolute bottom-2 left-2 text-[9px] text-slate-400 font-mono">
+                          (IMAGES: ELECTION PLATFORM WAR ROOM)
+                        </div>
+                      </div>
+
+                      {/* Hover Overlay for Download */}
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity z-30 flex items-center justify-center gap-3">
+                        <button
+                          onClick={downloadRichPosterCanvas}
+                          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 text-white font-bold text-xs flex items-center gap-2 shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>ब्रेकिंग बैनर डाउनलोड करें (HD PNG)</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mode 5: DALL-E AI Visual Poster */}
                   {posterStyle === 'ai-poster' && (
                     <div className="relative aspect-square max-h-[480px] mx-auto rounded-2xl overflow-hidden shadow-2xl border-2 border-red-900/60 bg-slate-950 text-white flex flex-col justify-between p-4 sm:p-5 select-none group">
-                      {/* Background AI Visual Image with Dark Cinematic Gradient */}
                       {response.creative_assets.square_1080.ai_visual_url ? (
                         <div
                           className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
@@ -594,7 +1078,6 @@ export const CounterStudioPage: React.FC = () => {
                       ) : null}
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-red-950/80 backdrop-blur-[1px]" />
 
-                      {/* Top Header Tag */}
                       <div className="relative z-10 space-y-1.5">
                         <div className="flex items-center justify-between text-[10px] font-mono font-bold tracking-wider">
                           <span className="text-red-300 bg-red-950/80 px-2 py-0.5 rounded border border-red-800">
@@ -609,7 +1092,6 @@ export const CounterStudioPage: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* Headline & Subheadline Card */}
                       <div className="relative z-10 space-y-2 my-auto bg-slate-900/70 backdrop-blur-md p-3 sm:p-4 rounded-xl border border-white/10 shadow-lg">
                         <h4 className="text-sm sm:text-base md:text-lg font-black text-amber-300 leading-snug drop-shadow-md">
                           {response.copywriting.headline_hi}
@@ -617,39 +1099,18 @@ export const CounterStudioPage: React.FC = () => {
                         <p className="text-[11px] sm:text-xs font-semibold text-indigo-200 leading-relaxed">
                           {response.copywriting.sub_headline_hi}
                         </p>
-
-                        {/* Official Proof Snippet */}
-                        {response.official_data_citations?.[0] && (
-                          <div className="pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-[10px] font-mono">
-                            <span className="text-emerald-400 font-bold">
-                              ✓ {response.official_data_citations[0].metric}:
-                            </span>
-                            <span className="text-white bg-red-950/80 px-1.5 py-0.5 rounded">
-                              सपा: {response.official_data_citations[0].sp_value}
-                            </span>
-                            <span className="text-slate-300 bg-slate-800/80 px-1.5 py-0.5 rounded">
-                              भाजपा: {response.official_data_citations[0].bjp_value}
-                            </span>
-                          </div>
-                        )}
                       </div>
 
-                      {/* Footer & Signature */}
                       <div className="relative z-10 flex items-center justify-between border-t border-white/15 pt-2 text-[10px] font-mono">
                         <div>
-                          <span className="text-red-400 font-bold block">
-                            समाजवादी पार्टी • PDA परिवार
-                          </span>
-                          <span className="text-slate-400 text-[9px]">
-                            {response.copywriting.call_to_action_hi}
-                          </span>
+                          <span className="text-red-400 font-bold block">समाजवादी पार्टी • PDA परिवार</span>
+                          <span className="text-slate-400 text-[9px]">{response.copywriting.call_to_action_hi}</span>
                         </div>
                         <span className="text-emerald-400 font-bold bg-emerald-950/80 px-2 py-1 rounded border border-emerald-800">
                           ✓ ECI &amp; NCRB VERIFIED
                         </span>
                       </div>
 
-                      {/* Hover Overlay for Download */}
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity z-20 flex items-center justify-center gap-3">
                         <button
                           onClick={downloadRichPosterCanvas}
@@ -662,7 +1123,7 @@ export const CounterStudioPage: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Mode 2: Pure DALL-E/Flux AI Art */}
+                  {/* Mode 6: Pure DALL-E/Flux AI Art */}
                   {posterStyle === 'pure-ai-art' && (
                     <div className="relative aspect-square max-h-[480px] mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-950 flex items-center justify-center group">
                       {response.creative_assets.square_1080.ai_visual_url ? (
@@ -675,9 +1136,7 @@ export const CounterStudioPage: React.FC = () => {
                         <span className="text-slate-400 text-xs">AI आर्ट लोड हो रहा है...</span>
                       )}
                       <div className="absolute bottom-3 left-3 right-3 bg-black/75 backdrop-blur-md p-2.5 rounded-xl border border-white/10 flex items-center justify-between text-xs text-white">
-                        <span className="font-semibold text-amber-300">
-                          Flux / DALL-E 8K Photorealistic AI Artwork
-                        </span>
+                        <span className="font-semibold text-amber-300">Flux / DALL-E 8K Photorealistic AI Artwork</span>
                         {response.creative_assets.square_1080.ai_visual_url && (
                           <a
                             href={response.creative_assets.square_1080.ai_visual_url}
@@ -692,7 +1151,7 @@ export const CounterStudioPage: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Mode 3: Server Base64 Canvas */}
+                  {/* Mode 7: Server Base64 Canvas */}
                   {posterStyle === 'server-canvas' && (
                     <div className="relative aspect-square max-h-[480px] mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-950 flex items-center justify-center group">
                       <img
@@ -705,13 +1164,13 @@ export const CounterStudioPage: React.FC = () => {
 
                   {/* Bottom Download Controls */}
                   <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
-                    <span>उपयुक्त: इंस्टाग्राम पोस्ट, फेसबुक फीड, व्हाट्सएप डीपी</span>
+                    <span>उपयुक्त: इंस्टाग्राम, फेसबुक, ट्विटर/X, व्हाट्सएप डिजिटल कार्ड</span>
                     <button
                       onClick={downloadRichPosterCanvas}
                       className="text-red-600 dark:text-red-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       <Download className="w-3.5 h-3.5" />
-                      <span>1-Click HD Download (1080x1080)</span>
+                      <span>1-Click HD Download</span>
                     </button>
                   </div>
                 </div>

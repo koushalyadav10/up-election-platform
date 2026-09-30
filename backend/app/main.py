@@ -79,10 +79,14 @@ def health_check():
         "version": "1.0.0"
     }
 
-# Mount static GeoJSON
+# Mount static GeoJSON & backend assets
 geojson_dir = Path(__file__).resolve().parent.parent.parent / "data" / "geojson"
 if geojson_dir.exists():
     app.mount("/api/static/geojson", StaticFiles(directory=str(geojson_dir)), name="geojson")
+
+backend_static_dir = Path(__file__).resolve().parent / "static"
+if backend_static_dir.exists():
+    app.mount("/api/static", StaticFiles(directory=str(backend_static_dir)), name="backend_static")
 
 @app.get("/guide")
 async def serve_guide():
