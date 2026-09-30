@@ -98,6 +98,16 @@ async def serve_guide_pdf():
     pdf_path = Path(__file__).resolve().parent.parent.parent / "UP_Election_Intelligence_Platform_Master_Guide.pdf"
     return FileResponse(pdf_path, filename="UP_Election_Intelligence_Platform_Master_Guide.pdf", media_type="application/pdf")
 
+@app.get("/summary")
+async def serve_summary():
+    summary_path = Path(__file__).resolve().parent.parent.parent / "UP_Election_Intelligence_4Page_Summary.html"
+    return FileResponse(summary_path, media_type="text/html")
+
+@app.get("/summary-pdf")
+async def serve_summary_pdf():
+    pdf_path = Path(__file__).resolve().parent.parent.parent / "UP_Election_Intelligence_4Page_Summary.pdf"
+    return FileResponse(pdf_path, filename="UP_Election_Intelligence_4Page_Executive_Summary.pdf", media_type="application/pdf")
+
 @app.get("/proposal")
 async def serve_proposal():
     proposal_path = Path(__file__).resolve().parent.parent.parent / "Koushal_Kumar_Yadav_SP_Mission_2027_Proposal.html"

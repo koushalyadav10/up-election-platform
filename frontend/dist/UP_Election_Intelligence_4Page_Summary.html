@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<title>UP Election Intelligence Platform — 4-Page Executive War Room Summary</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap');
+
+@page {
+    size: A4 portrait;
+    margin: 8mm 10mm 8mm 10mm;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+body {
+    font-family: 'Inter', 'Noto Sans Devanagari', -apple-system, sans-serif;
+    color: #0f172a;
+    background-color: #ffffff;
+    line-height: 1.35;
+    font-size: 8pt;
+    margin: 0;
+    padding: 0;
+}
+
+.page {
+    height: 278mm;
+    max-height: 278mm;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+}
+
+.page:last-child {
+    page-break-after: avoid;
+}
+
+/* Header & Top Branding */
+.top-header {
+    border-bottom: 2.5px solid #E30613;
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-title {
+    font-size: 13pt;
+    font-weight: 900;
+    color: #E30613;
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+}
+
+.brand-sub {
+    font-size: 8pt;
+    font-weight: 700;
+    color: #008837;
+    margin-top: 1px;
+}
+
+.page-badge {
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 7.5pt;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+/* Author Profile Card */
+.author-card {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-left: 4px solid #008837;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.author-name {
+    font-size: 9.5pt;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.author-role {
+    font-size: 7.5pt;
+    color: #475569;
+    font-weight: 600;
+}
+
+.author-contact {
+    text-align: right;
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.3;
+}
+
+/* Live Demo Hero Button */
+.live-demo-box {
+    background: linear-gradient(135deg, #090d16, #1e293b);
+    border: 2px solid #E30613;
+    border-radius: 8px;
+    padding: 7px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(227,6,19,0.15);
+}
+
+.live-btn {
+    background: linear-gradient(135deg, #E30613, #b91c1c);
+    color: #ffffff !important;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 8pt;
+    padding: 5px 12px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* KPI Badges Grid */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.kpi-card {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    padding: 4px 6px;
+    text-align: center;
+}
+
+.kpi-num {
+    font-size: 10pt;
+    font-weight: 900;
+    color: #E30613;
+    line-height: 1.1;
+}
+
+.kpi-lbl {
+    font-size: 6.5pt;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+}
+
+/* Feature Cards & Layouts */
+.section-title {
+    font-size: 9.5pt;
+    font-weight: 800;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1.5px solid #cbd5e1;
+    padding-bottom: 2px;
+    margin-bottom: 5px;
+}
+
+.tag-red { background: #fee2e2; color: #991b1b; padding: 1px 5px; border-radius: 3px; font-size: 6.5pt; font-weight: 800; }
+.tag-green { background: #dcfce7; color: #166534; padding: 1px 5px; border-radius: 3px; font-size: 6.5pt; font-weight: 800; }
+.tag-blue { background: #dbeafe; color: #1e40af; padding: 1px 5px; border-radius: 3px; font-size: 6.5pt; font-weight: 800; }
+.tag-gold { background: #fef3c7; color: #92400e; padding: 1px 5px; border-radius: 3px; font-size: 6.5pt; font-weight: 800; }
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 6px 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.card-title {
+    font-size: 8.5pt;
+    font-weight: 800;
+    color: #E30613;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.bullet-list {
+    margin: 0;
+    padding-left: 14px;
+}
+
+.bullet-list li {
+    margin-bottom: 2px;
+    font-size: 7.5pt;
+    color: #334155;
+    line-height: 1.35;
+}
+
+.bullet-list li strong {
+    color: #0f172a;
+}
+
+/* Tables */
+.mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.5pt;
+    margin-top: 4px;
+}
+
+.mini-table th {
+    background: #f1f5f9;
+    color: #1e293b;
+    font-weight: 800;
+    padding: 3px 6px;
+    border: 1px solid #cbd5e1;
+    text-align: left;
+}
+
+.mini-table td {
+    padding: 3px 6px;
+    border: 1px solid #e2e8f0;
+    line-height: 1.25;
+}
+
+/* Footer Bar */
+.bottom-footer {
+    border-top: 1.5px solid #e2e8f0;
+    padding-top: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 7pt;
+    color: #64748b;
+    font-weight: 600;
+    margin-top: auto;
+}
+</style>
+</head>
+<body>
+
+<!-- ========================================================================= -->
+<!-- PAGE 1: EXECUTIVE MANDATE & CORE ELECTORAL ENGINE -->
+<!-- ========================================================================= -->
+<div class="page">
+    <div>
+        <div class="top-header">
+            <div>
+                <div class="brand-title">UP ELECTION INTELLIGENCE &amp; WAR ROOM PLATFORM</div>
+                <div class="brand-sub">समाजवादी पार्टी • मिशन 2027 सामरिक वॉर मशीन | 403 विधानसभा एवं 80 लोकसभा सम्पूर्ण डेटा विजन</div>
+            </div>
+            <div class="page-badge">पेज 1 / 4 • मुख्य संरचना</div>
+        </div>
+
+        <!-- Creator Profile Card -->
+        <div class="author-card">
+            <div>
+                <div class="author-name">कौशल कुमार यादव (Koushal Kumar Yadav)</div>
+                <div class="author-role">बी.टेक (इंजीनियरिंग अंतिम वर्ष, पंजाब) • पूर्ण-स्टैक AI सॉफ्टवेयर इंजीनियर एवं डेटा वैज्ञानिक</div>
+                <div style="font-size: 7pt; color: #64748b; margin-top: 1px;">मूल निवासी: खलीलाबाद, जनपद संतकबीर नगर, उत्तर प्रदेश (पिन: 272175) • समर्पित समाजवादी विचारधारा</div>
+            </div>
+            <div class="author-contact">
+                <div>📱 +91 95552 36625</div>
+                <div>✉️ koushalkumaryadav9090@gmail.com</div>
+                <div style="color: #008837;">✓ 100% सेल्फ-कोडेड एवं लाइव होस्टेड</div>
+            </div>
+        </div>
+
+        <!-- Live Demo Interactive Banner -->
+        <div class="live-demo-box">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e;"></span>
+                <div>
+                    <span style="color: #fde047; font-weight: 900; font-size: 9pt; text-transform: uppercase;">🚀 LIVE DEMO ACCESS: </span>
+                    <span style="color: #ffffff; font-size: 8pt; font-weight: 600;">पूरा प्लेटफॉर्म AWS क्लाउड पर 24×7 लाइव चालू है</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+                <a href="http://15.207.14.41" target="_blank" class="live-btn">
+                    🌐 लाइव सिस्टम खोलें: http://15.207.14.41
+                </a>
+            </div>
+        </div>
+
+        <!-- 6 KPI Badges -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-num">403</div>
+                <div class="kpi-lbl">विधानसभाएं</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-num">80</div>
+                <div class="kpi-lbl">लोकसभा सीटें</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-num">1,59,000+</div>
+                <div class="kpi-lbl">पोलिंग बूथ</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-num">33 वर्ष</div>
+                <div class="kpi-lbl">1991–2024 डेटा</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-num">90+</div>
+                <div class="kpi-lbl">बैटलग्राउंड सीटें</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-num">100%</div>
+                <div class="kpi-lbl">ECI सम्मत</div>
+            </div>
+        </div>
+
+        <!-- Mission 2027 Strategic Mandate -->
+        <div class="card" style="border-left: 3.5px solid #E30613; margin-bottom: 8px; background: #fffcfc;">
+            <div class="card-title">
+                <span>🎯 मिशन 2027 का सामरिक रोडमैप: अनुमान नहीं, शुद्ध डेटा और AI से जीत</span>
+            </div>
+            <p style="margin: 0 0 4px 0; font-size: 7.5pt; color: #334155;">
+                2024 के लोकसभा चुनाव में उत्तर प्रदेश की जनता ने समाजवादी पार्टी को <strong>37 लोकसभा सीटें (179 विधानसभा क्षेत्रों में निर्णायक बढ़त)</strong> देकर देश की तीसरी सबसे बड़ी राजनीतिक शक्ति बनाया है। अब 2027 के विधानसभा चुनाव में 202+ पूर्ण बहुमत प्राप्त करने के लिए यह प्लेटफॉर्म प्रत्येक बूथ का वैज्ञानिक सूक्ष्म-प्रबंधन (Micro-Targeting) सुनिश्चित करता है।
+            </p>
+        </div>
+
+        <!-- Section 1: Command Center & GIS Map -->
+        <div class="section-title">
+            <span>1. कमांड सेंटर एवं इंटरैक्टिव जीआईएस मानचित्र (GIS Vector Map)</span>
+            <span class="tag-red">Dual-Layer Architecture</span>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">🖥️ संपूर्ण प्रदेश का बर्ड्स-आई डैशबोर्ड</div>
+                <ul class="bullet-list">
+                    <li><strong>80 लोकसभा एवं 403 विधानसभाओं का लाइव तुलनात्मक कार्ड:</strong> प्रदेश स्तर पर 2024 का 56.92% टर्नआउट बनाम 2019/2022 का संपूर्ण ऐतिहासिक रुझान।</li>
+                    <li><strong>विधानसभा स्तर पर लोकसभा वोट बढ़त:</strong> 403 में से किन सीटों पर सपा आगे रही और कहां 1,000 से 5,000 वोटों का मामूली अंतर रहा।</li>
+                    <li><strong>75 जिला इंटेलिजेंस हब:</strong> जिले के सभी विधायकों और सांसदों के वोटों का कुल संतुलन एक स्क्रीन पर।</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-title">🗺️ इंटरैक्टिव जीआईएस चुनावी मानचित्र</div>
+                <ul class="bullet-list">
+                    <li><strong>डुअल-लेयर कोरोप्लेथ नक्शा:</strong> एक क्लिक में 80 संसदीय क्षेत्र (PC) और 403 विधानसभा (AC) नक्शों के बीच स्विचिंग।</li>
+                    <li><strong>रंग-कोडित राजनीतिक रुझान:</strong> लाल (सपा), हरा (सहयोगी दल), केसरिया (भाजपा) और नीला (बसपा) के आधार पर तात्कालिक भौगोलिक स्थिति।</li>
+                    <li><strong>होवर व क्लिक विश्लेषण:</strong> किसी भी सीट पर माउस ले जाते ही विजेता प्रत्याशी, रनर-अप, वोट प्रतिशत व जीत का अंतर प्रकट होना।</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: Assembly & Lok Sabha Deep Explorers -->
+        <div class="section-title" style="margin-top: 4px;">
+            <span>2. 403 विधानसभा एवं 80 लोकसभा डीप एक्सप्लोरर (Deep Explorers)</span>
+            <span class="tag-green">1991–2024 Vault</span>
+        </div>
+        <div class="card" style="margin-bottom: 4px;">
+            <ul class="bullet-list">
+                <li><strong>33 वर्षों का ऐतिहासिक डेटा आर्काइव:</strong> 1991 से 2024 तक उत्तर प्रदेश में हुए सभी चुनावों के ECI Form 20 अधिकृत आंकड़े।</li>
+                <li><strong>मल्टी-ईयर ट्रेंड चार्ट्स:</strong> किसी भी सीट पर सपा के वोट बैंक का उतार-चढ़ाव, तीसरे दल (बसपा/कांग्रेस) के वोटों का स्थानांतरण और भाजपा का पीक/डिक्लाइन ग्राफ।</li>
+                <li><strong>1-क्लिक डेटा एक्सपोर्ट:</strong> किसी भी चुनाव वर्ष की पूरी कैंडिडेट लिस्ट और वोट शेयर सीधे एक्सेल (XLSX/CSV) में डाउनलोड।</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="bottom-footer">
+        <span>UP ELECTION PLATFORM • DEVELOPED BY KOUSHAL KUMAR YADAV (+91 95552 36625)</span>
+        <span>LIVE URL: HTTP://15.207.14.41</span>
+        <span>पेज 1 / 4</span>
+    </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- PAGE 2: ROAD TO 2027, BOOTH WAR ROOM & ELECTRA AI -->
+<!-- ========================================================================= -->
+<div class="page">
+    <div>
+        <div class="top-header">
+            <div>
+                <div class="brand-title">ROAD TO 2027: वॉर रूम, बूथ इंटेलिजेंस एवं ELECTRA AI</div>
+                <div class="brand-sub">159,000+ पोलिंग बूथों का सूक्ष्म-प्रबंधन, BLA-2 एक्शन कार्ड्स एवं स्विंग सिमुलेटर</div>
+            </div>
+            <div class="page-badge">पेज 2 / 4 • रणनीतिक इंजन</div>
+        </div>
+
+        <!-- Section 3: Road to 2027 Matrix -->
+        <div class="section-title">
+            <span>3. रोड टू 2027: मिशन 202+ बैटलग्राउंड वॉर रूम एवं स्विंग सिमुलेटर</span>
+            <span class="tag-red">Mission 202+ Engine</span>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">🎯 90+ बैटलग्राउंड सीटों का वैज्ञानिक वर्गीकरण</div>
+                <ul class="bullet-list">
+                    <li><strong>Flipped to SP (सपा ने छीनी):</strong> 2022 विधानसभा में हारी लेकिन 2024 लोकसभा में सपा ने निर्णायक बढ़त बनाई—इन सीटों को 2027 में पक्का करना।</li>
+                    <li><strong>Retained SP (सपा का मजबूत गढ़):</strong> दोनों चुनावों में सपा की प्रचंड जीत वाली सीटें।</li>
+                    <li><strong>Near-Miss Seats (<5,000 वोट से हार):</strong> वे सीटें जो मामूली अंतर से छूटीं, जहां थोड़ी सी बूथ रणनीति से जीत पक्की है।</li>
+                    <li><strong>Defensive Hold:</strong> जहां अंतर कम हुआ है और अतिरिक्त सुरक्षा की आवश्यकता है।</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-title">⚡ 1% से 5% लाइव वोट स्विंग सिमुलेटर</div>
+                <ul class="bullet-list">
+                    <li><strong>डायनामिक स्विंग प्रेडिक्शन:</strong> स्लाइडर को 1% या 2% आगे बढ़ाते ही स्क्रीन पर तुरंत दिखता है कि सपा की सीटें 111 से बढ़कर 205 या 240 कैसे पहुंचती हैं।</li>
+                    <li><strong>बसपा / निर्दलीय वोट शिफ्ट:</strong> यदि गैर-भाजपा वोटों का 3% भी सपा में जुड़ता है, तो किस विधानसभा में भाजपा का किला ढहता है।</li>
+                    <li><strong>संसाधन आबंटन गाइड:</strong> प्रदेश नेतृत्व को स्पष्ट पता चलता है कि स्टार प्रचारकों की रैलियां किन 45 सीटों पर सबसे ज्यादा सीटें जिताएंगी।</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 4: AC 360 War Dossier & Booth Explorer -->
+        <div class="section-title">
+            <span>4. विधानसभा 360° वॉr डॉसियर एवं फॉर्म 20 पोलिंग बूथ एक्सप्लोरर</span>
+            <span class="tag-blue">159,000+ Polling Booths</span>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">📑 विधानसभा 360° वॉर डॉसियर</div>
+                <ul class="bullet-list">
+                    <li><strong>प्रत्याशी व सीट का संपूर्ण इतिहास:</strong> 2012, 2017, 2022 और 2024 के वोट अंतर और जातिगत समीकरणों का विस्तृत विवरण।</li>
+                    <li><strong>कमजोर व मजबूत बूथों की सूची:</strong> विधानसभा के 350+ बूथों में से किस गांव/मोहल्ले में पार्टी को वोट नहीं मिला और कहां 80%+ वोट मिला।</li>
+                    <li><strong>Single-Click BOM Excel Export:</strong> प्रत्याशी अपने मोबाइल में पूरी विधानसभा का बूथवार डेटा डाउनलोड कर सकते हैं।</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-title">📍 फॉर्म 20 पोलिंग बूथ एक्सप्लोरर</div>
+                <ul class="bullet-list">
+                    <li><strong>उत्तर प्रदेश के सभी 1,59,000+ बूथों का डेटा:</strong> आधिकारिक ECI Form 20 से निकाला गया एक-एक बूथ का वास्तविक मतदान।</li>
+                    <li><strong>बूथ वर्गीकरण:</strong> Stronghold (सपा गढ़), Battleground (कांटे की टक्कर), और Weak (कमजोर बूथ)।</li>
+                    <li><strong>वोटर टर्नआउट गैप:</strong> किस बूथ पर महिला मतदाताओं का वोट कम पड़ा और कहां फर्जी मतदान का संदेह है।</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 5: BLA-2 Mobile Action Cards & Voter SSR -->
+        <div class="section-title">
+            <span>5. BLA-2 मोबाइल एक्शन कार्ड्स एवं विशेष मतदाता पुनरीक्षण (SSR Form-6)</span>
+            <span class="tag-gold">Ground Mobilization</span>
+        </div>
+        <div class="card" style="margin-bottom: 6px;">
+            <div class="card-title">📱 सीधे BLA-2 के मोबाइल पर 'व्हाट्सएप बूथ एक्शन कार्ड'</div>
+            <div class="grid-2" style="margin-bottom: 0;">
+                <ul class="bullet-list">
+                    <li><strong>प्रत्येक बूथ का डिजिटल कार्ड:</strong> बूथ अध्यक्ष को सीधे व्हाट्सएप पर मिलता है कार्ड जिसमें लिखा होता है: <em>"2024 में मिले वोट: 412, जीत का लक्ष्य: 520, आवश्यक नए वोट: 108"</em>।</li>
+                    <li><strong>Form-6 नए मतदाता पंजीकरण:</strong> 18 से 21 वर्ष के छूटे हुए युवा और PDA परिवारों के नाम वोटर लिस्ट में जुड़वाने का सटीक लक्ष्य।</li>
+                </ul>
+                <ul class="bullet-list">
+                    <li><strong>मतदान दिवस माइक्रो-मैनेजमेंट:</strong> सुबह 7 से 11 बजे के बीच 60% अनुकूल मतदान कराना ताकि शाम की धांधली का मौका न मिले।</li>
+                    <li><strong>BLA-2 जवाबदेही:</strong> हर बूथ अध्यक्ष का मोबाइल नंबर और असाइनमेंट सीधे सिस्टम में दर्ज।</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 6: ELECTRA AI -->
+        <div class="section-title">
+            <span>6. ELECTRA AI: शून्य-भ्रम (Zero-Hallucination) चुनावी शोध इंजन</span>
+            <span class="tag-green">AI Research Engine</span>
+        </div>
+        <div class="card">
+            <div class="card-title">🧠 चुनाव आयोग के प्रमाणित डेटा पर आधारित AI असिस्टेंट</div>
+            <p style="margin: 0 0 3px 0; font-size: 7.5pt; color: #334155;">
+                सामान्य चैटबॉट्स चुनावी आंकड़ों में गलत जानकारी (Hallucination) देते हैं, लेकिन <strong>ELECTRA AI</strong> केवल सिस्टम के प्रमाणित ECI डेटाबेस से उत्तर देता है।
+            </p>
+            <ul class="bullet-list">
+                <li><strong>स्वाभाविक भाषा में सवाल पूछें:</strong> जैसे—<em>"करहल विधानसभा में 2022 में सपा को कितने वोट मिले और 2024 में क्या अंतर रहा?"</em> या <em>"कुशीनगर जिले की सबसे कमजोर 2 सीटें कौन सी हैं?"</em>।</li>
+                <li><strong>3 सेकंड में विस्तृत रिपोर्ट:</strong> आंकड़े, टेबल और रणनीतिक सलाह के साथ तत्काल सटीक विश्लेषण।</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="bottom-footer">
+        <span>UP ELECTION PLATFORM • DEVELOPED BY KOUSHAL KUMAR YADAV (+91 95552 36625)</span>
+        <span>LIVE URL: HTTP://15.207.14.41/?TAB=STRATEGY</span>
+        <span>पेज 2 / 4</span>
+    </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- PAGE 3: CHITRAGUPTA 3.0 CDR CARTOON STUDIO & TV DEBATE DOSSIER -->
+<!-- ========================================================================= -->
+<div class="page">
+    <div>
+        <div class="top-header">
+            <div>
+                <div class="brand-title">चित्रगुप्त 3.0: CorelDraw (CDR) व्यंग्य चित्र व टीवी प्रवक्ता वॉर रूम</div>
+                <div class="brand-sub">8 प्रमुख राजनीतिक व्यंग्य चित्र, 3D देवनागरी पोस्टर्स, ECI/NCRB अधिकृत साक्ष्य एवं डिजिटल मीडिया कार्ड्स</div>
+            </div>
+            <div class="page-badge">पेज 3 / 4 • प्रचार व मीडिया</div>
+        </div>
+
+        <!-- Section 7: Chitragupta 3.0 Intro -->
+        <div class="section-title">
+            <span>7. "चित्रगुप्त 3.0" यूनिवर्सल राजनीतिक व्यंग्य चित्र व CorelDraw (CDR) 3D स्टूडियो</span>
+            <span class="tag-red">CorelDraw 3D Postering</span>
+        </div>
+        <div class="card" style="border-left: 3.5px solid #E30613; margin-bottom: 6px; background: #fffcfc;">
+            <p style="margin: 0; font-size: 7.5pt; color: #334155;">
+                <strong>काले बक्सों और साधारण फोटो कार्ड्स का संपूर्ण अंत:</strong> यह मॉड्यूल असली राजनीतिक व्यंग्य चित्र (Editorial Cartoon/Caricature) और CorelDraw/Photoshop स्तर का 3D पोस्टर जनरेटर है। कलाकृति 100% साफ दिखाई देती है, जिस पर 3D देवनागरी हेडलाइन और मैटेलिक लाल-पीला रिबन स्वतः रेंडर होता है।
+            </p>
+        </div>
+
+        <!-- 8 Cartoon Vectors Table -->
+        <div class="card" style="margin-bottom: 6px;">
+            <div class="card-title">🎨 8 प्रमुख ज्वलंत राजनीतिक मुद्दे व व्यंग्य चित्र (8 Editorial Cartoon Artworks)</div>
+            <table class="mini-table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">मुद्दा (Political Vector)</th>
+                        <th style="width: 45%;">व्यंग्य चित्र कलाकृति का दृश्य (Cartoon Visual)</th>
+                        <th style="width: 30%;">CorelDraw 3D स्लोगन</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. पेपर लीक व युवा आक्रोश</strong></td>
+                        <td>डिग्री व रद्द परीक्षा पत्र लिए छात्र (PAPER LEAK RADD मोहर), 2027 की टिक-टिक घड़ी व लाठीचार्ज।</td>
+                        <td><strong>60 लाख युवाओं का हिसाब दो!</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. सांड का आतंक व किसान</strong></td>
+                        <td>लहलहाती फसल को रौंदता आक्रामक सांड (Bull), लालटेन लिए बेबस किसान और कागजी गौशाला का सच।</td>
+                        <td><strong>अन्नदाता मांगे न्याय!</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. महंगाई व रसोई गैस ₹1100</strong></td>
+                        <td>विशालकाय ₹1100 का लाल सिलेंडर जो आम गरीब परिवार की खाली जेब को कुचल रहा है।</td>
+                        <td><strong>रसोई गैस ₹1100 क्यों?</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. बुलडोजर अन्याय बनाम संविधान</strong></td>
+                        <td>सुप्रीम कोर्ट का ऐतिहासिक फैसला और 'न्याय का तराजू' जो गैर-संवैधानिक बुलडोजर को रोक देता है।</td>
+                        <td><strong>संविधान के आगे झुका बुलडोजर!</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>5. एक्सप्रेसवे व विकास</strong></td>
+                        <td>6-लेन आगरा-लखनऊ एक्सप्रेसवे पर वायुसेना का सुखोई लड़ाकू विमान और समानांतर लखनऊ मेट्रो।</td>
+                        <td><strong>काम बोलता है!</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>6. सर्वधर्म सद्भाव व प्रभु राम</strong></td>
+                        <td>अयोध्या सरयू तट पर मंदिर, तिरंगा और सर्वसमाज के जुड़े हाथ ('प्रभु राम सबके हैं, नफरत किसी की नहीं')।</td>
+                        <td><strong>प्रभु राम सबके हैं!</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>7. संविधान रक्षा व जाति जनगणना</strong></td>
+                        <td>बाबासाहेब का स्वर्णिम संविधान, उगता सूरज 'PEOPLE POWER', किसान, महिला शिक्षिका व युवा।</td>
+                        <td><strong>संविधान हमारा स्वाभिमान!</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>8. मिशन 2027 महा-रैली</strong></td>
+                        <td>लाल टोपी में अखिलेश यादव का विजय मुक्का, यूपी विधानसभा की ओर बढ़ता लाखों समर्थकों का जनसैलाब।</td>
+                        <td><strong>युवा शक्ति, प्रदेश की प्रगति!</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 8: TV Debate Dossier & Digital News Cards -->
+        <div class="section-title">
+            <span>8. प्रवक्ता टीवी डिबेट डॉसियर एवं अमर उजाला डिजिटल मीडिया कार्ड्स</span>
+            <span class="tag-gold">Debate War Room</span>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">📰 अमर उजाला अखबारी स्टाइल कार्ड्स</div>
+                <ul class="bullet-list">
+                    <li><strong>शून्य फेस-ओवरलैप तकनीक:</strong> योगी आदित्यनाथ (बाईं ओर) और अखिलेश यादव (दाईं ओर) के कटआउट्स किनारों पर स्थिर, बीच में 3 तीखे बुलेट पॉइंट्स—चेहरे कभी नहीं छिपते।</li>
+                    <li><strong>डिजिटल न्यूज़ मीडिया लुक:</strong> अमर उजाला/दैनिक भास्कर के आधिकारिक डिजिटल कार्ड जैसा प्रामाणिक लुक।</li>
+                    <li><strong>1-क्लिक 1080p HD PNG डाउनलोड:</strong> सीधे सोशल मीडिया (Twitter/X, WhatsApp, FB) पर शेयर करने योग्य।</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-title">🎙️ टीवी डिबेट के लिए अकाट्य डेटा साक्ष्य</div>
+                <ul class="bullet-list">
+                    <li><strong>सरकारी विभागों के अधिकृत आंकड़े (ECI / NCRB):</strong> UPPRPB (पुलिस भर्ती रद्द), पेट्रोलियम मंत्रालय (गैस दरें), इलाहाबाद हाईकोर्ट (69,000 शिक्षक भर्ती आरक्षण)।</li>
+                    <li><strong>विपक्षी प्रवक्ता पर 3 कड़े पलटवार सवाल:</strong> स्टूडियो में भाजपा प्रवक्ता से सीधे पूछने के लिए ऐसे सवाल जिससे वह तुरंत रक्षात्मक मुद्रा में आ जाए।</li>
+                    <li><strong>100% आचार संहिता सम्मत:</strong> डिबेट में कानूनी या मानहानि का शून्य जोखिम।</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Live Demo Link for Studio -->
+        <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 6px; padding: 6px 12px; margin-top: 4px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 7.5pt; font-weight: 700; color: #0f172a;">
+                🎨 सीधे चित्रगुप्त 3.0 में 8 कार्टून पोस्टर्स और टीवी डिबेट डॉसियर का लाइव परीक्षण करें:
+            </span>
+            <a href="http://15.207.14.41/?tab=counter-studio" target="_blank" style="background: #E30613; color: white; padding: 3px 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 7.5pt;">
+                http://15.207.14.41/?tab=counter-studio
+            </a>
+        </div>
+    </div>
+
+    <div class="bottom-footer">
+        <span>UP ELECTION PLATFORM • DEVELOPED BY KOUSHAL KUMAR YADAV (+91 95552 36625)</span>
+        <span>LIVE URL: HTTP://15.207.14.41/?TAB=COUNTER-STUDIO</span>
+        <span>पेज 3 / 4</span>
+    </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- PAGE 4: SATYA-CHAKRA FORENSICS, MOBILE WAR ROOM & PLAYBOOK -->
+<!-- ========================================================================= -->
+<div class="page">
+    <div>
+        <div class="top-header">
+            <div>
+                <div class="brand-title">सत्य-चक्र 2.5 फॉरेंसिक लैब, मोबाइल वॉर रूम एवं ऑपरेशनल प्लेबुक</div>
+                <div class="brand-sub">4-स्तरीय फॉरेंसिक ऑडिट, डीपफेक डिटेक्शन, 100% मोबाइल-फर्स्ट एवं संगठनात्मक विजय रोडमैप</div>
+            </div>
+            <div class="page-badge">पेज 4 / 4 • कानूनी सुरक्षा व निष्कर्ष</div>
+        </div>
+
+        <!-- Section 9: Satya-Chakra 2.5 Forensics -->
+        <div class="section-title">
+            <span>9. "सत्य-चक्र 2.5" 4-स्तरीय मल्टी-डोमेन फॉरेंसिक ऑडिट लेजर एवं फैक्ट-चेक इंजन</span>
+            <span class="tag-blue">Deepfake &amp; Tamper Defense</span>
+        </div>
+        <div class="card" style="border-left: 3.5px solid #1d4ed8; margin-bottom: 6px; background: #f8fafc;">
+            <p style="margin: 0; font-size: 7.5pt; color: #334155;">
+                <strong>भारत का पहला राजनीतिक फॉरेंसिक ऑडिट सिस्टम:</strong> चुनाव में विरोधी दलों द्वारा सपा नेताओं के फर्जी वीडियो, AI डीपफेक और भ्रामक तस्वीरों के जरिए मतदाताओं को गुमराह करने की साजिशों को कानूनी व तकनीकी स्तर पर विफल करने वाला रक्षा कवच।
+            </p>
+        </div>
+        <div class="grid-2" style="margin-bottom: 6px;">
+            <div class="card">
+                <div class="card-title">🔬 4-स्तरीय फॉरेंसिक ऑडिट लेजर</div>
+                <ul class="bullet-list">
+                    <li><strong>1. 2D FFT Frequency Analysis:</strong> इमेज के फ्रीक्वेंसी स्पेक्ट्रम में कृत्रिम ग्रिड स्पाइक्स और AI डिफ्यूजन लैटिस को पकड़ना (लेंस फैलाव बनाम सिंथेटिक पिक्सल)।</li>
+                    <li><strong>2. ELA (Error Level Analysis):</strong> संपीड़न (Compression) स्तर में असमानता की जांच; फोटो में अलग से जोड़े गए फर्जी चेहरों/सामग्री का तुरंत पर्दाफाश।</li>
+                    <li><strong>3. बायोमेट्रिक व नॉइज़ असंगति:</strong> चेहरे की त्वचा पर अस्वाभाविक प्लास्टिक स्मूथिंग और पुतलियों/बालों की AI विकृति का विश्लेषण।</li>
+                    <li><strong>4. मेटाडेटा व C2PA क्रिप्टोग्राफिक ऑडिट:</strong> मूल कैमरा मॉडल, सॉफ्टवेयर फिंगरप्रिंट और AI प्रॉम्प्ट्स का निष्कर्षण।</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-title">⚖️ विधिक सेल (Legal Cell) एवं साइबर सुरक्षा लाभ</div>
+                <ul class="bullet-list">
+                    <li><strong>कोर्ट व ECI सम्मत फॉरेंसिक रिपोर्ट:</strong> चुनाव आयोग में आदर्श आचार संहिता उल्लंघन और पुलिस साइबर सेल में एफआईआर दर्ज कराने हेतु ठोस तकनीकी प्रमाण।</li>
+                    <li><strong>लाइव इंटरनेट फैक्ट-चेकिंग (OCR + Web Verification):</strong> पर्चे या तस्वीर में लिखे देवनागरी टेक्स्ट को पढ़कर इंटरनेट और समाचार अभिलेखागार से सच की पुष्टि।</li>
+                    <li><strong>अफवाहों का तुरंत खंडन:</strong> व्हाट्सएप पर फैलाई जाने वाली झूठी खबरों का 2 मिनट में आधिकारिक तकनीकी खंडन जारी करना।</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 10: Mobile War Room -->
+        <div class="section-title">
+            <span>10. 100% मोबाइल-फर्स्ट रिस्पॉन्सिव वॉर रूम (Field Mobilization)</span>
+            <span class="tag-green">Zero App Download</span>
+        </div>
+        <div class="card" style="margin-bottom: 6px;">
+            <div class="grid-2">
+                <ul class="bullet-list">
+                    <li><strong>शून्य ऐप डाउनलोड की आवश्यकता:</strong> किसी भी सामान्य 4G/5G स्मार्टफोन (एंड्रॉइड या आईफोन) के क्रोम/सफारी में सीधे <code>http://15.207.14.41</code> खोलते ही पूरा वॉर रूम चालू।</li>
+                    <li><strong>कम डेटा खपत व तेज गति:</strong> ग्रामीण क्षेत्रों में कमजोर सिग्नल पर भी मक्खन की तरह स्मूथ लोडिंग और बड़े टच बटन्स।</li>
+                </ul>
+                <ul class="bullet-list">
+                    <li><strong>खेत-खलिहान से लेकर केंद्रीय वॉर रूम तक:</strong> BLA-2 कार्यकर्ता सीधे बूथ पर खड़े होकर वोटर लिस्ट और बूथ एक्शन कार्ड देख सकता है।</li>
+                    <li><strong>पर्यवेक्षक व जिलाध्यक्ष:</strong> दौरे के दौरान कार में बैठकर भी पूरी विधानसभा का लाइव हाल जान सकते हैं।</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 11: Role Playbook Summary -->
+        <div class="section-title">
+            <span>11. संगठनात्मक स्तरों के लिए संपूर्ण ऑपरेशनल प्लेबुक (Role Action Summary)</span>
+        </div>
+        <table class="mini-table" style="margin-bottom: 6px;">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">पद / स्तर (Role)</th>
+                    <th style="width: 45%;">प्लेटफॉर्म में मुख्य कार्य (Platform Action)</th>
+                    <th style="width: 30%;">मिशन 2027 में अपेक्षित परिणाम</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>राज्य नेतृत्व व वॉर रूम</strong></td>
+                    <td>'Road to 2027' मैट्रिक्स से 90+ बैटलग्राउंड सीटों की निगरानी, संसाधनों का सटीक आबंटन।</td>
+                    <td><strong>202+ विधानसभा सीटों पर प्रचंड विजय।</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>सोशल मीडिया व IT सेल</strong></td>
+                    <td>चित्रगुप्त 3.0 से 10 सेकंड में 3D व्यंग्य पोस्टर डाउनलोड कर WhatsApp/Twitter पर वायरल करना।</td>
+                    <td><strong>विपक्षी नैरेटिव का तत्काल 100% विध्वंस।</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>टीवी प्रवक्ता विंग</strong></td>
+                    <td>ECI/NCRB अधिकृत आंकड़े व विरोधी से पूछने वाले 3 तीखे पलटवार सवाल जेब में रखना।</td>
+                    <td><strong>टीवी बहसों पर सपा का पूर्ण बौद्धिक दबदबा।</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>विधिक सेल (Legal Cell)</strong></td>
+                    <td>सत्य-चक्र 2.5 फॉरेंसिक रिपोर्ट से ECI व पुलिस में विरोधी डीपफेक की कानूनी शिकायत करना।</td>
+                    <td><strong>फर्जी प्रचार पर कानूनी रोक व कार्रवाई।</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>प्रत्याशी व BLA-2 कार्यकर्ता</strong></td>
+                    <td>AC वॉर डॉसियर डाउनलोड करना; WhatsApp बूथ एक्शन कार्ड से Form-6 नए वोट जुड़वाना।</td>
+                    <td><strong>बूथ स्तर पर 50 से 150 वोटों की निर्णायक बढ़त।</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Final Creator Card & Sign-Off -->
+        <div style="background: linear-gradient(135deg, #f8fafc, #f1f5f9); border: 1.5px solid #cbd5e1; border-top: 3px solid #E30613; border-radius: 6px; padding: 6px 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div style="font-size: 8.5pt; font-weight: 800; color: #0f172a;">
+                    🚩 समर्पण: कौशल कुमार यादव (Koushal Kumar Yadav) • समर्पित समाजवादी इंजीनियर
+                </div>
+                <div style="font-size: 7.5pt; color: #475569;">
+                    निवासी: खलीलाबाद, संतकबीर नगर (272175) • संपर्क: <strong>+91 95552 36625</strong> | koushalkumaryadav9090@gmail.com
+                </div>
+            </div>
+            <div>
+                <a href="http://15.207.14.41" target="_blank" style="background: linear-gradient(135deg, #E30613, #b91c1c); color: white; padding: 5px 12px; border-radius: 5px; text-decoration: none; font-weight: 900; font-size: 8pt; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    🚀 लाइव वेब डेमो: http://15.207.14.41
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-footer">
+        <span>UP ELECTION PLATFORM • DEVELOPED BY KOUSHAL KUMAR YADAV (+91 95552 36625)</span>
+        <span>CONFIDENTIAL &amp; PROPRIETARY — SAMAJWADI PARTY STRATEGIC BRIEF</span>
+        <span>पेज 4 / 4</span>
+    </div>
+</div>
+
+</body>
+</html>
