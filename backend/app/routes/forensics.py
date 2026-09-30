@@ -391,7 +391,23 @@ def build_forensic_dossier(img: Image.Image, filename: str, file_bytes: bytes, c
                            (typo["graphic_overlay_score"] * 0.15), 1)
         synth_prob = min(99.4, max(4.0, synth_prob))
 
-        if synth_prob >= 65.0:
+        # Check for Photo Splicing / Substitution Anomaly (e.g. photo pasted on ID card)
+        photo_splicing_detected = (noise["noise_variance"] > 3500.0 and typo["graphic_overlay_score"] > 60.0) or (noise["biological_anomaly_score"] > 60.0 and typo["anomaly_detected"])
+
+        if photo_splicing_detected:
+            synth_prob = max(synth_prob, 76.5)
+            classification = "SUSPICIOUS_TAMPERED"
+            badge_color = "rose"
+            headline_hi = "चेतावनी: फोटो प्रतिस्थापन / स्प्लिसिंग प्रमाणित (Photo Insertion / Splicing Detected)"
+            headline_en = "Warning: Photo Splicing & Insertion Anomaly Detected"
+            summary = (
+                f"फॉरेंसिक बायोमेट्रिक व बाउंड्री विश्लेषण द्वारा प्रमाणित: पहचान पत्र / दस्तावेज पर लगी फोटो अलग से "
+                f"काटकर चिपकाई गई है (Photo Spliced / Superimposed)। "
+                f"फोटो के आंतरिक कैमरा सेंसर नॉइज़ (वेरिएंस: {noise['noise_variance']}) तथा कार्ड के फ्रेम बॉर्डर "
+                f"(ओवरले रेशियो: {typo['graphic_overlay_score']}%) के बीच गंभीर विसंगति (Anomaly) दर्ज हुई है। "
+                f"मूल दस्तावेज़ के फोटो फ्रेम में अन्य व्यक्ति की तस्वीर प्रतिस्थापित की गई है।"
+            )
+        elif synth_prob >= 65.0:
             classification = "SYNTHETIC_AI_GENERATED"
             badge_color = "rose"
             headline_hi = "उच्च जोखिम: कृत्रिम AI निर्मित सामग्री (Deepfake / Diffusion Detected)"
