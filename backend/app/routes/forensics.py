@@ -30,7 +30,10 @@ from PIL import Image, ImageChops, ImageEnhance, ImageFilter, ImageDraw, ImageFo
 from scipy import fftpack
 from scipy.signal import convolve2d
 
-from backend.app.services.fact_checker import extract_text_from_image, verify_claim_and_media
+try:
+    from app.services.fact_checker import extract_text_from_image, verify_claim_and_media
+except ImportError:
+    from backend.app.services.fact_checker import extract_text_from_image, verify_claim_and_media
 
 router = APIRouter(prefix="/api/forensics", tags=["Media Forensics & Deepfake Lab"])
 
