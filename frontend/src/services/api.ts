@@ -2557,7 +2557,15 @@ export interface CounterCreativeResponse {
   status: string;
   detected_vector: string;
   vector_label: string;
+  artwork_url?: string;
+  cdr_headline_hi?: string;
   creative_assets: {
+    cdr_poster?: {
+      title: string;
+      format: string;
+      image_base64: string;
+      artwork_url: string;
+    };
     square_1080: {
       title: string;
       format: string;
@@ -2602,6 +2610,7 @@ export interface PresetAttack {
   label: string;
   claim: string;
   description: string;
+  artwork_url?: string;
 }
 
 export async function fetchPresetAttacks(): Promise<{ presets: PresetAttack[] }> {

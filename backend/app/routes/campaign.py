@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 E:/eci/backend/app/routes/campaign.py
-"Chitragupta" — Universal Strategic Counter-Creative Studio.
+"Chitragupta 3.0" — Universal Political Cartoon & CorelDraw (CDR) Studio.
 Applies the 360° Samajwadi Party Strategic Re-framing Playbook
 (Lohia - Ambedkar - Mulayam - Akhilesh Doctrine).
-Integrates DALL-E / Flux AI Generative Imaging Engine (1024x1024 Photorealistic Visuals)
-with 100% Devanagari Hindi Typography and Spokesperson Debate Briefs.
+Integrates High-Impact Political Satirical Cartoons, 3D CorelDraw Typography,
+Dynamic Issue Intelligence, and Spokesperson TV Debate Briefs.
 """
 
 import io
@@ -15,6 +15,7 @@ import json
 import base64
 import urllib.parse
 import urllib.request
+from pathlib import Path
 from typing import Optional, Dict, Any, List
 
 from fastapi import APIRouter, HTTPException
@@ -23,11 +24,15 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 
 router = APIRouter(prefix="/api/campaign", tags=["Strategic Counter Studio"])
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_CARTOONS_DIR = BASE_DIR / "static" / "cartoons"
+
 # ---------------------------------------------------------------------------
 # SAFE MULTI-PLATFORM HINDI FONT LOADER
 # ---------------------------------------------------------------------------
 def get_safe_hindi_font(size: int = 24, bold: bool = False):
     candidate_paths = [
+        "/usr/share/fonts/truetype/annapurna/AnnapurnaSIL-Bold.ttf" if bold else "/usr/share/fonts/truetype/annapurna/AnnapurnaSIL-Regular.ttf",
         "/usr/share/fonts/truetype/lohit-devanagari/Lohit-Devanagari.ttf",
         "/usr/share/fonts/truetype/Gargi/Gargi.ttf",
         "/usr/share/fonts/truetype/samyak/Samyak-Devanagari.ttf",
@@ -58,128 +63,234 @@ class CounterCreativePayload(BaseModel):
     tone: Optional[str] = "FACTUAL_DIGNIFIED"
 
 # ---------------------------------------------------------------------------
-# PRESET ATTACK SCENARIOS FOR 1-CLICK TESTING
+# PRESET ATTACK SCENARIOS & TOPICS (8 KEY POLARIZING ISSUES)
 # ---------------------------------------------------------------------------
 PRESET_ATTACKS = [
     {
-        "id": "rel_01",
-        "vector": "RELIGIOUS_COMMUNAL",
-        "label": "तुष्टिकरण व सांप्रदायिक आरोप (Communal Polarization)",
-        "claim": "सपा केवल एक वर्ग विशेष और तुष्टिकरण की राजनीति करती है, सनातन का विरोध करती है।",
-        "description": "विपक्ष द्वारा ध्रुवीकरण करने व बुनियादी मुद्दों (रोजगार, महंगाई) से भटकाने का प्रयास।"
+        "id": "paper_leak_01",
+        "vector": "PAPER_LEAK",
+        "label": "पेपर लीक, युवा आक्रोश व बेरोजगारी (Paper Leak & Youth)",
+        "claim": "सपा सरकार में पर्ची और खर्ची से भर्तियां होती थीं, भाजपा पारदर्शी रोजगार दे रही है।",
+        "description": "60 लाख छात्रों के भविष्य, लगातार परीक्षा रद्दीकरण और लाठीचार्ज पर समाजवादी प्रहार।",
+        "artwork_url": "/assets/cartoons/youth_paper_leak.jpg"
     },
     {
-        "id": "pariv_02",
-        "vector": "PARIVARWAAD",
-        "label": "परिवारवाद व सैफई कुनबा (Dynastic Attack)",
-        "claim": "सपा में लोकतंत्र नहीं है, यह केवल एक परिवार और सैफई कुनबे की पार्टी है।",
-        "description": "वंशवाद का आरोप लगाकर सामाजिक न्याय की राजनीति को कमजोर करने का प्रयास।"
-    },
-    {
-        "id": "crime_03",
-        "vector": "LAW_AND_ORDER",
-        "label": "गुंडाराज व कानून-व्यवस्था (Crime Propaganda)",
-        "claim": "सपा के 2012-2017 शासन में गुंडाराज और माफियाओं का बोलबाला था, बेटियां सुरक्षित नहीं थीं।",
-        "description": "एनसीआरबी के आधिकारिक आंकड़ों को छिपाकर झूठा नैरेटिव खड़ा करना।"
-    },
-    {
-        "id": "dev_04",
-        "vector": "DEVELOPMENT",
-        "label": "मुफ्त की रेवड़ी व विकास (Infrastructure & Freebies)",
-        "claim": "सपा सरकार केवल मुफ्त की रेवड़ियां बांटती है, कोई वास्तविक ढांचागत विकास नहीं किया।",
-        "description": "आगरा-लखनऊ एक्सप्रेसवे, मेट्रो और डायल-100 जैसे ऐतिहासिक कार्यों की अनदेखी।"
-    },
-    {
-        "id": "pda_05",
-        "vector": "CASTE_PDA",
-        "label": "जाति जनगणना व सामाजिक विभाजन (Social Justice / PDA)",
+        "id": "pda_const_02",
+        "vector": "CONSTITUTION_PDA",
+        "label": "संविधान रक्षा व जाति जनगणना (Constitution & PDA Justice)",
         "claim": "जाति जनगणना और पीडीए की मांग समाज को बांटने और वैमनस्य फैलाने का षड्यंत्र है।",
-        "description": "संवैधानिक हक और 90% आबादी के प्रतिनिधित्व की मांग पर प्रहार।"
+        "description": "बाबासाहेब के संविधान, 69000 शिक्षक भर्ती आरक्षण और 90% आबादी के प्रतिनिधित्व की मांग।",
+        "artwork_url": "/assets/cartoons/constitution_pda.jpg"
+    },
+    {
+        "id": "mehngai_03",
+        "vector": "INFLATION_MEHNGAI",
+        "label": "महंगाई, रसोई गैस ₹1100 व घरेलू संकट (LPG Cylinder ₹1100 & Inflation)",
+        "claim": "विपक्ष महंगाई का झूठा रोना रो रहा है, देश की अर्थव्यवस्था दुनिया में सबसे तेज भाग रही है।",
+        "description": "रसोई गैस, दाल, तेल, दूध पर जीएसटी और आम जनता की खाली जेब का वास्तविक सच।",
+        "artwork_url": "/assets/cartoons/inflation_mehngai.jpg"
+    },
+    {
+        "id": "kisan_cattle_04",
+        "vector": "STRAY_CATTLE_FARMER",
+        "label": "सांड का आतंक, आवारा पशु व किसान संकट (Stray Cattle & Farm Distress)",
+        "claim": "भाजपा सरकार ने गौ संरक्षण और किसानों के लिए ऐतिहासिक कल्याणकारी योजनाएं बनाई हैं।",
+        "description": "खेतों को बर्बाद करते सांड, रात भर जागते किसान और कागजी गौशालाओं के भ्रष्टाचार की पोल।",
+        "artwork_url": "/assets/cartoons/stray_cattle_farmer.jpg"
+    },
+    {
+        "id": "dev_exp_05",
+        "vector": "DEVELOPMENT_EXPRESSWAY",
+        "label": "विश्वस्तरीय विकास बनाम जुमले (Agra-Lucknow Expressway & Metro)",
+        "claim": "सपा सरकार केवल मुफ्त की रेवड़ियां बांटती थी, कोई वास्तविक ढांचागत विकास नहीं किया।",
+        "description": "22 महीने में बने आगरा-लखनऊ एक्सप्रेसवे, लखनऊ मेट्रो और विश्वस्तरीय अस्पतालों का प्रमाण।",
+        "artwork_url": "/assets/cartoons/expressway_vikas.jpg"
+    },
+    {
+        "id": "rel_sanatan_06",
+        "vector": "RELIGIOUS_COMMUNAL",
+        "label": "तुष्टिकरण व सांप्रदायिक आरोप (Sanatan, Unity & Faith)",
+        "claim": "सपा केवल एक वर्ग विशेष और तुष्टिकरण की राजनीति करती है, सनातन का विरोध करती है।",
+        "description": "प्रभु राम जन-जन के आराध्य हैं, किसी दल की जागीर नहीं; अयोध्या जनादेश और सद्भाव का संदेश।",
+        "artwork_url": "/assets/cartoons/ram_sabke_harmony.jpg"
+    },
+    {
+        "id": "bulldozer_law_07",
+        "vector": "BULLDOZER_INJUSTICE",
+        "label": "बुलडोजर न्याय बनाम संविधान (Bulldozer Raj vs Supreme Court)",
+        "claim": "बुलडोजर से त्वरित न्याय और कानून व्यवस्था स्थापित की गई है, माफिया थर्रा रहे हैं।",
+        "description": "सुप्रीम कोर्ट का ऐतिहासिक फैसला: कार्यपालिका जज नहीं बन सकती, बुलडोजर गैर-कानूनी है।",
+        "artwork_url": "/assets/cartoons/bulldozer_justice.jpg"
+    },
+    {
+        "id": "rally_2027_08",
+        "vector": "SP_2027_RALLY",
+        "label": "मिशन 2027 विशाल विजय संकल्प (SP 2027 People's Wave & Rally)",
+        "claim": "सपा की जमीन खिसक चुकी है, 2027 में विपक्ष का कोई भविष्य नहीं है।",
+        "description": "37 लोकसभा सीटों की प्रचंड शक्ति, 2027 में 202+ सीटों का संकल्प और अखिलेश यादव का विजन।",
+        "artwork_url": "/assets/cartoons/sp_2027_rally.jpg"
     }
 ]
 
 # ---------------------------------------------------------------------------
-# ATTACK VECTOR CLASSIFIER
+# INTELLIGENT ATTACK VECTOR CLASSIFIER
 # ---------------------------------------------------------------------------
 def detect_attack_vector(claim_text: str) -> str:
     txt = claim_text.lower()
-    if any(k in txt for k in ["muslim", "appeasement", "tushtikaran", "sanatan", "ram", "mandir", "masjid", "dharma", "hindu", "communal", "dange", "dharm"]):
+    
+    # 1. Religious & Communal attacks / Appeasement / Sanatan / Muslim
+    if any(k in txt for k in [
+        "मुस्लिम", "तुष्टिकरण", "सनातन", "राम", "मंदिर", "मस्जिद", "दंगा", "दंगे", "हिंदू", "धर्म", "अयोध्या", "मजहब", "धार्मिक", "सांप्रदायिक",
+        "muslim", "appeasement", "tushtikaran", "sanatan", "ram", "mandir", "masjid", "dharma", "hindu", "communal", 
+        "dange", "dharm", "ayodhya", "religion", "namaz", "waqf", "वक्फ"
+    ]):
         return "RELIGIOUS_COMMUNAL"
-    if any(k in txt for k in ["parivar", "dynasty", "nepotism", "kunba", "saifai", "pariwarwaad", "vanshwaad"]):
-        return "PARIVARWAAD"
-    if any(k in txt for k in ["crime", "gunda", "mafia", "bulldozer", "suraksha", "women", "mahila", "kanoon", "hathras", "police", "danga"]):
-        return "LAW_AND_ORDER"
-    if any(k in txt for k in ["caste", "jaati", "pda", "census", "yadav", "dalit", "reservation", "aarakshan", "samajik"]):
-        return "CASTE_PDA"
-    if any(k in txt for k in ["expressway", "metro", "freebie", "revadi", "laptop", "vikas", "double engine", "paper leak", "berozgari", "mehngai"]):
-        return "DEVELOPMENT"
-    return "RELIGIOUS_COMMUNAL"
+
+    # 2. Bulldozer & Law & Order & Mafia
+    if any(k in txt for k in [
+        "बुलडोजर", "माफिया", "अपराध", "एनकाउंटर", "हथकड़ी", "हाथरस", "सुप्रीम कोर्ट", "गुंडा", "कानून", "थाना", "कोर्ट",
+        "supreme court", "bulldozer", "crime", "gunda", "kanoon", "court", "encounter", "law and order", "mafia"
+    ]):
+        return "BULLDOZER_INJUSTICE"
+
+    # 3. Stray Cattle & Farmers distress
+    if any(k in txt for k in [
+        "सांड", "आवारा", "पशु", "गाय", "बैल", "किसान", "फसल", "एमएसपी", "गौशाला", "खेत", "खाद", "यूरिया", "अन्नदाता",
+        "cattle", "bull", "kisan", "farmer", "gaushala", "khet", "stray", "crop", "msp", "sand"
+    ]):
+        return "STRAY_CATTLE_FARMER"
+
+    # 4. Inflation & LPG cylinder & Household expense
+    if any(k in txt for k in [
+        "महंगाई", "सिलेंडर", "गैस", "दाल", "तेल", "पेट्रोल", "डीजल", "खर्चा", "राशन", "टैक्स", "जीएसटी", "1100", "बजट",
+        "lpg", "price", "pocket", "mehngai", "kharcha", "cylinder", "ration", "petrol", "diesel", "inflation", "tax", "gst"
+    ]):
+        return "INFLATION_MEHNGAI"
+
+    # 5. Paper leak & youth unemployment & exams
+    if any(k in txt for k in [
+        "पेपर", "लीक", "युवा", "बेरोजगार", "नौकरी", "भर्ती", "सिपाही", "ro/aro", "छात्र", "परीक्षा", "लाठीचार्ज", "डिग्री",
+        "paper", "leak", "exam", "student", "job", "degree", "lathicharge", "unemployment", "youth", "recruitment", "police bharti"
+    ]):
+        return "PAPER_LEAK"
+
+    # 6. Constitution, Caste Census & PDA Social Justice
+    if any(k in txt for k in [
+        "संविधान", "आरक्षण", "जाति", "जनगणना", "दलित", "पिछड़ा", "अल्पसंख्यक", "पीडीए", "आंबेडकर", "लोहिया", "सामाजिक न्याय", "69000",
+        "pda", "ambedkar", "caste", "census", "aarakshan", "samajik", "constitution", "dalit", "obc", "reservation", "lohia"
+    ]):
+        return "CONSTITUTION_PDA"
+
+    # 7. Development, Expressways, Infrastructure & Hospitals
+    if any(k in txt for k in [
+        "एक्सप्रेसवे", "मेट्रो", "लैपटॉप", "सड़क", "अस्पताल", "विकास", "पुल", "रिवरफ्रंट", "मेदांता", "लोहिया संस्थान", "रेवड़ी", "डबल इंजन",
+        "expressway", "metro", "freebie", "revadi", "laptop", "vikas", "double engine", "hospital", "infrastructure", "flyover"
+    ]):
+        return "DEVELOPMENT_EXPRESSWAY"
+
+    # 8. Dynasty, General Political Attacks, Rallies -> SP Mission 2027 Wave
+    if any(k in txt for k in [
+        "परिवार", "कुनबा", "सैफई", "वंशवाद", "परिवारवाद", "रैली", "2027", "चुनाव", "सपा", "अखिलेश", "जीत", "हार", "जनादेश",
+        "parivar", "dynasty", "nepotism", "kunba", "saifai", "pariwarwaad", "vanshwaad", "2027", "chunav", "rally", "wave"
+    ]):
+        return "SP_2027_RALLY"
+        
+    return "PAPER_LEAK"
 
 # ---------------------------------------------------------------------------
-# SAMAJWADI 360° STRATEGIC PLAYBOOK & PROMPT SYNTHESIZER
+# SAMAJWADI 360° STRATEGIC PLAYBOOK & CARTOON ARTWORK ENGINE
 # ---------------------------------------------------------------------------
 def get_strategic_counter(vector: str, claim: str, tone: str) -> Dict[str, Any]:
     playbook = {
-        "RELIGIOUS_COMMUNAL": {
-            "vector_label": "सांप्रदायिक ध्रुवीकरण व तुष्टिकरण का झूठा आरोप",
-            "ai_prompt": "photorealistic 8k cinematic shot of majestic ancient temple architecture in Uttar Pradesh India, peaceful glowing traditional oil lamps at dusk, serene cultural harmony, golden hour lighting, ultra detailed award winning documentary photography",
-            "headline_hi": "सच्चा सनातनी वही जो सबका सम्मान करे: प्रभु राम सबके हैं, नफरत किसी की नहीं!",
-            "sub_headline_hi": "धर्म आस्था का विषय है, चुनावी व्यापार का नहीं • पेपर लीक व बेरोजगारी पर जवाब दे भाजपा",
-            "body_hi": "अखिलेश यादव सरकार ने सैफई में भव्य भगवान हनुमान की 54 फीट की प्रतिमा स्थापित की, भगवान परशुराम जी का भव्य धाम बनवाया और महर्षि वाल्मीकि, रविदास जी की जयंती पर सम्मान दिया। भाजपा जब भी पेपर लीक, महंगाई और बेरोजगारी पर घिरती है, तो धर्म की आड़ लेती है। हमारा धर्म 'वसुधैव कुटुम्बकम्' और संविधान की रक्षा है।",
-            "call_to_action_hi": "रोजी-रोटी, अस्पताल और शिक्षा पर बात करो • PDA 2027 में हिसाब लेगा!",
-            "hashtags": ["#PDA_Ekta", "#SamajwadiKaam", "#RozgarDo_DharmNahi", "#AkhileshYadav2027", "#VasudhaivaKutumbakam"],
+        "PAPER_LEAK": {
+            "vector_label": "पेपर लीक, युवा आक्रोश व बेरोजगारी का मुद्दा",
+            "artwork_file": "youth_paper_leak.jpg",
+            "artwork_url": "/assets/cartoons/youth_paper_leak.jpg",
+            "cdr_headline_hi": "60 लाख युवाओं का हिसाब दो!",
+            "headline_hi": "60 लाख नौजवानों का भविष्य बर्बाद: पेपर लीक का हिसाब 2027 में होगा!",
+            "sub_headline_hi": "पुलिस भर्ती व RO/ARO रद्द, लाठीचार्ज और बेरोजगारी पर भाजपा मौन • PDA युवा शक्ति मांगे रोजगार",
+            "body_hi": "उत्तर प्रदेश में भाजपा राज में 10 से अधिक महत्वपूर्ण प्रतियोगी परीक्षाओं के पेपर लीक हुए। 60 लाख से अधिक छात्र व नौजवान सड़कों पर रोने को मजबूर हैं और अपने हक की आवाज उठाने पर पुलिस की लाठियां झेल रहे हैं। अखिलेश यादव सरकार ने पुलिस एवं शिक्षा में रिकॉर्ड पारदर्शी भर्तियां की थीं और 18 लाख मेधावियों को लैपटॉप दिए थे। 2027 में युवा शक्ति इस तानाशाही का लोकतांत्रिक अंत करेगी।",
+            "call_to_action_hi": "रोजी-रोटी और रोजगार पर बात करो • PDA युवा 2027 में हिसाब लेगा!",
+            "hashtags": ["#PaperLeakMuktUP", "#RozgarDo_DharmNahi", "#YouthPower2027", "#AkhileshYadavWithYouth", "#PDAYuvaMorcha"],
             "talking_points": [
-                "1. प्रभु श्री राम जन-जन के आराध्य हैं, किसी एक राजनीतिक दल के चुनावी एजेंट नहीं। राम सबके हैं, शबरी के भी और निषादराज के भी।",
-                "2. 60 लाख नौजवानों के पेपर लीक हुए, 2 करोड़ युवा बेरोजगार हैं—भाजपा के पास इसका कोई जवाब नहीं, इसलिए वह सांप्रदायिक ध्रुवीकरण करती है।",
-                "3. नेताजी और अखिलेश यादव ने हमेशा संतों और सर्वसमाज का सम्मान किया। हमारा राष्ट्रवाद तिरंगे और संविधान से बंधा है।"
+                "1. 60 लाख नौजवानों की यूपी पुलिस सिपाही भर्ती परीक्षा परीक्षा से चंद घंटे पहले लीक हुई। यह प्रशासनिक अपराध है।",
+                "2. युवा जब लखनऊ और प्रयागराज में शांतिपूर्ण प्रदर्शन करते हैं, तो उन पर बर्बर लाठीचार्ज कराया जाता है।",
+                "3. समाजवादी सरकार ने पारदर्शी प्रक्रिया से बिना किसी पेपर लीक के लाखों नौकरियां दी थीं और लैपटॉप बांटे थे।"
             ],
             "official_data_citations": [
-                {"metric": "UP पुलिस सिपाही भर्ती परीक्षा", "sp_value": "पारदर्शी भर्ती", "bjp_value": "पेपर लीक रद्द (60 लाख प्रभावित)", "source": "UPPRPB Official 2024"},
-                {"metric": "अयोध्या 2024 लोकसभा परिणाम", "sp_value": "अवधेश प्रसाद (विजेता - 54,567 वोट)", "bjp_value": "पराजित (जनता का जनादेश)", "source": "ECI Form 20"}
+                {"metric": "UP पुलिस सिपाही भर्ती परीक्षा", "sp_value": "पारदर्शी भर्ती एवं सम्मान", "bjp_value": "पेपर लीक रद्द (60 लाख छात्र प्रभावित)", "source": "UPPRPB 2024"},
+                {"metric": "युवाओं को मुफ्त लैपटॉप वितरण", "sp_value": "18.2 लाख मेधावी छात्र लाभान्वित", "bjp_value": "शून्य लैपटॉप (योजना बंद कर दी)", "source": "UP Madhyamik Shiksha"}
             ],
-            "spokesperson_caution": "विपक्षी प्रवक्ता को किसी भी धार्मिक ग्रंथ या देवता पर उलझने न दें; तुरंत पलटकर पूछें कि 'अयोध्या के किसानों की जमीन के मुआवजे और पेपर लीक पर आपकी क्या नीति है?'"
+            "spokesperson_caution": "विपक्षी प्रवक्ता से सीधे पूछें: '60 लाख अभ्यर्थियों के परीक्षा फॉर्म फीस के 1,000 करोड़ रुपये कहां गए और दोषी पेपर माफिया पर अब तक क्या कार्रवाई हुई?'"
         },
-        "PARIVARWAAD": {
-            "vector_label": "परिवारवाद व वंशवाद का तंज",
-            "ai_prompt": "photorealistic 8k heroic shot of 25 crore united citizens of Uttar Pradesh, diverse smiling farmers youth women standing together under open sky, inspirational cinematic golden lighting, wide angle documentary portrait",
-            "headline_hi": "हमारा परिवार 90% PDA की जनता है • भाजपा का परिवार चंद कॉर्पोरेट मित्र!",
-            "sub_headline_hi": "किसान, मजदूर, नौजवान और वंचित समाज ही समाजवादी पार्टी का असली कुनबा है",
-            "body_hi": "नेताजी मुलायम सिंह यादव ने खेत-खलिहान और अखाड़े से निकलकर 90% वंचितों को संसद तक पहुँचाया। अखिलेश यादव ने परिवारवाद नहीं, बल्कि पूरे उत्तर प्रदेश के परिवारों को आगरा-लखनऊ एक्सप्रेसवे, 108 एम्बुलेंस और लैपटॉप दिया। भाजपा बताए कि उसके गृहमंत्री के बेटे बिना एक मैच खेले क्रिकेट बोर्ड के सर्वेसर्वा कैसे बन गए?",
-            "call_to_action_hi": "जनता का परिवार PDA के साथ • 2027 में लोकशाही जीतेगी!",
-            "hashtags": ["#PDAHiParivarHai", "#SamajwadiVikas", "#AkhileshYadav", "#NoToCronyFamily"],
+        "CONSTITUTION_PDA": {
+            "vector_label": "संविधान रक्षा, आरक्षण व जाति जनगणना का संकल्प",
+            "artwork_file": "constitution_pda.jpg",
+            "artwork_url": "/assets/cartoons/constitution_pda.jpg",
+            "cdr_headline_hi": "संविधान हमारा स्वाभिमान!",
+            "headline_hi": "जिसकी जितनी संख्या भारी, उसकी उतनी हिस्सेदारी: जाति जनगणना राष्ट्र निर्माण का आधार है!",
+            "sub_headline_hi": "बाबासाहेब डॉ. आंबेडकर व डॉ. लोहिया का सामाजिक न्याय ही PDA की आत्मा है",
+            "body_hi": "जाति जनगणना समाज को बांटने के लिए नहीं, बल्कि 90% पिछड़े, दलित, आदिवासी और अल्पसंख्यकों के हक और विकास की सटीक नीतियां बनाने के लिए अनिवार्य है। जब पशुओं और पेड़ों की गिनती हो सकती है, तो देश के इंसानों की गिनती से भाजपा को डर क्यों लगता है? संविधान के अनुच्छेद 15 और 16 की रक्षा के लिए PDA चट्टान की तरह खड़ा है।",
+            "call_to_action_hi": "PDA जीतेगा, सामाजिक न्याय आएगा • 2027 में 202+ सीटें!",
+            "hashtags": ["#PDA_SocialJustice", "#JaatiJangananaZarooriHai", "#SamvidhanRaksha", "#LohiaAmbedkarVichar", "#AkhileshYadav2027"],
             "talking_points": [
-                "1. हमारा परिवार उत्तर प्रदेश के 25 करोड़ नागरिक हैं। अखिलेश जी ने 18 लाख छात्रों को मुफ्त लैपटॉप बांटे—वे सब हमारा परिवार हैं।",
-                "2. भाजपा अपने गिरेबान में झांके: केंद्र से लेकर राज्यों तक दर्जनों भाजपा सांसदों-मंत्रियों के बेटे-बेटियां पदों पर बैठे हैं।",
-                "3. लोकतंत्र में जनता वोट देकर नेता चुनती है। अखिलेश यादव जी को यूपी की जनता ने 37 लोकसभा सीटें जिताकर देश की तीसरी सबसे बड़ी ताकत बनाया है।"
+                "1. जाति जनगणना विकास का एक्सरे है। जब तक बीमारी का सटीक पता नहीं चलेगा, इलाज कैसे होगा?",
+                "2. 69,000 शिक्षक भर्ती में पिछड़ों और दलितों के आरक्षण पर डाका डाला गया—हाईकोर्ट के फैसले ने भाजपा सरकार के आरक्षण-विरोधी चेहरे को बेनकाब किया।",
+                "3. PDA (पिछड़ा, दलित, अल्पसंख्यक) केवल चुनावी गठबंधन नहीं, बल्कि सामाजिक गैर-बराबरी को मिटाने का जन-आंदोलन है।"
             ],
             "official_data_citations": [
-                {"metric": "लोकसभा 2024 जनमत", "sp_value": "37 सांसद (देश की तीसरी बड़ी शक्ति)", "bjp_value": "33 सीटें (ऐतिहासिक गिरावट)", "source": "ECI 2024 Official"},
-                {"metric": "लैपटॉप वितरण (2012-16)", "sp_value": "18.2 लाख मेधावी छात्र लाभान्वित", "bjp_value": "शून्य लैपटॉप", "source": "UP Secondary Education"}
+                {"metric": "69000 शिक्षक भर्ती आरक्षण घोटाला", "sp_value": "PDA छात्रों के हक में सड़क पर संघर्ष", "bjp_value": "इलाहाबाद HC द्वारा सूची रद्द", "source": "Allahabad HC Order 2024"},
+                {"metric": "संसद में प्रतिनिधित्व मांग", "sp_value": "जातिगत जनगणना कानून अनिवार्य", "bjp_value": "गणना कराने से इंकार", "source": "Parliamentary Debates 2024"}
             ],
-            "spokesperson_caution": "व्यक्तिगत पारिवारिक रिश्तों पर जाने के बजाय सीधे 2024 लोकसभा परिणाम (37 सीटें) और जन-समर्थन को जनता का सच्चा फैसला बताएं।"
+            "spokesperson_caution": "अति-पिछड़ी जातियों (निषाद, कश्यप, बिंद, राजभर, मौर्य, शाक्य) के संवैधानिक अधिकारों और सरकारी नौकरियों में प्रतिनिधित्व की बात पर जोर दें।"
         },
-        "LAW_AND_ORDER": {
-            "vector_label": "कानून-व्यवस्था व गुंडाराज का दुष्प्रचार",
-            "ai_prompt": "photorealistic 8k cinematic view of modern emergency response command center in Uttar Pradesh, high-tech GPS monitors, sleek modern police patrol vehicles with glowing blue lights, ultra modern security, cinematic lighting",
-            "headline_hi": "आंकड़े गवाह हैं: 2012-17 में यूपी अपराध दर 97.7 थी • आज बुलडोजर राज में बेटियां असुरक्षित!",
-            "sub_headline_hi": "UP-100 (3,200 GPS पुलिस गाड़ियां) और 1090 महिला हेल्पलाइन अखिलेश यादव की देन है",
-            "body_hi": "भारत सरकार के गृह मंत्रालय की आधिकारिक NCRB रिपोर्ट प्रमाण है कि अखिलेश सरकार (2012) में यूपी में प्रति 1 लाख जनसंख्या पर मात्र 97.7 संज्ञेय अपराध दर्ज थे, जो भाजपा शासित मध्य प्रदेश (298.8) से एक-तिहाई कम था। हाथरस, उन्नाव, लखीमपुर खीरी और कस्टोडियल मौतों ने साबित किया है कि भाजपा का तथाकथित कानून-व्यवस्था केवल प्रचार और जातिवादी बुलडोजर है।",
-            "call_to_action_hi": "कानून का राज बहाल करेंगे • UP-100 और 1090 को फिर से मजबूत बनाएंगे!",
-            "hashtags": ["#NCRBDataSpeaks", "#UP100_1090", "#SachKaSawal", "#LawAndOrderTruth"],
+        "INFLATION_MEHNGAI": {
+            "vector_label": "महंगाई की मार, ₹1100 का रसोई गैस सिलेंडर व लूट",
+            "artwork_file": "inflation_mehngai.jpg",
+            "artwork_url": "/assets/cartoons/inflation_mehngai.jpg",
+            "cdr_headline_hi": "रसोई गैस ₹1100 क्यों?",
+            "headline_hi": "रसोई गैस ₹1100, दाल-रोटी महंगी: आम जनता की जेब खाली, कॉर्पोरेट मित्रों की तिजोरी भरी!",
+            "sub_headline_hi": "महंगाई पर चुप्पी साधने वाली सरकार को जनता का सीधा सवाल • जवाब दो भाजपा",
+            "body_hi": "2014 में ₹400 का मिलने वाला रसोई गैस सिलेंडर आज ₹1100 पार कर चुका है। आटा, दाल, दूध, सरसों का तेल और बच्चों की पढ़ाई तक टैक्स के बोझ तले दब चुकी है। आम गरीब, किसान और माताएं-बहनें घर का बजट संभालने में लाचार हैं, जबकि सरकार चंद अरबपतियों के 16 लाख करोड़ रुपये के कर्ज माफ कर रही है।",
+            "call_to_action_hi": "महंगाई से मुक्ति चाहिए • 2027 में समाजवादी सरकार लाइए!",
+            "hashtags": ["#MehngaiMuktBharat", "#LPG1100Kyu", "#GharKaBudgetBigada", "#SamajwadiLadhai", "#AmAdmiKiAwaz"],
             "talking_points": [
-                "1. NCRB की आधिकारिक रिपोर्ट के अनुसार, 2012-2017 में यूपी का प्रति-लाख अपराध दर देश के औसत से काफी नीचे था।",
-                "2. देश की सबसे आधुनिक पुलिसिंग—'डायल 100' (15 मिनट में पुलिस मौके पर) और '1090 वूमेन पावर लाइन' अखिलेश यादव जी ने बनाई।",
-                "3. आज भाजपा राज में पुलिस हिरासत में सर्वाधिक मौतें (NHRC रिपोर्ट) और हाथरस जैसी घटनाएं हो रही हैं। कानून का राज नहीं, अफसरों की मनमानी चल रही है।"
+                "1. घरेलू गैस सिलेंडर 400 से बढ़कर 1100 रुपये पार हो गया, उज्ज्वला के सिलेंडर आज गांवों में खाली पड़े हैं।",
+                "2. खाद्य तेल, आटा, दाल पर टैक्स लगाकर गरीब की थाली से निवाला छीना गया है।",
+                "3. समाजवादी सरकार ने समाजवादी पेंशन और राशन वितरण से 55 लाख कमजोर परिवारों को वास्तविक सुरक्षा दी थी।"
             ],
             "official_data_citations": [
-                {"metric": "प्रति 1 लाख अपराध दर (2012)", "sp_value": "97.7 (अत्यंत कम)", "bjp_value": "मध्य प्रदेश 298.8 (3x अधिक)", "source": "NCRB Crime in India 2012"},
-                {"metric": "GPS त्वरित पुलिस गाड़ियां", "sp_value": "3,200 UP-100 गाड़ियां शुरू", "bjp_value": "केवल नाम बदलकर 112 किया", "source": "UP Police Tech Cell"}
+                {"metric": "घरेलू गैस सिलेंडर दर", "sp_value": "₹410 (सपा शासन)", "bjp_value": "₹1100+ (असहनीय बोझ)", "source": "Ministry of Petroleum"},
+                {"metric": "समाजवादी पेंशन योजना", "sp_value": "55 लाख गरीब परिवारों को सीधी मदद", "bjp_value": "योजना बंद कर दी गई", "source": "UP Social Welfare"}
             ],
-            "spokesperson_caution": "भाजपा के 'बुलडोजर' जुमले पर तुरंत सुप्रीम कोर्ट की बुलडोजर न्याय पर कड़ी फटकार और संविधान के उल्लंघन का हवाला दें।"
+            "spokesperson_caution": "भाजपा को केवल एक सवाल पूछें: '2014 में 400 के सिलेंडर पर छाती पीटने वाले आज 1100 के सिलेंडर पर मौन क्यों हैं?'"
         },
-        "DEVELOPMENT": {
-            "vector_label": "मुफ्त की रेवड़ी व विकास पर हमला",
-            "ai_prompt": "photorealistic 8k cinematic shot of Agra-Lucknow expressway in Uttar Pradesh India with Indian Air Force fighter jet landing on highway, modern high-speed Lucknow metro train running parallel, dramatic golden hour, 8k documentary photo",
+        "STRAY_CATTLE_FARMER": {
+            "vector_label": "आवारा पशु, सांड का आतंक व किसान संकट",
+            "artwork_file": "stray_cattle_farmer.jpg",
+            "artwork_url": "/assets/cartoons/stray_cattle_farmer.jpg",
+            "cdr_headline_hi": "अन्नदाता मांगे न्याय!",
+            "headline_hi": "खेत बर्बाद, किसान लाचार: रात-रात भर जागने वाला अन्नदाता मांगे न्याय!",
+            "sub_headline_hi": "सांडों के आतंक और कागजी गौशालाओं से त्रस्त यूपी का किसान • 2027 में होगा पूरा हिसाब",
+            "body_hi": "उत्तर प्रदेश के 75 जिलों में लाखों आवारा पशु और सांड किसानों की खून-पसीने से सींची फसलें बर्बाद कर रहे हैं। किसान कड़ाके की ठंड और बरसात में रात भर लाठी और लालटेन लेकर खेतों की रखवाली करने को मजबूर हैं। गौशालाओं के नाम पर करोड़ों रुपये का भ्रष्टाचार हुआ और गायें भूख से तड़प रही हैं। सड़क हादसों में सैकड़ों निर्दोषों की जान जा चुकी है।",
+            "call_to_action_hi": "किसान बचेगा तो देश बचेगा • 2027 में सांडों के आतंक से मुक्ति!",
+            "hashtags": ["#KisanBachao", "#SandMuktiAbhiyan", "#AnnadataMangeyHaq", "#KhetKisanSamajwadi", "#GauShalaGhotala"],
+            "talking_points": [
+                "1. आवारा पशुओं के कारण हर गांव में किसान रात भर खेतों में जागने को विवश हैं, फसलें तबाह हो रही हैं।",
+                "2. गौशालाओं के नाम पर सरकारी बजट की लूट हुई, सड़कों पर सांडों के हमलों में रोजाना जानें जा रही हैं।",
+                "3. समाजवादी पार्टी किसानों को कानूनी एमएसपी गारंटी और आवारा पशु समस्या का स्थाई वैज्ञानिक समाधान देगी।"
+            ],
+            "official_data_citations": [
+                {"metric": "गौशाला बजट खर्च (2017-24)", "sp_value": "सीधे किसान राहत व सिंचाई", "bjp_value": "₹2,000+ करोड़ खर्च पर सांड सड़कों पर", "source": "UP Animal Husbandry"},
+                {"metric": "मुफ्त सिंचाई सुविधा", "sp_value": "नहरों व नलकूपों से मुफ्त पानी", "bjp_value": "बिजली दरों में भारी बढ़ोतरी", "source": "UP Irrigation Dept"}
+            ],
+            "spokesperson_caution": "भाजपा को चुनौती दें कि किसी भी एक गांव में जाकर किसानों से सांडों के आतंक और फसल नुकसान पर सीधे बात करके दिखाएं।"
+        },
+        "DEVELOPMENT_EXPRESSWAY": {
+            "vector_label": "विश्वस्तरीय एक्सप्रेसवे व मेट्रो विकास बनाम जुमले",
+            "artwork_file": "expressway_vikas.jpg",
+            "artwork_url": "/assets/cartoons/expressway_vikas.jpg",
+            "cdr_headline_hi": "काम बोलता है!",
             "headline_hi": "22 महीने में सुखोई लड़ाकू विमान उतारने वाला एक्सप्रेसवे बनाया • भाजपा ने केवल फीते काटे!",
             "sub_headline_hi": "लखनऊ-आगरा एक्सप्रेसवे, लखनऊ मेट्रो, मेदांता अस्पताल, कैंसर संस्थान: विकास की असली परिभाषा",
             "body_hi": "अखिलेश यादव जी ने 302 किमी लंबा आगरा-लखनऊ एक्सप्रेसवे रिकॉर्ड 22 महीनों में बनाकर विश्व कीर्तिमान स्थापित किया, जिस पर वायुसेना के मिराज और सुखोई उतरे। लखनऊ मेट्रो, गोमती रिवरफ्रंट, लोहिया आयुर्विज्ञान संस्थान और मेदांता अस्पताल सपा की देन हैं। भाजपा 8 साल में एक भी नया बिजली घर या विश्वस्तरीय अस्पताल नहीं बना पाई; केवल आवारा पशुओं से किसानों की फसलें बर्बाद कीं।",
@@ -196,75 +307,94 @@ def get_strategic_counter(vector: str, claim: str, tone: str) -> Dict[str, Any]:
             ],
             "spokesperson_caution": "भाजपा को केवल एक सवाल पूछें: 'अपने 8 साल के कार्यकाल में कोई एक ऐसा प्रोजेक्ट बताएं जो जमीन से शुरू होकर समय पर पूरा हुआ हो?'"
         },
-        "CASTE_PDA": {
-            "vector_label": "जाति जनगणना व सामाजिक विभाजन पर हमला",
-            "ai_prompt": "photorealistic 8k cinematic shot of a massive progressive gathering of farmers, students and working class in Uttar Pradesh holding Indian national flag, glowing emblem of Constitution of India and equality, majestic sunrise light, heroic 8k photography",
-            "headline_hi": "जिसकी जितनी संख्या भारी, उसकी उतनी हिस्सेदारी: जाति जनगणना राष्ट्र निर्माण का आधार है!",
-            "sub_headline_hi": "बाबासाहेब डॉ. आंबेडकर व डॉ. लोहिया का सामाजिक न्याय ही PDA की आत्मा है",
-            "body_hi": "जाति जनगणना समाज को बांटने के लिए नहीं, बल्कि 90% पिछड़े, दलित, आदिवासी और अल्पसंख्यकों के हक और विकास की सटीक नीतियां बनाने के लिए अनिवार्य है। जब पशुओं और पेड़ों की गिनती हो सकती है, तो देश के इंसानों की गिनती से भाजपा को डर क्यों लगता है? संविधान के अनुच्छेद 15 और 16 की रक्षा के लिए PDA चट्टान की तरह खड़ा है।",
-            "call_to_action_hi": "PDA जीतेगा, सामाजिक न्याय आएगा • 2027 में 202+ सीटें!",
-            "hashtags": ["#PDA_SocialJustice", "#JaatiJangananaZarooriHai", "#SamvidhanRaksha", "#LohiaAmbedkarVichar"],
+        "RELIGIOUS_COMMUNAL": {
+            "vector_label": "सांप्रदायिक ध्रुवीकरण व तुष्टिकरण का झूठा आरोप",
+            "artwork_file": "ram_sabke_harmony.jpg",
+            "artwork_url": "/assets/cartoons/ram_sabke_harmony.jpg",
+            "cdr_headline_hi": "प्रभु राम सबके हैं!",
+            "headline_hi": "सच्चा सनातनी वही जो सबका सम्मान करे: प्रभु राम सबके हैं, नफरत किसी की नहीं!",
+            "sub_headline_hi": "धर्म आस्था का विषय है, चुनावी व्यापार का नहीं • सर्वधर्म समभाव ही असली राष्ट्रवाद",
+            "body_hi": "अखिलेश यादव सरकार ने सैफई में भव्य भगवान हनुमान की 54 फीट की प्रतिमा स्थापित की, भगवान परशुराम जी का भव्य धाम बनवाया और महर्षि वाल्मीकि, रविदास जी की जयंती पर सम्मान दिया। भाजपा जब भी पेपर लीक, महंगाई और बेरोजगारी पर घिरती है, तो धर्म की आड़ लेती है। हमारा धर्म 'वसुधैव कुटुम्बकम्' और संविधान की रक्षा है।",
+            "call_to_action_hi": "रोजी-रोटी, अस्पताल और शिक्षा पर बात करो • PDA 2027 में हिसाब लेगा!",
+            "hashtags": ["#PDA_Ekta", "#SamajwadiKaam", "#RozgarDo_DharmNahi", "#AkhileshYadav2027", "#VasudhaivaKutumbakam"],
             "talking_points": [
-                "1. जाति जनगणना विकास का एक्सरे है। जब तक बीमारी का सटीक पता नहीं चलेगा, इलाज कैसे होगा?",
-                "2. 69,000 शिक्षक भर्ती में पिछड़ों और दलितों के आरक्षण पर डाका डाला गया—हाईकोर्ट के फैसले ने भाजपा सरकार के आरक्षण-विरोधी चेहरे को बेनकाब किया।",
-                "3. PDA (पिछड़ा, दलित, अल्पसंख्यक) केवल चुनावी गठबंधन नहीं, बल्कि सामाजिक गैर-बराबरी को मिटाने का जन-आंदोलन है।"
+                "1. प्रभु श्री राम जन-जन के आराध्य हैं, किसी एक राजनीतिक दल के चुनावी एजेंट नहीं। राम सबके हैं, शबरी के भी और निषादराज के भी।",
+                "2. 60 लाख नौजवानों के पेपर लीक हुए, 2 करोड़ युवा बेरोजगार हैं—भाजपा के पास इसका कोई जवाब नहीं, इसलिए वह सांप्रदायिक ध्रुवीकरण करती है।",
+                "3. नेताजी और अखिलेश यादव ने हमेशा संतों और सर्वसमाज का सम्मान किया। हमारा राष्ट्रवाद तिरंगे और संविधान से बंधा है।"
             ],
             "official_data_citations": [
-                {"metric": "69000 शिक्षक भर्ती आरक्षण घोटाला", "sp_value": "PDA छात्रों के हक में सड़क पर संघर्ष", "bjp_value": "इलाहाबाद HC द्वारा सूची रद्द", "source": "Allahabad HC Order 2024"},
-                {"metric": "संसद में प्रतिनिधित्व मांग", "sp_value": "जातिगत जनगणना कानून अनिवार्य", "bjp_value": "गणना कराने से इंकार", "source": "Parliamentary Debates 2024"}
+                {"metric": "UP पुलिस सिपाही भर्ती परीक्षा", "sp_value": "पारदर्शी भर्ती", "bjp_value": "पेपर लीक रद्द (60 लाख प्रभावित)", "source": "UPPRPB Official 2024"},
+                {"metric": "अयोध्या 2024 लोकसभा परिणाम", "sp_value": "अवधेश प्रसाद (विजेता - 54,567 वोट)", "bjp_value": "पराजित (जनता का जनादेश)", "source": "ECI Form 20"}
             ],
-            "spokesperson_caution": "अति-पिछड़ी जातियों (निषाद, कश्यप, बिंद, राजभर, मौर्य, शाक्य) के संवैधानिक अधिकारों और सरकारी नौकरियों में प्रतिनिधित्व की बात पर जोर दें।"
+            "spokesperson_caution": "विपक्षी प्रवक्ता को किसी भी धार्मिक ग्रंथ या देवता पर उलझने न दें; तुरंत पलटकर पूछें कि 'अयोध्या के किसानों की जमीन के मुआवजे और पेपर लीक पर आपकी क्या नीति है?'"
+        },
+        "BULLDOZER_INJUSTICE": {
+            "vector_label": "बुलडोजर न्याय बनाम संविधान व सुप्रीम कोर्ट का फैसला",
+            "artwork_file": "bulldozer_justice.jpg",
+            "artwork_url": "/assets/cartoons/bulldozer_justice.jpg",
+            "cdr_headline_hi": "संविधान के आगे झुका बुलडोजर!",
+            "headline_hi": "संविधान के आगे झुका बुलडोजर: सुप्रीम कोर्ट का फैसला, कानून का राज ही अंतिम सच!",
+            "sub_headline_hi": "तानाशाही और गैर-संवैधानिक ध्वस्तीकरण पर संवैधानिक प्रहार • न्याय और समानता की जीत",
+            "body_hi": "सुप्रीम कोर्ट ने ऐतिहासिक फैसला सुनाते हुए बुलडोजर कार्रवाई को असंवैधानिक और कानून के शासन पर सीधा हमला करार दिया है। किसी के आरोप मात्र पर घर गिरा देना न्याय नहीं, बल्कि तानाशाही और बदला लेने की राजनीति है। कानून की अदालतें फैसला करती हैं, सरकार या बुलडोजर नहीं। बाबासाहेब का संविधान हर नागरिक को सिर छुपाने और निष्पक्ष सुनवाई का मौलिक अधिकार देता है।",
+            "call_to_action_hi": "देश संविधान से चलेगा, बुलडोजर से नहीं • न्याय की जीत!",
+            "hashtags": ["#SupremeCourtJudgment", "#BulldozerRajExposed", "#RuleOfLaw", "#SamvidhanZindabad", "#AkhileshYadavStandsWithJustice"],
+            "talking_points": [
+                "1. सुप्रीम कोर्ट ने स्पष्ट कहा कि कार्यपालिका जज नहीं बन सकती; किसी का घर गिराना मनमाना और असंवैधानिक है।",
+                "2. चुनिंदा और जातिवादी आधार पर बुलडोजर चलाकर भय का माहौल बनाया गया।",
+                "3. देश बुलडोजर से नहीं, संविधान और कानून के शासन से चलेगा।"
+            ],
+            "official_data_citations": [
+                {"metric": "सुप्रीम कोर्ट निर्देश (2024)", "sp_value": "संवैधानिक मर्यादा व प्रक्रिया की जीत", "bjp_value": "बुलडोजर कार्रवाई पर देशव्यापी रोक व फटकार", "source": "Supreme Court of India"},
+                {"metric": "UP-100 आधुनिक पुलिसिंग", "sp_value": "3,200 GPS पुलिस गाड़ियां (15 मिनट रिस्पॉन्स)", "bjp_value": "केवल नाम बदलकर 112 किया", "source": "UP Police Tech Cell"}
+            ],
+            "spokesperson_caution": "भाजपा के 'बुलडोजर' जुमले पर तुरंत सुप्रीम कोर्ट की बुलडोजर न्याय पर कड़ी फटकार और संविधान के उल्लंघन का हवाला दें।"
+        },
+        "SP_2027_RALLY": {
+            "vector_label": "मिशन 2027 विशाल विजय संकल्प व जन-आंदोलन",
+            "artwork_file": "sp_2027_rally.jpg",
+            "artwork_url": "/assets/cartoons/sp_2027_rally.jpg",
+            "cdr_headline_hi": "युवा शक्ति, प्रदेश की प्रगति!",
+            "headline_hi": "युवा शक्ति, प्रदेश की प्रगति: 2027 में 202+ सीटों के साथ जन-क्रांति!",
+            "sub_headline_hi": "अखिलेश यादव के नेतृत्व में पीडीए का विशाल जनादेश • प्रगतिशील यूपी की वापसी",
+            "body_hi": "2024 के लोकसभा चुनावों में उत्तर प्रदेश की जनता ने 37 सीटें देकर समाजवादी पार्टी को देश की तीसरी सबसे बड़ी राजनीतिक शक्ति बनाया है। अब 2027 के विधानसभा चुनाव में 25 करोड़ जनता बेरोजगारी, महंगाई, पेपर लीक और सांडों के आतंक से मुक्ति के लिए अखिलेश यादव के नेतृत्व में ऐतिहासिक बहुमत (202+ सीटें) देने जा रही है। यह चुनाव सत्ता का नहीं, जनता के हक और संविधान की रक्षा का है।",
+            "call_to_action_hi": "PDA जीतेगा, यूपी बढ़ेगा • 2027 में अखिलेश यादव सरकार!",
+            "hashtags": ["#Mission2027", "#AkhileshYadavNextCM", "#PDA_Sarkar", "#HamarNeta", "#UPVidhanSabha2027"],
+            "talking_points": [
+                "1. 2024 लोकसभा में यूपी की जनता ने भाजपा को नकार कर समाजवादी पार्टी को 37 सीटों का ऐतिहासिक जनादेश दिया।",
+                "2. PDA (पिछड़ा, दलित, अल्पसंख्यक) और आधी आबादी एकजुट होकर 2027 में पूर्ण बहुमत की सरकार बनाएगी।",
+                "3. किसान, नौजवान, शिक्षक और व्यापारी सभी अखिलेश यादव के विकासपरक और समावेशी विजन के साथ हैं।"
+            ],
+            "official_data_citations": [
+                {"metric": "लोकसभा 2024 जनमत", "sp_value": "37 सांसद (देश की तीसरी बड़ी शक्ति)", "bjp_value": "33 सीटें (ऐतिहासिक गिरावट)", "source": "ECI 2024 Official"},
+                {"metric": "लक्ष्य 2027 विधानसभा", "sp_value": "202+ सीटें (पूर्ण बहुमत की सरकार)", "bjp_value": "विपक्षी ध्रुवीकरण की विफलता", "source": "SP Strategic War Room"}
+            ],
+            "spokesperson_caution": "व्यक्तिगत पारिवारिक रिश्तों पर जाने के बजाय सीधे 2024 लोकसभा परिणाम (37 सीटें) और जन-समर्थन को जनता का सच्चा फैसला बताएं।"
         }
     }
 
-    return playbook.get(vector, playbook["RELIGIOUS_COMMUNAL"])
+    return playbook.get(vector, playbook["PAPER_LEAK"])
 
 # ---------------------------------------------------------------------------
-# DALL-E / FLUX GRADE AI IMAGE FETCH & CANVAS COMPOSITOR
+# CORELDRAW (CDR) & PHOTOSHOP HIGH-IMPACT POSTER COMPOSITOR
 # ---------------------------------------------------------------------------
-def fetch_ai_visual_image(prompt: str) -> Optional[Image.Image]:
-    """Fetches high-definition photorealistic visual from Pollinations/Flux API."""
-    try:
-        encoded_prompt = urllib.parse.quote(prompt)
-        url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&nologo=true&seed=42"
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
-        with urllib.request.urlopen(req, timeout=8) as response:
-            img_data = response.read()
-            return Image.open(io.BytesIO(img_data)).convert("RGB")
-    except Exception as e:
-        print(f"AI image generation fallback: {e}")
-        return None
-
 def generate_studio_poster_image(strategy: Dict[str, Any]) -> tuple[str, str]:
     """
-    Renders high-resolution 1080x1080 poster composite.
-    Uses AI generated photorealistic background image + Hindi typography.
-    Returns (base64_image, ai_image_url).
+    Renders high-resolution 1080x1080 CorelDraw (CDR) / Photoshop political poster.
+    Keeps the satirical political cartoon illustration 100% visible, sharp and vibrant,
+    adding professional 3D gold typography, header ribbon, and victory footer.
     """
     width, height = 1080, 1080
-    prompt = strategy.get("ai_prompt", "photorealistic dramatic political documentary photo of Uttar Pradesh, 8k")
-    encoded_prompt = urllib.parse.quote(prompt)
-    ai_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&nologo=true&seed=42"
-
-    # Try fetching AI visual
-    bg_ai = fetch_ai_visual_image(prompt)
+    artwork_file = strategy.get("artwork_file", "sp_2027_rally.jpg")
+    art_path = STATIC_CARTOONS_DIR / artwork_file
     
-    if bg_ai:
-        im = bg_ai.resize((width, height), Image.Resampling.LANCZOS)
-        # Apply dark cinematic overlay for text legibility
-        overlay = Image.new("RGBA", (width, height), (15, 23, 42, 170))
-        # Top gradient (red-tinted)
-        draw_ov = ImageDraw.Draw(overlay)
-        for y in range(250):
-            alpha = int(220 * (1 - y / 250.0))
-            draw_ov.line([(0, y), (width, y)], fill=(127, 29, 29, alpha))
-        # Bottom gradient (slate-tinted)
-        for y in range(height - 350, height):
-            alpha = int(230 * ((y - (height - 350)) / 350.0))
-            draw_ov.line([(0, y), (width, y)], fill=(15, 23, 42, alpha))
-        im = Image.alpha_composite(im.convert("RGBA"), overlay).convert("RGB")
+    # Try public dir if static doesn't have it
+    if not art_path.exists():
+        art_path = BASE_DIR.parent / "frontend" / "public" / "assets" / "cartoons" / artwork_file
+
+    if art_path.exists():
+        im = Image.open(art_path).convert("RGB").resize((width, height), Image.Resampling.LANCZOS)
     else:
-        # Fallback rich studio gradient
+        # Fallback rich studio gradient if file missing
         im = Image.new("RGB", (width, height), color=(15, 23, 42))
         draw_bg = ImageDraw.Draw(im)
         for y in range(height):
@@ -274,96 +404,89 @@ def generate_studio_poster_image(strategy: Dict[str, Any]) -> tuple[str, str]:
             b = int(29 * (1 - alpha) + 42 * alpha)
             draw_bg.line([(0, y), (width, y)], fill=(r, g, b))
 
+    # Apply subtle darkening only in top 80px and bottom 140px for text contrast
+    overlay = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw_ov = ImageDraw.Draw(overlay)
+    
+    # Top header gradient (y: 0 to 90)
+    for y in range(90):
+        alpha = int(210 * (1 - y / 90.0))
+        draw_ov.line([(0, y), (width, y)], fill=(127, 29, 29, alpha))
+        
+    # Bottom gradient (y: 860 to 1080)
+    for y in range(860, height):
+        alpha = int(230 * ((y - 860) / 220.0))
+        draw_ov.line([(0, y), (width, y)], fill=(15, 23, 42, alpha))
+        
+    im = Image.alpha_composite(im.convert("RGBA"), overlay).convert("RGB")
     draw = ImageDraw.Draw(im)
 
     # Load Devanagari Hindi font
-    font_bold = get_safe_hindi_font(30, bold=True)
+    font_bold = get_safe_hindi_font(34, bold=True)
     font_sub = get_safe_hindi_font(20, bold=False)
-    font_body = get_safe_hindi_font(22, bold=False)
-    font_meta = get_safe_hindi_font(16, bold=False)
+    font_tag = get_safe_hindi_font(18, bold=True)
+    font_meta = get_safe_hindi_font(15, bold=False)
 
-    # 1. Header Bar
-    draw.rectangle([(0, 0), (width, 10)], fill="#ef4444")
-    if font_sub:
-        draw.text((50, 25), "SAMAJWADI WAR ROOM 2027 • STRATEGIC FACT-CHECK", fill="#fecaca", font=font_sub)
-        draw.text((width - 340, 25), "OFFICIAL COUNTER-PUNCH", fill="#fbbf24", font=font_sub)
+    # 1. Top Ribbon: Red & Gold CorelDraw Banner (y: 0 to 60)
+    draw.rectangle([(0, 0), (width, 8)], fill="#fbbf24")
+    draw.rectangle([(0, 8), (width, 58)], fill="#991b1b")
+    draw.rectangle([(0, 58), (width, 62)], fill="#fbbf24")
+    
+    if font_tag:
+        draw.text((30, 20), "★ SAMAJWADI WAR ROOM 2027 • POLITICAL CARTOON & CDR POSTER ★", fill="#ffffff", font=font_tag)
+        draw.text((width - 240, 20), "★ 100% सत्यमेव जयते ★", fill="#fef08a", font=font_tag)
 
-    # 2. Vector Banner
-    draw.rounded_rectangle([(50, 65), (width - 50, 130)], radius=12, fill="#7f1d1d", outline="#dc2626", width=2)
-    if font_bold:
-        draw.text((70, 82), f"मुद्दे का पलटवार: {strategy['vector_label']}", fill="#ffffff", font=font_bold)
-
-    # 3. Main Bold Headline Box
-    draw.rounded_rectangle([(50, 155), (width - 50, 360)], radius=18, fill="#1e1b4b", outline="#6366f1", width=2)
-    h_text = strategy["headline_hi"]
-    if font_bold:
-        draw.text((75, 180), h_text[:50], fill="#fef08a", font=font_bold)
-        if len(h_text) > 50:
-            draw.text((75, 225), h_text[50:100], fill="#fef08a", font=font_bold)
-    if font_sub:
-        draw.text((75, 290), strategy["sub_headline_hi"][:75], fill="#c7d2fe", font=font_sub)
-
-    # 4. Factual Data Box
-    draw.rounded_rectangle([(50, 390), (width - 50, 650)], radius=18, fill="#022c22", outline="#10b981", width=2)
-    draw.rectangle([(75, 378), (380, 406)], fill="#059669")
-    if font_sub:
-        draw.text((85, 382), "प्रमाणित सरकारी डेटा (OFFICIAL PROOF)", fill="#ffffff", font=font_sub)
-
-    c1 = strategy["official_data_citations"][0]
-    if font_bold:
-        draw.text((75, 425), f"1. {c1['metric']}:", fill="#a7f3d0", font=font_bold)
-    if font_body:
-        draw.text((100, 465), f"• सपा रिकॉर्ड: {c1['sp_value']}", fill="#ffffff", font=font_body)
-        draw.text((100, 500), f"• भाजपा रिकॉर्ड: {c1['bjp_value']}", fill="#f87171", font=font_body)
+    # 2. Category Pill Badge (y: 72 to 108)
+    draw.rounded_rectangle([(30, 72), (480, 108)], radius=8, fill="#7f1d1d", outline="#f87171", width=2)
     if font_meta:
-        draw.text((100, 540), f"• स्रोत: {c1['source']}", fill="#94a3b8", font=font_meta)
+        draw.text((45, 80), f"मुद्दे का पलटवार: {strategy['vector_label'][:45]}", fill="#fef08a", font=font_meta)
 
-    # 5. Narrative Call to Action
-    draw.rounded_rectangle([(50, 680), (width - 50, 930)], radius=18, fill="#0f172a", outline="#334155", width=2)
+    # 3. Bottom 3D Typography (CorelDraw Extruded Slogan)
+    headline_3d = strategy.get("cdr_headline_hi", strategy["headline_hi"][:40])
+    h_y = 890
+    
+    # 3D Drop-Shadow
     if font_bold:
-        draw.text((75, 705), "सच्चाई और संकल्प (The Ground Reality):", fill="#e2e8f0", font=font_bold)
-    if font_body:
-        b_txt = strategy["body_hi"]
-        draw.text((75, 750), b_txt[:60], fill="#cbd5e1", font=font_body)
-        draw.text((75, 785), b_txt[60:120], fill="#cbd5e1", font=font_body)
-        draw.text((75, 820), b_txt[120:180], fill="#cbd5e1", font=font_body)
-    if font_bold:
-        draw.text((75, 870), f"नारा: {strategy['call_to_action_hi']}", fill="#34d399", font=font_bold)
+        for dx, dy in [(3, 3), (2, 2), (1, 1)]:
+            draw.text((40 + dx, h_y + dy), headline_3d, fill="#000000", font=font_bold)
+        # Golden Main Lettering
+        draw.text((40, h_y), headline_3d, fill="#fde047", font=font_bold)
 
-    # 6. Bottom Signature Bar
-    draw.rectangle([(0, 960), (width, height)], fill="#090d16")
-    draw.rectangle([(0, 960), (width, 964)], fill="#dc2626")
-    if font_bold:
-        draw.text((50, 985), "समाजवादी पार्टी • PDA (पिछड़ा, दलित, अल्पसंख्यक) परिवार", fill="#f87171", font=font_bold)
-    if font_meta:
-        draw.text((50, 1025), "सत्य • समानता • सामाजिक न्याय • प्रगतिशील उत्तर प्रदेश", fill="#94a3b8", font=font_meta)
-
-    draw.rounded_rectangle([(width - 340, 980), (width - 50, 1050)], radius=10, fill="#1e293b", outline="#10b981", width=1)
+    # Subheadline in crisp white/cyan
     if font_sub:
-        draw.text((width - 325, 995), "✓ ECI & NCRB CERTIFIED", fill="#34d399", font=font_sub)
+        sub_text = strategy["sub_headline_hi"][:70]
+        draw.text((40, 945), sub_text, fill="#e0f2fe", font=font_sub)
+
+    # 4. Bottom Signature Bar (y: 1010 to 1080)
+    draw.rectangle([(0, 1010), (width, 1014)], fill="#16a34a")
+    draw.rectangle([(0, 1014), (width, height)], fill="#dc2626")
+    
+    if font_tag:
+        draw.text((30, 1030), "समाजवादी पार्टी • PDA (पिछड़ा, दलित, अल्पसंख्यक) परिवार", fill="#ffffff", font=font_tag)
     if font_meta:
-        draw.text((width - 325, 1025), "WAR ROOM FACT-CHECKED", fill="#94a3b8", font=font_meta)
+        draw.text((width - 360, 1032), "सत्य • समानता • सामाजिक न्याय • मिशन 2027", fill="#fef08a", font=font_meta)
 
     buf = io.BytesIO()
     im.save(buf, format="PNG")
     buf.seek(0)
     b64 = f"data:image/png;base64,{base64.b64encode(buf.getvalue()).decode('utf-8')}"
-    return b64, ai_url
+    return b64, strategy.get("artwork_url", "/assets/cartoons/sp_2027_rally.jpg")
 
 # ---------------------------------------------------------------------------
 # API ENDPOINTS
 # ---------------------------------------------------------------------------
 @router.get("/preset-attacks")
 def get_preset_attacks():
-    """Returns the 5 major political attack presets for 1-click execution."""
+    """Returns the 8 major political attack & issue presets with cartoon artworks."""
     return {"status": "success", "presets": PRESET_ATTACKS}
 
 @router.post("/generate-counter")
 def generate_counter(payload: CounterCreativePayload):
     """
-    Accepts opponent's attack claim or slogan, identifies the vector,
-    synthesizes a DALL-E / Flux photorealistic AI background visual,
-    renders studio-grade counter-creative, and prepares debate briefings.
+    Accepts opponent's attack claim or custom issue topic,
+    identifies the political vector, selects the corresponding political cartoon artwork,
+    renders a 1080x1080 CorelDraw (CDR) / Photoshop style poster,
+    and synthesizes official talking points and data evidence.
     """
     claim = payload.opponent_claim.strip() if payload.opponent_claim else "विपक्षी दल द्वारा सामाजिक सौहार्द बिगाड़ने का प्रयास।"
     
@@ -373,36 +496,44 @@ def generate_counter(payload: CounterCreativePayload):
     else:
         vector = payload.target_vector
 
-    # 2. Get Strategy
+    # 2. Get Strategy & Cartoon Artwork
     strategy = get_strategic_counter(vector, claim, payload.tone or "FACTUAL_DIGNIFIED")
 
-    # 3. Render 1080p Studio Canvas with DALL-E Visual Background
-    square_b64, ai_image_url = generate_studio_poster_image(strategy)
+    # 3. Render 1080p CorelDraw Studio Canvas
+    square_b64, artwork_url = generate_studio_poster_image(strategy)
 
     return {
         "status": "success",
         "detected_vector": vector,
         "vector_label": strategy["vector_label"],
+        "artwork_url": strategy["artwork_url"],
+        "cdr_headline_hi": strategy.get("cdr_headline_hi", strategy["headline_hi"][:40]),
         "creative_assets": {
+            "cdr_poster": {
+                "title": "CorelDraw (CDR) Political Cartoon Poster",
+                "format": "1:1 Square (1080x1080 HD Graphic Poster)",
+                "image_base64": square_b64,
+                "artwork_url": strategy["artwork_url"]
+            },
             "square_1080": {
                 "title": "Square 1080p HD Studio Poster",
                 "format": "1:1 Square (Instagram / Facebook / WhatsApp DP)",
                 "image_base64": square_b64,
-                "ai_visual_url": ai_image_url
+                "ai_visual_url": strategy["artwork_url"]
             },
             "story_916": {
                 "title": "9:16 Vertical Story",
                 "format": "9:16 Vertical Story (WhatsApp Status / Reels)",
                 "caption": strategy["sub_headline_hi"],
                 "hook": strategy["headline_hi"],
-                "ai_visual_url": ai_image_url
+                "ai_visual_url": strategy["artwork_url"]
             },
             "banner_169": {
                 "title": "16:9 Twitter/X Press Card",
                 "format": "16:9 Landscape (Twitter / X Header & Card)",
                 "headline": strategy["headline_hi"],
                 "subhead": strategy["sub_headline_hi"],
-                "ai_visual_url": ai_image_url
+                "ai_visual_url": strategy["artwork_url"]
             }
         },
         "copywriting": {

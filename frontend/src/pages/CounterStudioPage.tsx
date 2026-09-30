@@ -36,7 +36,7 @@ export const CounterStudioPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [response, setResponse] = useState<CounterCreativeResponse | null>(null);
   const [activeFormat, setActiveFormat] = useState<'square' | 'story' | 'banner'>('square');
-  const [posterStyle, setPosterStyle] = useState<'news-card' | 'quote-duel' | 'statement-card' | 'breaking-banner' | 'ai-poster' | 'pure-ai-art' | 'server-canvas'>('news-card');
+  const [posterStyle, setPosterStyle] = useState<'cdr-cartoon' | 'rally-banner' | 'news-card' | 'quote-duel' | 'statement-card' | 'pure-ai-art' | 'breaking-banner' | 'ai-poster' | 'server-canvas'>('cdr-cartoon');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [presets, setPresets] = useState<PresetAttack[]>([]);
 
@@ -64,6 +64,94 @@ export const CounterStudioPage: React.FC = () => {
         img.src = src;
       });
     };
+
+    if (posterStyle === 'cdr-cartoon' || posterStyle === 'rally-banner' || posterStyle === 'pure-ai-art' || posterStyle === 'ai-poster') {
+      // CorelDraw (CDR) & Photoshop Grade Political Cartoon Poster (1080 x 1080)
+      canvas.width = 1080;
+      canvas.height = 1080;
+
+      const artSrc = posterStyle === 'rally-banner'
+        ? '/assets/cartoons/sp_2027_rally.jpg'
+        : (response.artwork_url || response.creative_assets.cdr_poster?.artwork_url || '/assets/cartoons/youth_paper_leak.jpg');
+
+      try {
+        const artImg = await loadImage(artSrc);
+        ctx.drawImage(artImg, 0, 0, 1080, 1080);
+      } catch (e) {
+        const grad = ctx.createLinearGradient(0, 0, 0, 1080);
+        grad.addColorStop(0, '#7f1d1d');
+        grad.addColorStop(1, '#0f172a');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 1080, 1080);
+      }
+
+      if (posterStyle === 'pure-ai-art') {
+        triggerDownload(`Samajwadi_Cartoon_Artwork_${Date.now()}.png`);
+        return;
+      }
+
+      // 1. Top Ribbon: Red & Gold CorelDraw Banner (y: 0 to 60)
+      ctx.fillStyle = '#b91c1c';
+      ctx.fillRect(0, 0, 1080, 60);
+      ctx.fillStyle = '#fbbf24';
+      ctx.fillRect(0, 56, 1080, 4);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 22px system-ui, sans-serif';
+      ctx.fillText('★ SAMAJWADI WAR ROOM 2027 • POLITICAL CARTOON & CDR POSTER ★', 30, 38);
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'bold 20px system-ui, sans-serif';
+      ctx.fillText('★ 100% सत्यमेव जयते ★', 840, 38);
+
+      // 2. Category Pill Badge (y: 75 to 115)
+      ctx.fillStyle = '#7f1d1d';
+      ctx.strokeStyle = '#f87171';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(30, 75, 520, 40, 8);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'bold 18px system-ui, sans-serif';
+      ctx.fillText(`मुद्दे का पलटवार: ${response.vector_label}`, 45, 102);
+
+      // 3. Lower Third subtle gradient (from y=830 to y=1080) for 100% readable text
+      const bGrad = ctx.createLinearGradient(0, 830, 0, 1080);
+      bGrad.addColorStop(0, 'rgba(15, 23, 42, 0)');
+      bGrad.addColorStop(0.35, 'rgba(15, 23, 42, 0.88)');
+      bGrad.addColorStop(1, 'rgba(15, 23, 42, 0.98)');
+      ctx.fillStyle = bGrad;
+      ctx.fillRect(0, 830, 1080, 250);
+
+      // 4. 3D Extruded Slogan (Gold with black shadow)
+      const hText = response.cdr_headline_hi || response.copywriting.headline_hi.slice(0, 40);
+      ctx.font = '900 42px system-ui, sans-serif';
+      ctx.fillStyle = '#000000';
+      ctx.fillText(hText, 34, 934);
+      ctx.fillStyle = '#fde047';
+      ctx.fillText(hText, 30, 930);
+
+      // Subheadline
+      ctx.fillStyle = '#e0f2fe';
+      ctx.font = 'bold 22px system-ui, sans-serif';
+      ctx.fillText(response.copywriting.sub_headline_hi.slice(0, 68), 30, 975);
+
+      // 5. Bottom Victory Ribbon (y: 1010 to 1080)
+      ctx.fillStyle = '#16a34a';
+      ctx.fillRect(0, 1010, 1080, 4);
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(0, 1014, 1080, 66);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 22px system-ui, sans-serif';
+      ctx.fillText('समाजवादी पार्टी • PDA (पिछड़ा, दलित, अल्पसंख्यक) परिवार', 30, 1052);
+      ctx.fillStyle = '#fef08a';
+      ctx.fillText('सत्य • समानता • सामाजिक न्याय • मिशन 2027', 680, 1052);
+
+      triggerDownload(`Samajwadi_CDR_Cartoon_Poster_${Date.now()}.png`);
+      return;
+    }
 
     if (posterStyle === 'news-card') {
       // 1. Amar Ujala / Digital News Card (1200 x 675 Landscape)
@@ -99,36 +187,36 @@ export const CounterStudioPage: React.FC = () => {
       ctx.fillText(headlineText, 600, 130);
       ctx.textAlign = 'left';
 
-      // 3 Red Bullet Points
-      const tp1 = response.talking_points?.[0] ? response.talking_points[0].replace(/^[0-9]\.\s*/, '').slice(0, 50) : "'स्वजातीय टॉर्चर फोर्स' बनी एसटीएफ";
-      const tp2 = response.talking_points?.[1] ? response.talking_points[1].replace(/^[0-9]\.\s*/, '').slice(0, 50) : 'पीडीए से होने के कारण केशव का हो रहा अपमान';
-      const tp3 = response.talking_points?.[2] ? response.talking_points[2].replace(/^[0-9]\.\s*/, '').slice(0, 50) : 'डिंपल के फर्जी वीडियो बनवा रही है सरकार';
+      // 3 Red Bullet Points (Centered with wide clear margins for cutouts)
+      const tp1 = response.talking_points?.[0] ? response.talking_points[0].replace(/^[0-9]\.\s*/, '').slice(0, 46) : "'स्वजातीय टॉर्चर फोर्स' बनी एसटीएफ";
+      const tp2 = response.talking_points?.[1] ? response.talking_points[1].replace(/^[0-9]\.\s*/, '').slice(0, 46) : 'पीडीए से होने के कारण केशव का हो रहा अपमान';
+      const tp3 = response.talking_points?.[2] ? response.talking_points[2].replace(/^[0-9]\.\s*/, '').slice(0, 46) : 'डिंपल के फर्जी वीडियो बनवा रही है सरकार';
 
       const drawBullet = (text: string, y: number) => {
         ctx.fillStyle = '#dc2626';
         ctx.beginPath();
-        ctx.arc(380, y - 8, 10, 0, Math.PI * 2);
+        ctx.arc(360, y - 8, 8, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.fillStyle = '#0f172a';
-        ctx.font = 'bold 26px system-ui, sans-serif';
-        ctx.fillText(text, 405, y);
+        ctx.font = 'bold 23px system-ui, sans-serif';
+        ctx.fillText(text, 380, y);
       };
 
       drawBullet(tp1, 230);
       drawBullet(tp2, 330);
       drawBullet(tp3, 430);
 
-      // Load Cutouts
+      // Load Cutouts (Positioned firmly at borders so they NEVER overlap center text)
       try {
         const [yogiImg, akhileshImg] = await Promise.all([
           loadImage('/assets/leaders/cutouts/yogi_cutout.png'),
           loadImage('/assets/leaders/cutouts/akhilesh_cutout.png')
         ]);
         // Draw Yogi on left
-        ctx.drawImage(yogiImg, 0, 180, 370, 495);
+        ctx.drawImage(yogiImg, 10, 250, 320, 425);
         // Draw Akhilesh on right
-        ctx.drawImage(akhileshImg, 830, 150, 370, 525);
+        ctx.drawImage(akhileshImg, 870, 230, 320, 445);
       } catch (e) {
         console.warn('Cutouts draw fallback:', e);
       }
@@ -609,7 +697,7 @@ export const CounterStudioPage: React.FC = () => {
               </h2>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              नीचे दिए गए मुख्य 5 चुनावी हमलों में से किसी पर क्लिक करके देखें कि कैसे यह AI कुछ ही सेकंडों में विपक्षी नेरेटिव को पूरी तरह ध्वस्त करता है:
+              नीचे दिए गए 8 प्रमुख ज्वलंत राजनीतिक मुद्दों व व्यंग्य चित्र प्रीसेट्स में से किसी पर क्लिक करके देखें कि कैसे यह AI कुछ ही सेकंडों में विपक्षी नेरेटिव को पूरी तरह ध्वस्त करता है:
             </p>
 
             <div className="space-y-2 pt-1">
@@ -741,6 +829,26 @@ export const CounterStudioPage: React.FC = () => {
                     </div>
                     <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-bold">
                       <button
+                        onClick={() => setPosterStyle('cdr-cartoon')}
+                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                          posterStyle === 'cdr-cartoon'
+                            ? 'bg-gradient-to-r from-red-600 to-amber-600 text-white shadow-xs font-black'
+                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
+                        }`}
+                      >
+                        <span>🎨 CDR व्यंग्य चित्र पोस्टर</span>
+                      </button>
+                      <button
+                        onClick={() => setPosterStyle('rally-banner')}
+                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                          posterStyle === 'rally-banner'
+                            ? 'bg-red-600 text-white shadow-xs'
+                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
+                        }`}
+                      >
+                        <span>⚡ 3D विशाल रैली पोस्टर</span>
+                      </button>
+                      <button
                         onClick={() => setPosterStyle('news-card')}
                         className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
                           posterStyle === 'news-card'
@@ -771,26 +879,6 @@ export const CounterStudioPage: React.FC = () => {
                         <span>🎙️ बयान कार्ड / सिंगल पंच</span>
                       </button>
                       <button
-                        onClick={() => setPosterStyle('breaking-banner')}
-                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                          posterStyle === 'breaking-banner'
-                            ? 'bg-red-600 text-white shadow-xs'
-                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
-                        }`}
-                      >
-                        <span>⚡ पीला ब्रेकिंग बैनर</span>
-                      </button>
-                      <button
-                        onClick={() => setPosterStyle('ai-poster')}
-                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                          posterStyle === 'ai-poster'
-                            ? 'bg-red-600 text-white shadow-xs'
-                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
-                        }`}
-                      >
-                        <span>🎨 DALL-E AI पोस्टर</span>
-                      </button>
-                      <button
                         onClick={() => setPosterStyle('pure-ai-art')}
                         className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
                           posterStyle === 'pure-ai-art'
@@ -798,20 +886,116 @@ export const CounterStudioPage: React.FC = () => {
                             : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
                         }`}
                       >
-                        <span>🖼️ केवल AI इमेज</span>
-                      </button>
-                      <button
-                        onClick={() => setPosterStyle('server-canvas')}
-                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                          posterStyle === 'server-canvas'
-                            ? 'bg-red-600 text-white shadow-xs'
-                            : 'text-slate-600 dark:text-slate-300 hover:text-red-500'
-                        }`}
-                      >
-                        <span>📄 सर्वर कैनवस</span>
+                        <span>🖼️ केवल मूल कार्टून आर्ट</span>
                       </button>
                     </div>
                   </div>
+
+                  {/* Mode: CDR Political Cartoon Poster (CorelDraw / Photoshop Style) */}
+                  {posterStyle === 'cdr-cartoon' && (
+                    <div className="relative aspect-square max-h-[500px] mx-auto rounded-2xl overflow-hidden shadow-2xl border-2 border-red-700/70 bg-slate-950 text-white flex flex-col justify-between select-none group">
+                      {/* Full-view Cartoon Artwork */}
+                      <img
+                        src={response.artwork_url || response.creative_assets.cdr_poster?.artwork_url || '/assets/cartoons/youth_paper_leak.jpg'}
+                        alt="CDR Cartoon Artwork"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+
+                      {/* Top CorelDraw Metallic Ribbon */}
+                      <div className="relative z-10 bg-gradient-to-r from-red-700 via-red-800 to-amber-700 px-3.5 py-2 shadow-lg border-b-2 border-yellow-400 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 rounded-full bg-yellow-300 animate-pulse" />
+                          <span className="text-[11px] sm:text-xs font-black tracking-wide text-white drop-shadow uppercase font-sans">
+                            💥 समाजवादी वॉर रूम 2027 • व्यंग्य चित्र
+                          </span>
+                        </div>
+                        <span className="text-[10px] sm:text-[11px] font-black text-yellow-200 bg-red-950/80 px-2 py-0.5 rounded border border-yellow-500/40">
+                          {response.vector_label || 'जन-मुद्दा'}
+                        </span>
+                      </div>
+
+                      {/* Lower-Third CorelDraw / Photoshop Typography (Subtle Dark Gradient) */}
+                      <div className="relative z-10 mt-auto bg-gradient-to-t from-black via-black/90 to-transparent pt-12 pb-2 px-4 space-y-1.5">
+                        {/* 3D Extruded Devanagari Headline */}
+                        <h3 className="text-base sm:text-lg md:text-xl font-black text-yellow-300 drop-shadow-[0_2px_4px_rgba(0,0,0,1)] leading-snug tracking-tight">
+                          {response.cdr_headline_hi || response.copywriting.headline_hi}
+                        </h3>
+                        <p className="text-[11px] sm:text-xs font-bold text-sky-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] line-clamp-2">
+                          {response.copywriting.sub_headline_hi}
+                        </p>
+                      </div>
+
+                      {/* Bottom Victory Ribbon (Dual Red & Green) */}
+                      <div className="relative z-10 bg-red-600 border-t-2 border-green-600 px-3 py-1.5 flex items-center justify-between text-[10px] font-bold text-white shadow-md">
+                        <span className="flex items-center gap-1.5">
+                          <span className="text-sm">🚲</span>
+                          <span>समाजवादी पार्टी • PDA परिवार</span>
+                        </span>
+                        <span className="text-yellow-200 font-mono text-[9px] tracking-wider">
+                          सत्यमेव जयते • मिशन 2027
+                        </span>
+                      </div>
+
+                      {/* Hover Overlay for 1-Click Download */}
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity z-20 flex items-center justify-center gap-3">
+                        <button
+                          onClick={downloadRichPosterCanvas}
+                          className="px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white font-black text-xs flex items-center gap-2 shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer border border-yellow-300"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>CDR / HD व्यंग्य पोस्टर डाउनलोड करें (1080p PNG)</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mode: 3D Mega Rally Poster */}
+                  {posterStyle === 'rally-banner' && (
+                    <div className="relative aspect-square max-h-[500px] mx-auto rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-600/80 bg-slate-950 text-white flex flex-col justify-between select-none group">
+                      <img
+                        src="/assets/cartoons/sp_2027_rally.jpg"
+                        alt="SP 2027 Mega Rally"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+
+                      {/* Top Ribbon */}
+                      <div className="relative z-10 bg-gradient-to-r from-red-800 via-amber-600 to-red-800 px-3.5 py-2 shadow-lg border-b-2 border-yellow-400 flex items-center justify-between">
+                        <span className="text-xs font-black tracking-wide text-white drop-shadow uppercase">
+                          ⚡ महा-विजय शंखनाद • 2027 लखनऊ कूच
+                        </span>
+                        <span className="text-[10px] font-bold text-yellow-200 bg-black/50 px-2 py-0.5 rounded border border-yellow-400">
+                          ऐतिहासिक जनसैलाब
+                        </span>
+                      </div>
+
+                      {/* Lower Third */}
+                      <div className="relative z-10 mt-auto bg-gradient-to-t from-black via-black/85 to-transparent pt-12 pb-2 px-4 space-y-1.5">
+                        <h3 className="text-base sm:text-lg md:text-xl font-black text-yellow-300 drop-shadow-[0_2px_4px_rgba(0,0,0,1)] leading-snug">
+                          {response.cdr_headline_hi || 'अबकी बार PDA सरकार • सामाजिक न्याय का शंखनाद'}
+                        </h3>
+                        <p className="text-[11px] sm:text-xs font-bold text-emerald-200 drop-shadow">
+                          {response.copywriting.call_to_action_hi || 'युवा, किसान और वंचितों की आवाज़ — अखिलेश यादव'}
+                        </p>
+                      </div>
+
+                      {/* Bottom Footer */}
+                      <div className="relative z-10 bg-red-600 border-t-2 border-green-600 px-3 py-1.5 flex items-center justify-between text-[10px] font-bold text-white shadow-md">
+                        <span>🚲 विकास की रफ्तार • सामाजिक न्याय का आधार</span>
+                        <span className="text-yellow-300">#Mission2027</span>
+                      </div>
+
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity z-20 flex items-center justify-center gap-3">
+                        <button
+                          onClick={downloadRichPosterCanvas}
+                          className="px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white font-black text-xs flex items-center gap-2 shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer border border-yellow-300"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>3D रैली पोस्टर डाउनलोड करें (1080p PNG)</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Mode 1: Amar Ujala / Digital News Media Card (Sample 1 Style) */}
                   {posterStyle === 'news-card' && (
@@ -840,8 +1024,8 @@ export const CounterStudioPage: React.FC = () => {
                         </h3>
                       </div>
 
-                      {/* 3 Red Bullet Points */}
-                      <div className="relative z-10 max-w-[55%] mx-auto space-y-2.5 my-auto bg-white/70 backdrop-blur-xs p-3.5 rounded-xl border border-red-100 shadow-xs">
+                      {/* 3 Red Bullet Points (Centered with wide clear margins for cutouts) */}
+                      <div className="relative z-10 max-w-[46%] mx-auto space-y-2.5 my-auto bg-white/70 backdrop-blur-xs p-3.5 rounded-xl border border-red-100 shadow-xs">
                         <div className="flex items-start gap-2 text-xs sm:text-sm font-bold text-slate-900 leading-snug">
                           <span className="w-2.5 h-2.5 rounded-full bg-red-600 shrink-0 mt-1 shadow-xs" />
                           <span>
@@ -872,14 +1056,14 @@ export const CounterStudioPage: React.FC = () => {
                       <img
                         src="/assets/leaders/cutouts/yogi_cutout.png"
                         alt="Yogi Adityanath Cutout"
-                        className="absolute bottom-0 left-0 max-h-[82%] w-[34%] object-contain pointer-events-none drop-shadow-md z-10"
+                        className="absolute bottom-0 left-0 max-h-[80%] w-[28%] object-contain pointer-events-none drop-shadow-md z-10"
                       />
 
                       {/* Cutout Right: Akhilesh */}
                       <img
                         src="/assets/leaders/cutouts/akhilesh_cutout.png"
                         alt="Akhilesh Yadav Cutout"
-                        className="absolute bottom-0 right-0 max-h-[86%] w-[34%] object-contain pointer-events-none drop-shadow-md z-10"
+                        className="absolute bottom-0 right-0 max-h-[85%] w-[28%] object-contain pointer-events-none drop-shadow-md z-10"
                       />
 
                       {/* Footer Attribution */}
@@ -1123,30 +1307,23 @@ export const CounterStudioPage: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Mode 6: Pure DALL-E/Flux AI Art */}
+                  {/* Mode 6: Pure Political Cartoon Satire Artwork */}
                   {posterStyle === 'pure-ai-art' && (
-                    <div className="relative aspect-square max-h-[480px] mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-950 flex items-center justify-center group">
-                      {response.creative_assets.square_1080.ai_visual_url ? (
-                        <img
-                          src={response.creative_assets.square_1080.ai_visual_url}
-                          alt="DALL-E AI Visual Art"
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-slate-400 text-xs">AI आर्ट लोड हो रहा है...</span>
-                      )}
-                      <div className="absolute bottom-3 left-3 right-3 bg-black/75 backdrop-blur-md p-2.5 rounded-xl border border-white/10 flex items-center justify-between text-xs text-white">
-                        <span className="font-semibold text-amber-300">Flux / DALL-E 8K Photorealistic AI Artwork</span>
-                        {response.creative_assets.square_1080.ai_visual_url && (
-                          <a
-                            href={response.creative_assets.square_1080.ai_visual_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-red-400 underline font-bold"
-                          >
-                            Full Res खोलें
-                          </a>
-                        )}
+                    <div className="relative aspect-square max-h-[500px] mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-950 flex items-center justify-center group">
+                      <img
+                        src={response.artwork_url || response.creative_assets.cdr_poster?.artwork_url || response.creative_assets.square_1080.ai_visual_url || '/assets/cartoons/youth_paper_leak.jpg'}
+                        alt="Political Cartoon Satire Art"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute bottom-3 left-3 right-3 bg-black/80 backdrop-blur-md p-3 rounded-xl border border-white/10 flex items-center justify-between text-xs text-white">
+                        <span className="font-bold text-amber-300">🎨 उच्च रिज़ॉल्यूशन व्यंग्य चित्र (Editorial Cartoon Satire)</span>
+                        <button
+                          onClick={downloadRichPosterCanvas}
+                          className="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] flex items-center gap-1.5 transition-all cursor-pointer shadow-md"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          <span>HD डाउनलोड</span>
+                        </button>
                       </div>
                     </div>
                   )}
