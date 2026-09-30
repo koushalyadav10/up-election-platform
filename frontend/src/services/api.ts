@@ -2440,6 +2440,7 @@ export interface ForensicAuditResponse {
   filename: string;
   file_size_kb: number;
   dimensions: { width: number; height: number };
+  media_domain?: string;
   verdict: {
     classification: 'AUTHENTIC_PHOTO' | 'SUSPICIOUS_TAMPERED' | 'SYNTHETIC_AI_GENERATED';
     synthetic_probability: number;
@@ -2537,18 +2538,21 @@ export interface CounterCreativeResponse {
       title: string;
       format: string;
       image_base64: string;
+      ai_visual_url?: string;
     };
     story_916: {
       title: string;
       format: string;
       caption: string;
       hook: string;
+      ai_visual_url?: string;
     };
     banner_169: {
       title: string;
       format: string;
       headline: string;
       subhead: string;
+      ai_visual_url?: string;
     };
   };
   copywriting: {

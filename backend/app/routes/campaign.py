@@ -3,8 +3,9 @@
 E:/eci/backend/app/routes/campaign.py
 "Chitragupta" — Universal Strategic Counter-Creative Studio.
 Applies the 360° Samajwadi Party Strategic Re-framing Playbook
-(Lohia - Ambedkar - Mulayam - Akhilesh Doctrine) to generate studio-grade,
-culturally resonant, dignified, and legally compliant counter-campaign creatives.
+(Lohia - Ambedkar - Mulayam - Akhilesh Doctrine).
+Integrates DALL-E / Flux AI Generative Imaging Engine (1024x1024 Photorealistic Visuals)
+with 100% Devanagari Hindi Typography and Spokesperson Debate Briefs.
 """
 
 import io
@@ -12,30 +13,40 @@ import re
 import os
 import json
 import base64
+import urllib.parse
+import urllib.request
 from typing import Optional, Dict, Any, List
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 
 router = APIRouter(prefix="/api/campaign", tags=["Strategic Counter Studio"])
 
 # ---------------------------------------------------------------------------
-# SAFE FONT LOADER (Linux & Windows Compatible)
+# SAFE MULTI-PLATFORM HINDI FONT LOADER
 # ---------------------------------------------------------------------------
-def get_safe_font(size: int = 24, bold: bool = False):
+def get_safe_hindi_font(size: int = 24, bold: bool = False):
     candidate_paths = [
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
-        "C:\\Windows\\Fonts\\arialbd.ttf" if bold else "C:\\Windows\\Fonts\\arial.ttf",
-        "arial.ttf"
+        "/usr/share/fonts/truetype/lohit-devanagari/Lohit-Devanagari.ttf",
+        "/usr/share/fonts/truetype/Gargi/Gargi.ttf",
+        "/usr/share/fonts/truetype/samyak/Samyak-Devanagari.ttf",
+        "/usr/share/fonts/truetype/Sahadeva/sahadeva.ttf",
+        "/usr/share/fonts/truetype/fonts-deva-extra/kalimati.ttf",
+        "C:\\Windows\\Fonts\\mangal.ttf",
+        "C:\\Windows\\Fonts\\aparaj.ttf",
+        "C:\\Windows\\Fonts\\arial.ttf"
     ]
     for path in candidate_paths:
-        try:
-            return ImageFont.truetype(path, size)
-        except Exception:
-            continue
-    return ImageFont.load_default()
+        if os.path.exists(path):
+            try:
+                return ImageFont.truetype(path, size)
+            except Exception:
+                continue
+    try:
+        return ImageFont.load_default()
+    except Exception:
+        return None
 
 # ---------------------------------------------------------------------------
 # REQUEST SCHEMA
@@ -47,7 +58,7 @@ class CounterCreativePayload(BaseModel):
     tone: Optional[str] = "FACTUAL_DIGNIFIED"
 
 # ---------------------------------------------------------------------------
-# PRESET ATTACK SCENARIOS FOR INSTANT TESTING
+# PRESET ATTACK SCENARIOS FOR 1-CLICK TESTING
 # ---------------------------------------------------------------------------
 PRESET_ATTACKS = [
     {
@@ -105,12 +116,13 @@ def detect_attack_vector(claim_text: str) -> str:
     return "RELIGIOUS_COMMUNAL"
 
 # ---------------------------------------------------------------------------
-# 360° SAMAJWADI STRATEGIC RE-FRAMING PLAYBOOK
+# SAMAJWADI 360° STRATEGIC PLAYBOOK & PROMPT SYNTHESIZER
 # ---------------------------------------------------------------------------
 def get_strategic_counter(vector: str, claim: str, tone: str) -> Dict[str, Any]:
     playbook = {
         "RELIGIOUS_COMMUNAL": {
             "vector_label": "सांप्रदायिक ध्रुवीकरण व तुष्टिकरण का झूठा आरोप",
+            "ai_prompt": "photorealistic 8k cinematic shot of majestic ancient temple architecture in Uttar Pradesh India, peaceful glowing traditional oil lamps at dusk, serene cultural harmony, golden hour lighting, ultra detailed award winning documentary photography",
             "headline_hi": "सच्चा सनातनी वही जो सबका सम्मान करे: प्रभु राम सबके हैं, नफरत किसी की नहीं!",
             "sub_headline_hi": "धर्म आस्था का विषय है, चुनावी व्यापार का नहीं • पेपर लीक व बेरोजगारी पर जवाब दे भाजपा",
             "body_hi": "अखिलेश यादव सरकार ने सैफई में भव्य भगवान हनुमान की 54 फीट की प्रतिमा स्थापित की, भगवान परशुराम जी का भव्य धाम बनवाया और महर्षि वाल्मीकि, रविदास जी की जयंती पर सम्मान दिया। भाजपा जब भी पेपर लीक, महंगाई और बेरोजगारी पर घिरती है, तो धर्म की आड़ लेती है। हमारा धर्म 'वसुधैव कुटुम्बकम्' और संविधान की रक्षा है।",
@@ -129,6 +141,7 @@ def get_strategic_counter(vector: str, claim: str, tone: str) -> Dict[str, Any]:
         },
         "PARIVARWAAD": {
             "vector_label": "परिवारवाद व वंशवाद का तंज",
+            "ai_prompt": "photorealistic 8k heroic shot of 25 crore united citizens of Uttar Pradesh, diverse smiling farmers youth women standing together under open sky, inspirational cinematic golden lighting, wide angle documentary portrait",
             "headline_hi": "हमारा परिवार 90% PDA की जनता है • भाजपा का परिवार चंद कॉर्पोरेट मित्र!",
             "sub_headline_hi": "किसान, मजदूर, नौजवान और वंचित समाज ही समाजवादी पार्टी का असली कुनबा है",
             "body_hi": "नेताजी मुलायम सिंह यादव ने खेत-खलिहान और अखाड़े से निकलकर 90% वंचितों को संसद तक पहुँचाया। अखिलेश यादव ने परिवारवाद नहीं, बल्कि पूरे उत्तर प्रदेश के परिवारों को आगरा-लखनऊ एक्सप्रेसवे, 108 एम्बुलेंस और लैपटॉप दिया। भाजपा बताए कि उसके गृहमंत्री के बेटे बिना एक मैच खेले क्रिकेट बोर्ड के सर्वेसर्वा कैसे बन गए?",
@@ -147,6 +160,7 @@ def get_strategic_counter(vector: str, claim: str, tone: str) -> Dict[str, Any]:
         },
         "LAW_AND_ORDER": {
             "vector_label": "कानून-व्यवस्था व गुंडाराज का दुष्प्रचार",
+            "ai_prompt": "photorealistic 8k cinematic view of modern emergency response command center in Uttar Pradesh, high-tech GPS monitors, sleek modern police patrol vehicles with glowing blue lights, ultra modern security, cinematic lighting",
             "headline_hi": "आंकड़े गवाह हैं: 2012-17 में यूपी अपराध दर 97.7 थी • आज बुलडोजर राज में बेटियां असुरक्षित!",
             "sub_headline_hi": "UP-100 (3,200 GPS पुलिस गाड़ियां) और 1090 महिला हेल्पलाइन अखिलेश यादव की देन है",
             "body_hi": "भारत सरकार के गृह मंत्रालय की आधिकारिक NCRB रिपोर्ट प्रमाण है कि अखिलेश सरकार (2012) में यूपी में प्रति 1 लाख जनसंख्या पर मात्र 97.7 संज्ञेय अपराध दर्ज थे, जो भाजपा शासित मध्य प्रदेश (298.8) से एक-तिहाई कम था। हाथरस, उन्नाव, लखीमपुर खीरी और कस्टोडियल मौतों ने साबित किया है कि भाजपा का तथाकथित कानून-व्यवस्था केवल प्रचार और जातिवादी बुलडोजर है।",
@@ -165,6 +179,7 @@ def get_strategic_counter(vector: str, claim: str, tone: str) -> Dict[str, Any]:
         },
         "DEVELOPMENT": {
             "vector_label": "मुफ्त की रेवड़ी व विकास पर हमला",
+            "ai_prompt": "photorealistic 8k cinematic shot of Agra-Lucknow expressway in Uttar Pradesh India with Indian Air Force fighter jet landing on highway, modern high-speed Lucknow metro train running parallel, dramatic golden hour, 8k documentary photo",
             "headline_hi": "22 महीने में सुखोई लड़ाकू विमान उतारने वाला एक्सप्रेसवे बनाया • भाजपा ने केवल फीते काटे!",
             "sub_headline_hi": "लखनऊ-आगरा एक्सप्रेसवे, लखनऊ मेट्रो, मेदांता अस्पताल, कैंसर संस्थान: विकास की असली परिभाषा",
             "body_hi": "अखिलेश यादव जी ने 302 किमी लंबा आगरा-लखनऊ एक्सप्रेसवे रिकॉर्ड 22 महीनों में बनाकर विश्व कीर्तिमान स्थापित किया, जिस पर वायुसेना के मिराज और सुखोई उतरे। लखनऊ मेट्रो, गोमती रिवरफ्रंट, लोहिया आयुर्विज्ञान संस्थान और मेदांता अस्पताल सपा की देन हैं। भाजपा 8 साल में एक भी नया बिजली घर या विश्वस्तरीय अस्पताल नहीं बना पाई; केवल आवारा पशुओं से किसानों की फसलें बर्बाद कीं।",
@@ -183,6 +198,7 @@ def get_strategic_counter(vector: str, claim: str, tone: str) -> Dict[str, Any]:
         },
         "CASTE_PDA": {
             "vector_label": "जाति जनगणना व सामाजिक विभाजन पर हमला",
+            "ai_prompt": "photorealistic 8k cinematic shot of a massive progressive gathering of farmers, students and working class in Uttar Pradesh holding Indian national flag, glowing emblem of Constitution of India and equality, majestic sunrise light, heroic 8k photography",
             "headline_hi": "जिसकी जितनी संख्या भारी, उसकी उतनी हिस्सेदारी: जाति जनगणना राष्ट्र निर्माण का आधार है!",
             "sub_headline_hi": "बाबासाहेब डॉ. आंबेडकर व डॉ. लोहिया का सामाजिक न्याय ही PDA की आत्मा है",
             "body_hi": "जाति जनगणना समाज को बांटने के लिए नहीं, बल्कि 90% पिछड़े, दलित, आदिवासी और अल्पसंख्यकों के हक और विकास की सटीक नीतियां बनाने के लिए अनिवार्य है। जब पशुओं और पेड़ों की गिनती हो सकती है, तो देश के इंसानों की गिनती से भाजपा को डर क्यों लगता है? संविधान के अनुच्छेद 15 और 16 की रक्षा के लिए PDA चट्टान की तरह खड़ा है।",
@@ -204,81 +220,135 @@ def get_strategic_counter(vector: str, claim: str, tone: str) -> Dict[str, Any]:
     return playbook.get(vector, playbook["RELIGIOUS_COMMUNAL"])
 
 # ---------------------------------------------------------------------------
-# STUDIO-GRADE CANVAS POSTER GENERATOR (1080x1080)
+# DALL-E / FLUX GRADE AI IMAGE FETCH & CANVAS COMPOSITOR
 # ---------------------------------------------------------------------------
-def generate_studio_poster_image(strategy: Dict[str, Any]) -> str:
+def fetch_ai_visual_image(prompt: str) -> Optional[Image.Image]:
+    """Fetches high-definition photorealistic visual from Pollinations/Flux API."""
+    try:
+        encoded_prompt = urllib.parse.quote(prompt)
+        url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&nologo=true&seed=42"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+        with urllib.request.urlopen(req, timeout=8) as response:
+            img_data = response.read()
+            return Image.open(io.BytesIO(img_data)).convert("RGB")
+    except Exception as e:
+        print(f"AI image generation fallback: {e}")
+        return None
+
+def generate_studio_poster_image(strategy: Dict[str, Any]) -> tuple[str, str]:
     """
-    Renders a high-resolution 1080x1080 poster canvas in Python PIL.
-    Safe on both Ubuntu Linux EC2 and Windows environments.
+    Renders high-resolution 1080x1080 poster composite.
+    Uses AI generated photorealistic background image + Hindi typography.
+    Returns (base64_image, ai_image_url).
     """
     width, height = 1080, 1080
-    im = Image.new("RGB", (width, height), color=(15, 23, 42)) # Deep slate
+    prompt = strategy.get("ai_prompt", "photorealistic dramatic political documentary photo of Uttar Pradesh, 8k")
+    encoded_prompt = urllib.parse.quote(prompt)
+    ai_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=1024&nologo=true&seed=42"
+
+    # Try fetching AI visual
+    bg_ai = fetch_ai_visual_image(prompt)
+    
+    if bg_ai:
+        im = bg_ai.resize((width, height), Image.Resampling.LANCZOS)
+        # Apply dark cinematic overlay for text legibility
+        overlay = Image.new("RGBA", (width, height), (15, 23, 42, 170))
+        # Top gradient (red-tinted)
+        draw_ov = ImageDraw.Draw(overlay)
+        for y in range(250):
+            alpha = int(220 * (1 - y / 250.0))
+            draw_ov.line([(0, y), (width, y)], fill=(127, 29, 29, alpha))
+        # Bottom gradient (slate-tinted)
+        for y in range(height - 350, height):
+            alpha = int(230 * ((y - (height - 350)) / 350.0))
+            draw_ov.line([(0, y), (width, y)], fill=(15, 23, 42, alpha))
+        im = Image.alpha_composite(im.convert("RGBA"), overlay).convert("RGB")
+    else:
+        # Fallback rich studio gradient
+        im = Image.new("RGB", (width, height), color=(15, 23, 42))
+        draw_bg = ImageDraw.Draw(im)
+        for y in range(height):
+            alpha = y / float(height)
+            r = int(127 * (1 - alpha) + 15 * alpha)
+            g = int(29 * (1 - alpha) + 23 * alpha)
+            b = int(29 * (1 - alpha) + 42 * alpha)
+            draw_bg.line([(0, y), (width, y)], fill=(r, g, b))
+
     draw = ImageDraw.Draw(im)
 
-    # Gradient top bar
-    for y in range(160):
-        alpha = y / 160.0
-        r = int(185 * (1 - alpha) + 15 * alpha)
-        g = int(28 * (1 - alpha) + 23 * alpha)
-        b = int(28 * (1 - alpha) + 42 * alpha)
-        draw.line([(0, y), (width, y)], fill=(r, g, b))
+    # Load Devanagari Hindi font
+    font_bold = get_safe_hindi_font(30, bold=True)
+    font_sub = get_safe_hindi_font(20, bold=False)
+    font_body = get_safe_hindi_font(22, bold=False)
+    font_meta = get_safe_hindi_font(16, bold=False)
 
-    # Header Top Bar
-    draw.rectangle([(0, 0), (width, 8)], fill="#ef4444")
-    font_bold = get_safe_font(28, bold=True)
-    font_sub = get_safe_font(18, bold=False)
-    font_body = get_safe_font(20, bold=False)
-    font_meta = get_safe_font(15, bold=False)
+    # 1. Header Bar
+    draw.rectangle([(0, 0), (width, 10)], fill="#ef4444")
+    if font_sub:
+        draw.text((50, 25), "SAMAJWADI WAR ROOM 2027 • STRATEGIC FACT-CHECK", fill="#fecaca", font=font_sub)
+        draw.text((width - 340, 25), "OFFICIAL COUNTER-PUNCH", fill="#fbbf24", font=font_sub)
 
-    # Top Brand Bar
-    draw.text((50, 25), "SAMAJWADI WAR ROOM 2027 • STRATEGIC FACT-CHECK", fill="#fecaca", font=font_sub)
-    draw.text((width - 340, 25), "OFFICIAL COUNTER-PUNCH", fill="#fbbf24", font=font_sub)
+    # 2. Vector Banner
+    draw.rounded_rectangle([(50, 65), (width - 50, 130)], radius=12, fill="#7f1d1d", outline="#dc2626", width=2)
+    if font_bold:
+        draw.text((70, 82), f"मुद्दे का पलटवार: {strategy['vector_label']}", fill="#ffffff", font=font_bold)
 
-    # Attack Vector Banner
-    draw.rounded_rectangle([(50, 75), (width - 50, 140)], radius=12, fill="#7f1d1d", outline="#dc2626", width=2)
-    draw.text((70, 95), f"मुद्दे का पलटवार: {strategy['vector_label']}", fill="#ffffff", font=font_bold)
+    # 3. Main Bold Headline Box
+    draw.rounded_rectangle([(50, 155), (width - 50, 360)], radius=18, fill="#1e1b4b", outline="#6366f1", width=2)
+    h_text = strategy["headline_hi"]
+    if font_bold:
+        draw.text((75, 180), h_text[:50], fill="#fef08a", font=font_bold)
+        if len(h_text) > 50:
+            draw.text((75, 225), h_text[50:100], fill="#fef08a", font=font_bold)
+    if font_sub:
+        draw.text((75, 290), strategy["sub_headline_hi"][:75], fill="#c7d2fe", font=font_sub)
 
-    # Headline Box
-    draw.rounded_rectangle([(50, 170), (width - 50, 370)], radius=18, fill="#1e1b4b", outline="#6366f1", width=2)
-    draw.text((75, 200), strategy["headline_hi"][:70], fill="#fef08a", font=font_bold)
-    if len(strategy["headline_hi"]) > 70:
-        draw.text((75, 245), strategy["headline_hi"][70:140], fill="#fef08a", font=font_bold)
-    draw.text((75, 310), strategy["sub_headline_hi"][:85], fill="#c7d2fe", font=font_sub)
+    # 4. Factual Data Box
+    draw.rounded_rectangle([(50, 390), (width - 50, 650)], radius=18, fill="#022c22", outline="#10b981", width=2)
+    draw.rectangle([(75, 378), (380, 406)], fill="#059669")
+    if font_sub:
+        draw.text((85, 382), "प्रमाणित सरकारी डेटा (OFFICIAL PROOF)", fill="#ffffff", font=font_sub)
 
-    # Official Data Proof Box
-    draw.rounded_rectangle([(50, 400), (width - 50, 670)], radius=18, fill="#022c22", outline="#10b981", width=2)
-    draw.rectangle([(75, 388), (380, 416)], fill="#059669")
-    draw.text((85, 392), "प्रमाणित सरकारी डेटा (OFFICIAL PROOF)", fill="#ffffff", font=font_sub)
-
-    # Data comparison bullets
     c1 = strategy["official_data_citations"][0]
-    draw.text((75, 440), f"1. {c1['metric']}:", fill="#a7f3d0", font=font_bold)
-    draw.text((100, 480), f"• सपा रिकॉर्ड: {c1['sp_value']}", fill="#ffffff", font=font_body)
-    draw.text((100, 515), f"• भाजपा रिकॉर्ड: {c1['bjp_value']}", fill="#f87171", font=font_body)
-    draw.text((100, 550), f"• आधिकारिक स्रोत: {c1['source']}", fill="#94a3b8", font=font_meta)
+    if font_bold:
+        draw.text((75, 425), f"1. {c1['metric']}:", fill="#a7f3d0", font=font_bold)
+    if font_body:
+        draw.text((100, 465), f"• सपा रिकॉर्ड: {c1['sp_value']}", fill="#ffffff", font=font_body)
+        draw.text((100, 500), f"• भाजपा रिकॉर्ड: {c1['bjp_value']}", fill="#f87171", font=font_body)
+    if font_meta:
+        draw.text((100, 540), f"• स्रोत: {c1['source']}", fill="#94a3b8", font=font_meta)
 
-    # Body Narrative
-    draw.rounded_rectangle([(50, 700), (width - 50, 930)], radius=18, fill="#0f172a", outline="#334155", width=2)
-    draw.text((75, 725), "सच्चाई और संकल्प (The Ground Reality):", fill="#e2e8f0", font=font_bold)
-    draw.text((75, 770), strategy["body_hi"][:95], fill="#cbd5e1", font=font_body)
-    draw.text((75, 805), strategy["body_hi"][95:190], fill="#cbd5e1", font=font_body)
-    draw.text((75, 840), strategy["body_hi"][190:285], fill="#cbd5e1", font=font_body)
-    draw.text((75, 885), f"नारा: {strategy['call_to_action_hi']}", fill="#34d399", font=font_bold)
+    # 5. Narrative Call to Action
+    draw.rounded_rectangle([(50, 680), (width - 50, 930)], radius=18, fill="#0f172a", outline="#334155", width=2)
+    if font_bold:
+        draw.text((75, 705), "सच्चाई और संकल्प (The Ground Reality):", fill="#e2e8f0", font=font_bold)
+    if font_body:
+        b_txt = strategy["body_hi"]
+        draw.text((75, 750), b_txt[:60], fill="#cbd5e1", font=font_body)
+        draw.text((75, 785), b_txt[60:120], fill="#cbd5e1", font=font_body)
+        draw.text((75, 820), b_txt[120:180], fill="#cbd5e1", font=font_body)
+    if font_bold:
+        draw.text((75, 870), f"नारा: {strategy['call_to_action_hi']}", fill="#34d399", font=font_bold)
 
-    # Bottom Footer & Signature Bar
+    # 6. Bottom Signature Bar
     draw.rectangle([(0, 960), (width, height)], fill="#090d16")
     draw.rectangle([(0, 960), (width, 964)], fill="#dc2626")
-    draw.text((50, 985), "समाजवादी पार्टी • PDA (पिछड़ा, दलित, अल्पसंख्यक) परिवार", fill="#f87171", font=font_bold)
-    draw.text((50, 1025), "सत्य • समानता • सामाजिक न्याय • प्रगतिशील उत्तर प्रदेश", fill="#94a3b8", font=font_meta)
+    if font_bold:
+        draw.text((50, 985), "समाजवादी पार्टी • PDA (पिछड़ा, दलित, अल्पसंख्यक) परिवार", fill="#f87171", font=font_bold)
+    if font_meta:
+        draw.text((50, 1025), "सत्य • समानता • सामाजिक न्याय • प्रगतिशील उत्तर प्रदेश", fill="#94a3b8", font=font_meta)
 
     draw.rounded_rectangle([(width - 340, 980), (width - 50, 1050)], radius=10, fill="#1e293b", outline="#10b981", width=1)
-    draw.text((width - 325, 995), "✓ ECI & NCRB CERTIFIED", fill="#34d399", font=font_sub)
-    draw.text((width - 325, 1025), "WAR ROOM FACT-CHECKED", fill="#94a3b8", font=font_meta)
+    if font_sub:
+        draw.text((width - 325, 995), "✓ ECI & NCRB CERTIFIED", fill="#34d399", font=font_sub)
+    if font_meta:
+        draw.text((width - 325, 1025), "WAR ROOM FACT-CHECKED", fill="#94a3b8", font=font_meta)
 
     buf = io.BytesIO()
     im.save(buf, format="PNG")
     buf.seek(0)
-    return f"data:image/png;base64,{base64.b64encode(buf.getvalue()).decode('utf-8')}"
+    b64 = f"data:image/png;base64,{base64.b64encode(buf.getvalue()).decode('utf-8')}"
+    return b64, ai_url
 
 # ---------------------------------------------------------------------------
 # API ENDPOINTS
@@ -292,8 +362,8 @@ def get_preset_attacks():
 def generate_counter(payload: CounterCreativePayload):
     """
     Accepts opponent's attack claim or slogan, identifies the vector,
-    formulates high-level Samajwadi strategic counter-thesis, and renders
-    studio-grade counter-creatives in multiple formats with debate talking points.
+    synthesizes a DALL-E / Flux photorealistic AI background visual,
+    renders studio-grade counter-creative, and prepares debate briefings.
     """
     claim = payload.opponent_claim.strip() if payload.opponent_claim else "विपक्षी दल द्वारा सामाजिक सौहार्द बिगाड़ने का प्रयास।"
     
@@ -306,8 +376,8 @@ def generate_counter(payload: CounterCreativePayload):
     # 2. Get Strategy
     strategy = get_strategic_counter(vector, claim, payload.tone or "FACTUAL_DIGNIFIED")
 
-    # 3. Render 1080p Studio Canvas
-    square_b64 = generate_studio_poster_image(strategy)
+    # 3. Render 1080p Studio Canvas with DALL-E Visual Background
+    square_b64, ai_image_url = generate_studio_poster_image(strategy)
 
     return {
         "status": "success",
@@ -315,21 +385,24 @@ def generate_counter(payload: CounterCreativePayload):
         "vector_label": strategy["vector_label"],
         "creative_assets": {
             "square_1080": {
-                "title": "Square 1080p HD Poster",
+                "title": "Square 1080p HD Studio Poster",
                 "format": "1:1 Square (Instagram / Facebook / WhatsApp DP)",
-                "image_base64": square_b64
+                "image_base64": square_b64,
+                "ai_visual_url": ai_image_url
             },
             "story_916": {
                 "title": "9:16 Vertical Story",
                 "format": "9:16 Vertical Story (WhatsApp Status / Reels)",
                 "caption": strategy["sub_headline_hi"],
-                "hook": strategy["headline_hi"]
+                "hook": strategy["headline_hi"],
+                "ai_visual_url": ai_image_url
             },
             "banner_169": {
                 "title": "16:9 Twitter/X Press Card",
                 "format": "16:9 Landscape (Twitter / X Header & Card)",
                 "headline": strategy["headline_hi"],
-                "subhead": strategy["sub_headline_hi"]
+                "subhead": strategy["sub_headline_hi"],
+                "ai_visual_url": ai_image_url
             }
         },
         "copywriting": {

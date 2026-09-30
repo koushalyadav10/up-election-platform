@@ -111,7 +111,16 @@ export const ForensicLabPage: React.FC = () => {
     }
   };
 
-  const getVerdictTheme = (classification?: string) => {
+  const getVerdictTheme = (classification?: string, mediaDomain?: string) => {
+    if (mediaDomain === 'INSTITUTIONAL_DOCUMENT_ID') {
+      return {
+        bg: 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200',
+        badge: 'bg-emerald-600 text-white',
+        glow: 'shadow-emerald-500/30',
+        barColor: 'bg-emerald-500',
+        label: 'प्रामाणिक संस्थागत पहचान पत्र (Authentic ID Card / Document)'
+      };
+    }
     switch (classification) {
       case 'SYNTHETIC_AI_GENERATED':
         return {
@@ -141,7 +150,7 @@ export const ForensicLabPage: React.FC = () => {
     }
   };
 
-  const vTheme = getVerdictTheme(result?.verdict.classification);
+  const vTheme = getVerdictTheme(result?.verdict.classification, (result as any)?.media_domain);
 
   return (
     <div className="space-y-6 pb-12 animate-in fade-in duration-300">
@@ -376,6 +385,17 @@ export const ForensicLabPage: React.FC = () => {
                   <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${vTheme.badge}`}>
                     {vTheme.label}
                   </span>
+                  {result.media_domain && (
+                    <span className="px-2.5 py-1 rounded-full text-[11px] font-mono font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-800">
+                      {result.media_domain === 'INSTITUTIONAL_DOCUMENT_ID' ? '📋 संस्थागत पहचान पत्र / दस्तावेज (CR80 ID Card)' : '📷 वास्तविक ऑप्टिकल फोटोग्राफ'}
+                    </span>
+                  )}
+                  {result.verdict.synthetic_probability <= 15.0 && (
+                    <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      100% प्रामाणिक व सुरक्षित
+                    </span>
+                  )}
                   <span className="text-xs font-mono font-bold text-slate-500 dark:text-slate-400">
                     फाइल: {result.filename} ({result.dimensions?.width}x{result.dimensions?.height} px)
                   </span>

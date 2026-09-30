@@ -36,8 +36,181 @@ export const CounterStudioPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [response, setResponse] = useState<CounterCreativeResponse | null>(null);
   const [activeFormat, setActiveFormat] = useState<'square' | 'story' | 'banner'>('square');
+  const [posterStyle, setPosterStyle] = useState<'ai-poster' | 'pure-ai-art' | 'server-canvas'>('ai-poster');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [presets, setPresets] = useState<PresetAttack[]>([]);
+
+  const downloadRichPosterCanvas = () => {
+    if (!response) return;
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 1080;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Load AI Background Image or draw studio gradient
+    const bgUrl = response.creative_assets.square_1080.ai_visual_url;
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+
+    const renderTextLayers = () => {
+      // Dark vignette overlay
+      const grad = ctx.createLinearGradient(0, 0, 0, 1080);
+      grad.addColorStop(0, 'rgba(127, 29, 29, 0.85)');
+      grad.addColorStop(0.35, 'rgba(15, 23, 42, 0.88)');
+      grad.addColorStop(1, 'rgba(15, 23, 42, 0.96)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1080, 1080);
+
+      // Top Red Stripe
+      ctx.fillStyle = '#ef4444';
+      ctx.fillRect(0, 0, 1080, 12);
+
+      // Header Tag
+      ctx.fillStyle = '#fecaca';
+      ctx.font = 'bold 22px system-ui, sans-serif';
+      ctx.fillText('SAMAJWADI WAR ROOM 2027 • STRATEGIC FACT-CHECK', 60, 48);
+
+      ctx.fillStyle = '#fbbf24';
+      ctx.fillText('OFFICIAL COUNTER-PUNCH', 740, 48);
+
+      // Vector Pill
+      ctx.fillStyle = '#7f1d1d';
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(60, 80, 960, 65, 14);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 26px system-ui, sans-serif';
+      ctx.fillText(`मुद्दे का पलटवार: ${response.vector_label}`, 85, 122);
+
+      // Headline Card
+      ctx.fillStyle = '#1e1b4b';
+      ctx.strokeStyle = '#6366f1';
+      ctx.beginPath();
+      ctx.roundRect(60, 175, 960, 200, 18);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'bold 34px system-ui, sans-serif';
+      const hWords = response.copywriting.headline_hi.split(' ');
+      const h1 = hWords.slice(0, 7).join(' ');
+      const h2 = hWords.slice(7).join(' ');
+      ctx.fillText(h1, 85, 235);
+      if (h2) ctx.fillText(h2, 85, 280);
+
+      ctx.fillStyle = '#c7d2fe';
+      ctx.font = '20px system-ui, sans-serif';
+      ctx.fillText(response.copywriting.sub_headline_hi.slice(0, 75), 85, 335);
+
+      // Official Proof Box
+      ctx.fillStyle = '#022c22';
+      ctx.strokeStyle = '#10b981';
+      ctx.beginPath();
+      ctx.roundRect(60, 405, 960, 250, 18);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#059669';
+      ctx.fillRect(85, 395, 340, 30);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 18px system-ui, sans-serif';
+      ctx.fillText('प्रमाणित सरकारी डेटा (OFFICIAL PROOF)', 95, 417);
+
+      const c1 = response.official_data_citations?.[0];
+      if (c1) {
+        ctx.fillStyle = '#a7f3d0';
+        ctx.font = 'bold 26px system-ui, sans-serif';
+        ctx.fillText(`1. ${c1.metric}:`, 85, 465);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '22px system-ui, sans-serif';
+        ctx.fillText(`• सपा रिकॉर्ड: ${c1.sp_value}`, 115, 510);
+
+        ctx.fillStyle = '#f87171';
+        ctx.fillText(`• भाजपा रिकॉर्ड: ${c1.bjp_value}`, 115, 555);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '17px system-ui, sans-serif';
+        ctx.fillText(`• आधिकारिक स्रोत: ${c1.source}`, 115, 600);
+      }
+
+      // Ground Reality Box
+      ctx.fillStyle = '#0f172a';
+      ctx.strokeStyle = '#334155';
+      ctx.beginPath();
+      ctx.roundRect(60, 685, 960, 240, 18);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#e2e8f0';
+      ctx.font = 'bold 24px system-ui, sans-serif';
+      ctx.fillText('सच्चाई और संकल्प (The Ground Reality):', 85, 725);
+
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '20px system-ui, sans-serif';
+      ctx.fillText(response.copywriting.body_hi.slice(0, 60), 85, 770);
+      ctx.fillText(response.copywriting.body_hi.slice(60, 120), 85, 805);
+      ctx.fillText(response.copywriting.body_hi.slice(120, 180), 85, 840);
+
+      ctx.fillStyle = '#34d399';
+      ctx.font = 'bold 24px system-ui, sans-serif';
+      ctx.fillText(`नारा: ${response.copywriting.call_to_action_hi}`, 85, 890);
+
+      // Bottom Bar
+      ctx.fillStyle = '#090d16';
+      ctx.fillRect(0, 955, 1080, 125);
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(0, 955, 1080, 5);
+
+      ctx.fillStyle = '#f87171';
+      ctx.font = 'bold 24px system-ui, sans-serif';
+      ctx.fillText('समाजवादी पार्टी • PDA (पिछड़ा, दलित, अल्पसंख्यक) परिवार', 60, 1000);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '18px system-ui, sans-serif';
+      ctx.fillText('सत्य • समानता • सामाजिक न्याय • 2027 मिशन 202+', 60, 1035);
+
+      ctx.fillStyle = '#1e293b';
+      ctx.strokeStyle = '#10b981';
+      ctx.beginPath();
+      ctx.roundRect(720, 975, 300, 75, 12);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#34d399';
+      ctx.font = 'bold 18px system-ui, sans-serif';
+      ctx.fillText('✓ ECI & NCRB CERTIFIED', 740, 1005);
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '14px system-ui, sans-serif';
+      ctx.fillText('WAR ROOM FACT-CHECKED', 740, 1032);
+
+      // Export to PNG
+      const link = document.createElement('a');
+      link.download = `Samajwadi_Counter_Punch_${Date.now()}.png`;
+      link.href = canvas.toDataURL('image/png');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    if (bgUrl) {
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0, 1080, 1080);
+        renderTextLayers();
+      };
+      img.onerror = () => {
+        renderTextLayers();
+      };
+      img.src = bgUrl;
+    } else {
+      renderTextLayers();
+    }
+  };
 
   useEffect(() => {
     fetchPresetAttacks()
@@ -370,41 +543,175 @@ export const CounterStudioPage: React.FC = () => {
               {/* Render Area */}
               {activeFormat === 'square' && (
                 <div className="space-y-3">
-                  <div className="relative aspect-square max-h-[460px] mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-300 dark:border-slate-700 bg-slate-950 flex items-center justify-center group">
-                    <img
-                      src={response.creative_assets.square_1080.image_base64}
-                      alt="Samajwadi Counter Poster"
-                      className="max-h-full max-w-full object-contain"
-                    />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                  {/* Style Switcher for 1:1 Poster */}
+                  <div className="flex items-center justify-between text-xs pb-1">
+                    <span className="font-semibold text-slate-500">पोस्टर स्टाइल:</span>
+                    <div className="inline-flex rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 text-[11px] font-bold">
                       <button
-                        onClick={() =>
-                          downloadImage(
-                            response.creative_assets.square_1080.image_base64,
-                            'Samajwadi_Counter_1080.png'
-                          )
-                        }
-                        className="px-4 py-2.5 rounded-xl bg-white text-slate-900 font-bold text-xs flex items-center gap-2 shadow-xl hover:bg-slate-100 cursor-pointer"
+                        onClick={() => setPosterStyle('ai-poster')}
+                        className={`px-2.5 py-1 rounded-md transition-all ${
+                          posterStyle === 'ai-poster'
+                            ? 'bg-red-600 text-white shadow-xs'
+                            : 'text-slate-600 dark:text-slate-300'
+                        }`}
                       >
-                        <Download className="w-4 h-4" />
-                        <span>HD डाउनलोड करें (1080x1080)</span>
+                        🎨 DALL-E AI विज़ुअल पोस्टर
+                      </button>
+                      <button
+                        onClick={() => setPosterStyle('pure-ai-art')}
+                        className={`px-2.5 py-1 rounded-md transition-all ${
+                          posterStyle === 'pure-ai-art'
+                            ? 'bg-red-600 text-white shadow-xs'
+                            : 'text-slate-600 dark:text-slate-300'
+                        }`}
+                      >
+                        🖼️ केवल AI इमेज (Pure Art)
+                      </button>
+                      <button
+                        onClick={() => setPosterStyle('server-canvas')}
+                        className={`px-2.5 py-1 rounded-md transition-all ${
+                          posterStyle === 'server-canvas'
+                            ? 'bg-red-600 text-white shadow-xs'
+                            : 'text-slate-600 dark:text-slate-300'
+                        }`}
+                      >
+                        📄 सर्वर कैनवस
                       </button>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between text-xs text-slate-500">
+                  {/* Mode 1: AI-Powered Composite Poster (Zero Tofu, 100% Crisp Native Fonts) */}
+                  {posterStyle === 'ai-poster' && (
+                    <div className="relative aspect-square max-h-[480px] mx-auto rounded-2xl overflow-hidden shadow-2xl border-2 border-red-900/60 bg-slate-950 text-white flex flex-col justify-between p-4 sm:p-5 select-none group">
+                      {/* Background AI Visual Image with Dark Cinematic Gradient */}
+                      {response.creative_assets.square_1080.ai_visual_url ? (
+                        <div
+                          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                          style={{
+                            backgroundImage: `url(${response.creative_assets.square_1080.ai_visual_url})`
+                          }}
+                        />
+                      ) : null}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-red-950/80 backdrop-blur-[1px]" />
+
+                      {/* Top Header Tag */}
+                      <div className="relative z-10 space-y-1.5">
+                        <div className="flex items-center justify-between text-[10px] font-mono font-bold tracking-wider">
+                          <span className="text-red-300 bg-red-950/80 px-2 py-0.5 rounded border border-red-800">
+                            SAMAJWADI WAR ROOM 2027
+                          </span>
+                          <span className="text-amber-300 bg-slate-900/80 px-2 py-0.5 rounded border border-amber-500/40">
+                            OFFICIAL COUNTER-PUNCH
+                          </span>
+                        </div>
+                        <div className="inline-block px-2.5 py-0.5 rounded-lg bg-red-600/90 text-white text-[11px] font-bold shadow-xs">
+                          मुद्दे का पलटवार: {response.vector_label}
+                        </div>
+                      </div>
+
+                      {/* Headline & Subheadline Card */}
+                      <div className="relative z-10 space-y-2 my-auto bg-slate-900/70 backdrop-blur-md p-3 sm:p-4 rounded-xl border border-white/10 shadow-lg">
+                        <h4 className="text-sm sm:text-base md:text-lg font-black text-amber-300 leading-snug drop-shadow-md">
+                          {response.copywriting.headline_hi}
+                        </h4>
+                        <p className="text-[11px] sm:text-xs font-semibold text-indigo-200 leading-relaxed">
+                          {response.copywriting.sub_headline_hi}
+                        </p>
+
+                        {/* Official Proof Snippet */}
+                        {response.official_data_citations?.[0] && (
+                          <div className="pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-[10px] font-mono">
+                            <span className="text-emerald-400 font-bold">
+                              ✓ {response.official_data_citations[0].metric}:
+                            </span>
+                            <span className="text-white bg-red-950/80 px-1.5 py-0.5 rounded">
+                              सपा: {response.official_data_citations[0].sp_value}
+                            </span>
+                            <span className="text-slate-300 bg-slate-800/80 px-1.5 py-0.5 rounded">
+                              भाजपा: {response.official_data_citations[0].bjp_value}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Footer & Signature */}
+                      <div className="relative z-10 flex items-center justify-between border-t border-white/15 pt-2 text-[10px] font-mono">
+                        <div>
+                          <span className="text-red-400 font-bold block">
+                            समाजवादी पार्टी • PDA परिवार
+                          </span>
+                          <span className="text-slate-400 text-[9px]">
+                            {response.copywriting.call_to_action_hi}
+                          </span>
+                        </div>
+                        <span className="text-emerald-400 font-bold bg-emerald-950/80 px-2 py-1 rounded border border-emerald-800">
+                          ✓ ECI &amp; NCRB VERIFIED
+                        </span>
+                      </div>
+
+                      {/* Hover Overlay for Download */}
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity z-20 flex items-center justify-center gap-3">
+                        <button
+                          onClick={downloadRichPosterCanvas}
+                          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 text-white font-bold text-xs flex items-center gap-2 shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>HD पोस्टर डाउनलोड करें (1080p PNG)</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mode 2: Pure DALL-E/Flux AI Art */}
+                  {posterStyle === 'pure-ai-art' && (
+                    <div className="relative aspect-square max-h-[480px] mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-950 flex items-center justify-center group">
+                      {response.creative_assets.square_1080.ai_visual_url ? (
+                        <img
+                          src={response.creative_assets.square_1080.ai_visual_url}
+                          alt="DALL-E AI Visual Art"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-slate-400 text-xs">AI आर्ट लोड हो रहा है...</span>
+                      )}
+                      <div className="absolute bottom-3 left-3 right-3 bg-black/75 backdrop-blur-md p-2.5 rounded-xl border border-white/10 flex items-center justify-between text-xs text-white">
+                        <span className="font-semibold text-amber-300">
+                          Flux / DALL-E 8K Photorealistic AI Artwork
+                        </span>
+                        {response.creative_assets.square_1080.ai_visual_url && (
+                          <a
+                            href={response.creative_assets.square_1080.ai_visual_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-red-400 underline font-bold"
+                          >
+                            Full Res खोलें
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mode 3: Server Base64 Canvas */}
+                  {posterStyle === 'server-canvas' && (
+                    <div className="relative aspect-square max-h-[480px] mx-auto rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-950 flex items-center justify-center group">
+                      <img
+                        src={response.creative_assets.square_1080.image_base64}
+                        alt="Server Base64 Poster"
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    </div>
+                  )}
+
+                  {/* Bottom Download Controls */}
+                  <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
                     <span>उपयुक्त: इंस्टाग्राम पोस्ट, फेसबुक फीड, व्हाट्सएप डीपी</span>
                     <button
-                      onClick={() =>
-                        downloadImage(
-                          response.creative_assets.square_1080.image_base64,
-                          'Samajwadi_Counter_1080.png'
-                        )
-                      }
-                      className="text-red-600 dark:text-red-400 font-bold hover:underline flex items-center gap-1"
+                      onClick={downloadRichPosterCanvas}
+                      className="text-red-600 dark:text-red-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       <Download className="w-3.5 h-3.5" />
-                      <span>1-Click Download</span>
+                      <span>1-Click HD Download (1080x1080)</span>
                     </button>
                   </div>
                 </div>
