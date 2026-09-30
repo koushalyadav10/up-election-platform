@@ -616,7 +616,7 @@ export const CounterStudioPage: React.FC = () => {
               rows={4}
               value={opponentClaim}
               onChange={(e) => setOpponentClaim(e.target.value)}
-              placeholder="उदा. 'सपा केवल एक वर्ग विशेष की पार्टी है, इनके शासन में केवल सैफई का विकास हुआ और गुंडाराज चरम पर था...'"
+              placeholder="उदा. 'स्मार्ट मीटर लगाकर गरीब जनता को लूटा जा रहा है' या 'अस्पतालों में दवाइयां और स्ट्रेचर नहीं मिल रहे' या 'सड़क पर गड्ढों से रोज हादसे हो रहे हैं' या अपना कोई भी स्थानीय मुद्दा दर्ज करें..."
               className="w-full text-xs sm:text-sm p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500 outline-none resize-none"
             />
           </div>
@@ -632,12 +632,25 @@ export const CounterStudioPage: React.FC = () => {
                 onChange={(e) => setSelectedVector(e.target.value as any)}
                 className="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-red-500 font-medium"
               >
-                <option value="AUTO_DETECT">🤖 स्वतः पहचानें (Auto-Detect Vector)</option>
-                <option value="RELIGIOUS_COMMUNAL">🚩 सांप्रदायिक / तुष्टिकरण / सनातन का झूठा आरोप</option>
-                <option value="PARIVARWAAD">👑 परिवारवाद / वंशवाद का तंज</option>
-                <option value="LAW_AND_ORDER">⚖️ कानून-व्यवस्था / गुंडाराज का दुष्प्रचार</option>
-                <option value="DEVELOPMENT">🏗️ मुफ्त की रेवड़ी / विकास पर अनर्गल प्रहार</option>
-                <option value="CASTE_PDA">✊ जाति जनगणना / PDA सामाजिक न्याय</option>
+                <option value="AUTO_DETECT">🤖 स्वतः पहचानें (AI Auto-Detect Any Issue)</option>
+                <option value="ELECTRICITY_METERS">⚡ स्मार्ट मीटर / बिजली लूट व निजीकरण</option>
+                <option value="HEALTHCARE_AMBULANCE">🏥 अस्पताल / स्ट्रेचर / दवा संकट / स्वास्थ्य विफलता</option>
+                <option value="INFRASTRUCTURE_ROADS">🛣️ सड़कें / गड्ढे / टोल टैक्स / जलभराव</option>
+                <option value="TEACHERS_SHIKSHAMITRA">📚 शिक्षक भर्ती / 69,000 / शिक्षामित्र / OPS पुरानी पेंशन</option>
+                <option value="AGNIVEER_ARMY">🎖️ अग्निवीर योजना / 4 साल की सेना नौकरी / सैन्य अपमान</option>
+                <option value="FARMERS_FERTILIZER_MSP">🌾 किसान / DAP खाद संकट / यूरिया कालाबाजारी / आवारा पशु</option>
+                <option value="PAPER_LEAK">📋 युवा व रोज़गार / UPPSC RO-ARO / पुलिस भर्ती पेपर लीक</option>
+                <option value="INFLATION_MEHNGAI">📉 महंगाई / सिलेंडर ₹1100 / राशन कटौती / दाल-तेल लूट</option>
+                <option value="WOMEN_SAFETY">🛡️ महिला सुरक्षा / हाथरस / उन्नाव / महिला अत्याचार</option>
+                <option value="CORRUPTION_SCAMS">💰 स्मार्ट सिटी / 69k भर्ती / कमीशनखोरी / भ्रष्टाचार</option>
+                <option value="BUSINESS_TRADERS">🏪 व्यापारी उत्पीड़न / GST छापा / MSME मंदी</option>
+                <option value="BULLDOZER_INJUSTICE">🚜 बुलडोजर न्याय / चयनात्मक ध्वस्तीकरण / अवैध कार्रवाई</option>
+                <option value="CONSTITUTION_PDA">✊ संविधान रक्षा / PDA हक / आरक्षण पर प्रहार</option>
+                <option value="RELIGIOUS_COMMUNAL">🚩 सांप्रदायिक ध्रुवीकरण / तुष्टिकरण / नफरती भाषण</option>
+                <option value="PARIVARWAAD">👑 परिवारवाद / वंशवाद का फर्जी तंज</option>
+                <option value="LAW_AND_ORDER">⚖️ कानून-व्यवस्था / फर्जी एनकाउंटर / कस्टोडियल डेथ</option>
+                <option value="DEVELOPMENT">🏗️ विकास के खोखले दावे / कागजी इन्वेस्टर समिट</option>
+                <option value="CUSTOM_GENERAL_MUDDA">🎯 स्थानीय जन-मुद्दा / कोई भी अन्य विषय</option>
               </select>
             </div>
 
@@ -697,7 +710,7 @@ export const CounterStudioPage: React.FC = () => {
               </h2>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              नीचे दिए गए 8 प्रमुख ज्वलंत राजनीतिक मुद्दों व व्यंग्य चित्र प्रीसेट्स में से किसी पर क्लिक करके देखें कि कैसे यह AI कुछ ही सेकंडों में विपक्षी नेरेटिव को पूरी तरह ध्वस्त करता है:
+              नीचे दिए गए 15 प्रमुख ज्वलंत राजनीतिक मुद्दों व व्यंग्य चित्र प्रीसेट्स में से किसी पर क्लिक करके देखें कि कैसे यह AI कुछ ही सेकंडों में विपक्षी नेरेटिव को पूरी तरह ध्वस्त करता है:
             </p>
 
             <div className="space-y-2 pt-1">

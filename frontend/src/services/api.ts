@@ -2548,7 +2548,7 @@ export async function fetchForensicDemoSamples(): Promise<{ samples: ForensicAud
 
 export interface CounterCreativePayload {
   opponent_claim: string;
-  target_vector?: 'AUTO_DETECT' | 'RELIGIOUS_COMMUNAL' | 'PARIVARWAAD' | 'LAW_AND_ORDER' | 'DEVELOPMENT' | 'CASTE_PDA';
+  target_vector?: string;
   opponent_image_base64?: string;
   tone?: 'AGGRESSIVE_COUNTER' | 'FACTUAL_DIGNIFIED' | 'YOUTH_VIRAL';
 }
